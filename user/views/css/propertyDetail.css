@@ -1,9 +1,8 @@
 /* Property Detail */
 .property-detail {
   padding: 2rem 0;
-}
 
-.property-header {
+  .property-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -344,4 +343,6 @@
 .similar-properties h2 {
   margin-bottom: 2rem;
   color: #333;
+}
+
 }

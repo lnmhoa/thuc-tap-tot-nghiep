@@ -1,4 +1,4 @@
-<?php ?>
+
 <main class="news-detail">
     <div class="container">
         <section class="page-header" style="background: none; border: none; margin: 15px 0;">

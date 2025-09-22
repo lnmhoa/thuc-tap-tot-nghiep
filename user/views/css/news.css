@@ -1,4 +1,4 @@
-/* News Pages */
+.news-page{
 .news-grid-list {
   display: flex;
   flex-direction: column;
@@ -179,4 +179,6 @@
 /* Featured News */
 .featured-news {
   margin-bottom: 3rem;
+}
+
 }

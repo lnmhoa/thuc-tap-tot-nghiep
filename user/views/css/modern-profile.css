@@ -1,15 +1,10 @@
-/* ========== MODERN PROFILE SYSTEM STYLES ========== */
-
-/* Page Header */
-.page-header {
+.profile-page {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 4rem 0 3rem;
     position: relative;
     overflow: hidden;
-}
-
-.page-header::before {
+    .page-header::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1686,4 +1681,7 @@
         flex-direction: column;
         text-align: center;
     }
+}
+
+
 }

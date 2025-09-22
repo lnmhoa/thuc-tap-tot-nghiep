@@ -4,9 +4,8 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   position: relative;
-}
 
-.profile-page::before {
+  &::before {
   content: '';
   position: absolute;
   top: 0;
@@ -711,4 +710,5 @@
 
 .followed-agent-card .agent-footer {
   gap: 0.5rem;
+}
 }

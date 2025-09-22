@@ -1,5 +1,5 @@
-<!-- Page Header -->
-<section class="page-header">
+<div class="change-password-page">
+    <section class="page-header">
     <div class="container">
         <div class="page-header-content">
             <div class="page-title">
@@ -201,7 +201,7 @@
         </div>
     </div>
 </main>
-
+                    </div>
 <script>
 // Password visibility toggle
 function togglePasswordVisibility(inputId) {
@@ -384,7 +384,6 @@ document.getElementById('confirmPassword').addEventListener('input', function() 
             </div>
         </div>
     </div>
-</main>
 
 <script>
 // Toggle password visibility
@@ -685,3 +684,4 @@ document.querySelector('.change-password-form').addEventListener('submit', funct
             </div>
         </div>
     </main>
+

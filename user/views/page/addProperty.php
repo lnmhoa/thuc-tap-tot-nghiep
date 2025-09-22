@@ -1,4 +1,4 @@
-<div class="page-header">
+<div class="page-header add-property-page">
         <div class="container">
             <h1>Đăng tin bất động sản</h1>
             <div class="breadcrumb">

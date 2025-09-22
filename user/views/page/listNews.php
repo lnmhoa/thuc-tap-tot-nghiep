@@ -1,4 +1,5 @@
-<section class="page-header">
+<div class="news-page">
+    <section class="page-header">
     <div class="container">
         <div class="breadcrumb">
             <a href="index.php">Trang chủ</a>
@@ -220,3 +221,4 @@
         </div>
     </div>
 </main>
+</div>

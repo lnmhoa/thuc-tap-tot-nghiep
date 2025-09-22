@@ -1,9 +1,8 @@
 /* broker Detail Page */
 .broker-detail {
   padding: 2rem 0;
-}
 
-.broker-profile {
+  .broker-profile {
   background: white;
   border-radius: 10px;
   padding: 2rem;
@@ -429,3 +428,5 @@
   text-align: center;
   margin-top: 2rem;
 }
+}
+

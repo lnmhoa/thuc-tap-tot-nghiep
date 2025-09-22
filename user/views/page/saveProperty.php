@@ -1,5 +1,5 @@
-<!-- Page Header -->
-<section class="page-header">
+<div class="save-property">
+    <section class="page-header">
     <div class="container">
         <div class="page-header-content">
             <div class="page-title">
@@ -835,3 +835,4 @@ document.addEventListener('keydown', function(event) {
             </div>
         </div>
     </main>
+</div>

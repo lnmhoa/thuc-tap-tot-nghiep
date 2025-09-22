@@ -1,4 +1,4 @@
-  <div class="page-header">
+  <div class="page-header broker-property-page">
         <div class="container">
             <h1>Bất động sản của tôi</h1>
             <div class="breadcrumb">

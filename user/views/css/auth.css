@@ -1,4 +1,4 @@
-
+.auth-page{
 .auth-section {
     min-height: 90vh;
     display: flex;
@@ -155,4 +155,6 @@ input.form-input.is-invalid {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
 }

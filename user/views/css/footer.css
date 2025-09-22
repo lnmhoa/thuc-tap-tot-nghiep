@@ -8,9 +8,8 @@
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
-}
-
-.footer-section h3,
+  }
+  .footer-section h3,
 .footer-section h4 {
   margin-bottom: 1rem;
   color: #e74c3c;
@@ -85,6 +84,9 @@
   border-top: 1px solid #34495e;
   color: #bdc3c7;
 }
-}
 
+
+
+
+}
 

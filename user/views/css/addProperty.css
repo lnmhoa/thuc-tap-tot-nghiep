@@ -1,4 +1,4 @@
-/* Add Property Styles */
+.add-property-page{
 .progress-steps {
   display: flex;
   justify-content: center;
@@ -683,3 +683,5 @@
     padding: 1.5rem;
   }
 }
+
+}/* Add Property Styles */
