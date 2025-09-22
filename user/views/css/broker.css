@@ -1,0 +1,221 @@
+/* brokers Grid */
+.brokers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+/* broker Cards */
+.broker-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.broker-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.broker-image {
+  margin-bottom: 1rem;
+}
+
+.broker-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #e74c3c;
+}
+
+.broker-info h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.broker-title {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.broker-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.broker-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.broker-contact {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.follow-btn {
+  background: #27ae60;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.follow-btn:hover {
+  background: #219a52;
+}
+
+/* broker Cards Detailed */
+.broker-card-detailed {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 2rem;
+}
+
+.broker-card-detailed:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.broker-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.broker-avatar {
+  position: relative;
+}
+
+.broker-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e74c3c;
+}
+
+.broker-basic-info {
+  flex: 1;
+}
+
+.broker-basic-info h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.broker-basic-info h3 a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.broker-basic-info h3 a:hover {
+  color: #e74c3c;
+}
+
+.broker-experience {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-item i {
+  color: #e74c3c;
+  font-size: 1.2rem;
+  width: 20px;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.broker-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.specialty-tag {
+  background: #e74c3c;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.broker-contact-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.contact-item i {
+  color: #e74c3c;
+  width: 16px;
+}
+
+.broker-footer {
+  display: flex;
+  gap: 0.33rem;
+  flex-wrap: wrap;
+}
+
+.rating-filter .checkbox-item span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rating-filter .stars {
+  color: #f39c12;
+}

@@ -1,0 +1,174 @@
+.main-content {
+  width: 75%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px 8px 0 0;
+}
+
+.top-header h2 {
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info span {
+  margin-right: 15px;
+}
+
+.user-info button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-info button:hover {
+  background-color: #c82333;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 20px 0;
+  align-items: center;
+}
+
+.add-news-button,
+.add-typeNews-button,
+.add-broker-button,
+.add-typeRentalProperty-button,
+.add-apartment-button,
+.add-user-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-news-button,
+.add-typeNews-button,
+.add-broker-button,
+.add-typeRentalProperty-button,
+.add-apartment-button,
+.add-user-button:hover {
+  background-color: #218838;
+}
+
+.data-table {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.data-table td {
+  padding: 8px;
+  font-size: 14px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.data-table th {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.page-button {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.page-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Styling cho các trường select có multiple */
+select[multiple] {
+    width: 100%;
+    padding: 0 !important;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Hiệu ứng khi focus */
+select[multiple]:focus {
+    outline: none;
+    border-color: dodgerblue;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+}
+
+/* Styling cho các tùy chọn (options) */
+select[multiple] option {
+    padding: 8px 10px;
+    background-color: #fff;
+    color: #555;
+    transition: background-color 0.2s ease;
+}
+
+/* Styling cho các tùy chọn đã được chọn */
+select[multiple] option:checked {
+    background-color: dodgerblue;
+    color: white;
+    font-weight: bold;
+}
+
+/* Hover effect */
+select[multiple] option:hover {
+    background-color: #e0e0e0;
+}
+
+/* Thêm một số khoảng cách giữa các label và select */
+.modal-content label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}

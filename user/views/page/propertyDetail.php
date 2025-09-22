@@ -1,0 +1,186 @@
+<?php
+// propertyDetail.php view
+if (!isset($property)) {
+    echo "Không tìm thấy thông tin bất động sản!";
+    return;
+}
+?>
+<section class="property-detail">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.php">Trang chủ</a>
+            <span>/</span>
+            <a href="index.php?act=property">Bất động sản</a>
+            <span>/</span>
+            <span><?= htmlspecialchars($property['title']) ?></span>
+        </div>
+
+        <div class="property-header">
+            <h1><?= htmlspecialchars($property['title']) ?></h1>
+            <div class="property-meta">
+                <span class="location"><i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($property['address']) ?></span>
+                <span class="type"><?= htmlspecialchars($property['propertyType']) ?></span>
+                <span class="transaction-type <?= $property['transactionType'] ?>">
+                    <?= $property['transactionType'] === 'sale' ? 'Bán' : 'Cho thuê' ?>
+                </span>
+            </div>
+        </div>
+
+        <div class="property-content">
+            <div class="property-main">
+                <!-- Property Images -->
+                <div class="property-images">
+                    <?php if (!empty($propertyImages)): ?>
+                        <div class="main-image">
+                            <img src="<?= htmlspecialchars($propertyImages[0]['imagePath']) ?>" 
+                                 alt="<?= htmlspecialchars($property['title']) ?>">
+                        </div>
+                        <?php if (count($propertyImages) > 1): ?>
+                            <div class="image-gallery">
+                                <?php foreach (array_slice($propertyImages, 1, 4) as $image): ?>
+                                    <img src="<?= htmlspecialchars($image['imagePath']) ?>" 
+                                         alt="<?= htmlspecialchars($property['title']) ?>">
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="main-image">
+                            <img src="placeholder.svg" alt="<?= htmlspecialchars($property['title']) ?>">
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Property Info -->
+                <div class="property-info">
+                    <div class="price-section">
+                        <h2 class="price">
+                            <?= number_format($property['price'], 0, ',', '.') ?> VNĐ
+                            <?= $property['transactionType'] === 'rent' ? '/tháng' : '' ?>
+                        </h2>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <strong>Diện tích:</strong>
+                            <span><?= $property['area'] ?? 'N/A' ?> m²</span>
+                        </div>
+                        <?php if ($property['bedrooms'] > 0): ?>
+                            <div class="detail-item">
+                                <strong>Phòng ngủ:</strong>
+                                <span><?= $property['bedrooms'] ?> phòng</span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($property['bathrooms'] > 0): ?>
+                            <div class="detail-item">
+                                <strong>Phòng tắm:</strong>
+                                <span><?= $property['bathrooms'] ?> phòng</span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($property['floors'] > 0): ?>
+                            <div class="detail-item">
+                                <strong>Số tầng:</strong>
+                                <span><?= $property['floors'] ?> tầng</span>
+                            </div>
+                        <?php endif; ?>
+                        <div class="detail-item">
+                            <strong>Loại hình:</strong>
+                            <span><?= htmlspecialchars($property['propertyType']) ?></span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Khu vực:</strong>
+                            <span><?= htmlspecialchars($property['locationName']) ?></span>
+                        </div>
+                    </div>
+
+                    <?php if (!empty($property['description'])): ?>
+                        <div class="description">
+                            <h3>Mô tả chi tiết</h3>
+                            <div class="description-content">
+                                <?= nl2br(htmlspecialchars($property['description'])) ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="property-sidebar">
+                <!-- Broker Info -->
+                <div class="broker-card">
+                    <h3>Thông tin môi giới</h3>
+                    <div class="broker-info">
+                        <?php if (!empty($property['brokerAvatar'])): ?>
+                            <img src="<?= htmlspecialchars($property['brokerAvatar']) ?>" 
+                                 alt="<?= htmlspecialchars($property['brokerName']) ?>" 
+                                 class="broker-avatar">
+                        <?php endif; ?>
+                        <div class="broker-details">
+                            <h4><?= htmlspecialchars($property['brokerName']) ?></h4>
+                            <?php if (!empty($property['brokerIntro'])): ?>
+                                <p><?= htmlspecialchars($property['brokerIntro']) ?></p>
+                            <?php endif; ?>
+                            <div class="broker-contact">
+                                <?php if (!empty($property['brokerPhone'])): ?>
+                                    <p><i class="fas fa-phone"></i> <?= htmlspecialchars($property['brokerPhone']) ?></p>
+                                <?php endif; ?>
+                                <?php if (!empty($property['brokerEmail'])): ?>
+                                    <p><i class="fas fa-envelope"></i> <?= htmlspecialchars($property['brokerEmail']) ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary contact-btn">Liên hệ ngay</button>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="btn btn-outline save-property">
+                        <i class="far fa-heart"></i> Lưu tin
+                    </button>
+                    <button class="btn btn-outline share-property">
+                        <i class="fas fa-share"></i> Chia sẻ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Properties -->
+        <?php if (!empty($relatedProperties)): ?>
+            <div class="related-properties">
+                <h2>Bất động sản liên quan</h2>
+                <div class="properties-grid">
+                    <?php foreach (array_slice($relatedProperties, 0, 4) as $item): ?>
+                        <div class="property-card">
+                            <div class="property-image">
+                                <img src="<?= !empty($item['mainImage']) ? $item['mainImage'] : 'placeholder.svg' ?>" 
+                                     alt="<?= htmlspecialchars($item['title']) ?>">
+                                <div class="property-badge<?= $item['transactionType']==='sale' ? ' sale' : '' ?>">
+                                    <?= $item['transactionType']==='sale' ? 'Bán' : 'Cho thuê' ?>
+                                </div>
+                            </div>
+                            <div class="property-info">
+                                <h3><a href="index.php?act=property&id=<?= $item['id'] ?>">
+                                    <?= htmlspecialchars($item['title']) ?>
+                                </a></h3>
+                                <p class="location"><?= htmlspecialchars($item['locationName']) ?></p>
+                                <p class="price">
+                                    <?= number_format($item['price'], 0, ',', '.') ?> VNĐ
+                                    <?= $item['transactionType'] === 'rent' ? '/tháng' : '' ?>
+                                </p>
+                                <div class="property-features">
+                                    <span><?= $item['area'] ?? 0 ?> m²</span>
+                                    <?php if ($item['bedrooms'] > 0): ?>
+                                        | <span><?= $item['bedrooms'] ?> PN</span>
+                                    <?php endif; ?>
+                                    <?php if ($item['bathrooms'] > 0): ?>
+                                        | <span><?= $item['bathrooms'] ?> WC</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>
