@@ -1,13 +1,11 @@
 <?php
-// Lấy ID bất động sản từ URL
-$propertyId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$propertyId = isset($_GET['id']) ? $_GET['id'] : 0;
 
 if ($propertyId <= 0) {
     error('Thông tin bất động sản không hợp lệ!', 'index.php?act=listProperty');
     return;
 }
 
-// Lấy thông tin chi tiết bất động sản
 $sql_property = "SELECT rp.*, t.name as propertyType, l.name as locationName, 
                  a.fullName as brokerName, a.avatar as brokerAvatar, a.phoneNumber as brokerPhone,
                  a.email as brokerEmail, b.shortIntro as brokerIntro

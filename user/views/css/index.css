@@ -283,6 +283,40 @@
   border-color: #e74c3c;
 }
 
+.page-dots {
+  padding: 0.5rem;
+  color: #666;
+}
+
+ */
+.page-header {
+    text-align: left;
+    max-width: 1200px;
+    margin: 10px auto;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+.page-header .breadcrumb {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+.page-header .breadcrumb a,
+.page-header .breadcrumb span {
+  font-size: 1.5rem;
+  font-weight: 600;
+    color: white;
+    text-decoration: none;
+}
+
+.page-header .breadcrumb a:hover {
+    color: #e74c3c;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -317,49 +351,6 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
-
-.page-dots {
-  padding: 0.5rem;
-  color: #666;
-}
-
-.page-header {
-    background-size: cover;
-    background-position: center;
-    color: #e74c3c;
-    text-align: left;
-}
-
-.page-header .container {
-    max-width: 1300px;
-        border-radius: 10px;
-    background-color: #fff;
-    margin: 0 auto;
-    padding: 15px;
-}
-
-.page-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.page-header .breadcrumb {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
-}
-
-.page-header .breadcrumb a,
-.page-header .breadcrumb span {
-    color: black;
-    text-decoration: none;
-}
-
-.page-header .breadcrumb a:hover {
-    color: #e74c3c;
-} */
 
 :root {
   --primary-color: #007bff;

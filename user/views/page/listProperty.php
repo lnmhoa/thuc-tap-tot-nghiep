@@ -1,25 +1,20 @@
-<section class="page-header">
-    <div class="container">
+<div class="property-list">
+    <section class="page-header">
         <div class="breadcrumb">
             <a href="index.php">Trang chủ</a>
             <span>/</span>
             <span>Bất động sản</span>
         </div>
-    </div>
 </section>
 
-<!-- Main Content -->
 <main class="main-content">
     <div class="container">
         <div class="content-layout">
-            <!-- Sidebar Filter -->
             <aside class="sidebar">
                 <form method="GET" action="index.php" id="property-filter-form">
                     <input type="hidden" name="act" value="listProperty">
                     <div class="filter-section">
                         <h3 style="position: unset !important;">Bộ lọc tìm kiếm</h3>
-
-                        <!-- Search Box -->
                         <div class="filter-group">
                             <label for="search">Tìm kiếm</label>
                             <input type="text" id="search" name="search"
@@ -27,7 +22,6 @@
                                 value="<?= htmlspecialchars($filters['search'] ?? '') ?>"
                                 class="form-input">
                         </div>
-
                         <div class="filter-group">
                             <label style="font-size: 1.1rem; font-weight:bold; margin: 10px 0">Loại giao dịch</label>
                             <div class="checkbox-group">
@@ -127,7 +121,6 @@
                 </form>
             </aside>
 
-            <!-- Main Content Area -->
             <div class="content-area">
                 <div class="content-header">
                     <div class="results-info">
@@ -198,10 +191,7 @@
 
                                     <div class="property-price">
                                         <span class="price-amount">
-                                            <?= number_format($item['price'], 0, ',', '.') ?>
-                                        </span>
-                                        <span class="price-unit">
-                                            <?= $item['transactionType'] === 'sale' ? ' VNĐ' : ' VNĐ/tháng' ?>
+                                            <?= number_format($item['price'], 0, ',', '.') ?> <?= $item['transactionType'] === 'sale' ? ' VNĐ' : ' VNĐ/tháng' ?>
                                         </span>
                                     </div>
 
@@ -234,8 +224,7 @@
                                                 <div class="agent-avatar">
                                                     <?php if (!empty($item['brokerAvatar'])): ?>
                                                         <img src="<?= htmlspecialchars($item['brokerAvatar']) ?>"
-                                                            alt="<?= htmlspecialchars($item['brokerName']) ?>"
-                                                            onerror="this.src='../assets/images/default-avatar.png'">
+                                                            alt="<?= htmlspecialchars($item['brokerName']) ?>">
                                                     <?php else: ?>
                                                         <div class="avatar-placeholder">
                                                             <i class="fas fa-user"></i>
@@ -251,14 +240,14 @@
                                             </div>
                                             <div class="agent-actions">
                                                 <a href="index.php?act=broker&id=<?= $item['brokerId'] ?? '' ?>"
-                                                    class="btn btn-sm btn-outline" title="Xem hồ sơ">
+                                                    class="btn btn-outline" style="padding: 0.475rem 1rem;" title="Xem hồ sơ">
                                                  
-                                                            <i class="fas fa-user" style="width: 4px"></i>
+                                                            <i class="fas fa-user"></i>
                                                  
                                                 </a>
                                                 <?php if (!empty($item['brokerPhone'])): ?>
                                                     <a href="tel:<?= $item['brokerPhone'] ?>"
-                                                        class="btn btn-sm btn-primary" title="Gọi điện">
+                                                        class="btn btn-sm btn-primary" style="padding: 0.475rem 1rem;"  title="Gọi điện">
                                                         <i class="fas fa-phone"></i>
                                                     </a>
                                                 <?php endif; ?>
@@ -277,12 +266,10 @@
                                             }
                                             ?>
                                         </span>
-                                        <?php if (!empty($item['updatedAt']) && $item['updatedAt'] !== $item['createdAt']): ?>
-                                            <span class="updated-date" title="Cập nhật: <?= date('d/m/Y H:i', strtotime($item['updatedAt'])) ?>">
-                                                <i class="fas fa-sync-alt"></i>
-                                                Cập nhật
-                                            </span>
-                                        <?php endif; ?>
+                                        <span class="updated-date" title="Lượt xem: <?= $item['views'] ?>">
+                                            <i class="fas fa-eye"></i>
+                                                <?= $item['views'] ?> lượt xem
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -332,277 +319,6 @@
         </div>
     </div>
 </main>
+    </div>
 
-<script>
-    function updateSort(sortBy) {
-        const url = new URL(window.location);
-        url.searchParams.set('sortBy', sortBy);
-        window.location.href = url.href;
-    }
-
-    // Price range validation
-    document.addEventListener('DOMContentLoaded', function() {
-        const minPriceInput = document.querySelector('input[name="minPrice"]');
-        const maxPriceInput = document.querySelector('input[name="maxPrice"]');
-        const minAreaInput = document.querySelector('input[name="minArea"]');
-        const maxAreaInput = document.querySelector('input[name="maxArea"]');
-
-        // Price range validation and auto-fill
-        function validatePriceRange() {
-            const minPrice = parseFloat(minPriceInput.value) || 0;
-            const maxPrice = parseFloat(maxPriceInput.value) || 0;
-
-            if (minPrice > 0 && maxPrice > 0 && minPrice > maxPrice) {
-                maxPriceInput.setCustomValidity('Giá đến phải lớn hơn giá từ');
-                maxPriceInput.style.borderColor = '#e74c3c';
-                return false;
-            } else {
-                maxPriceInput.setCustomValidity('');
-                maxPriceInput.style.borderColor = '#e1e5e9';
-                return true;
-            }
-        }
-
-        // Auto-fill and set min for price range
-        function handleMinPriceChange() {
-            const minPrice = parseFloat(minPriceInput.value) || 0;
-
-            if (minPrice > 0) {
-                // Set minimum value for max price input
-                maxPriceInput.setAttribute('min', minPrice);
-
-                // Auto-fill max price if it's empty or less than min price
-                const currentMaxPrice = parseFloat(maxPriceInput.value) || 0;
-                if (currentMaxPrice === 0 || currentMaxPrice < minPrice) {
-                    // Auto-suggest a reasonable max price (double the min price or add common increments)
-                    let suggestedMax;
-                    if (minPrice < 1000000) { // < 1 triệu
-                        suggestedMax = minPrice + 500000; // +500k
-                    } else if (minPrice < 10000000) { // < 10 triệu
-                        suggestedMax = minPrice + 5000000; // +5 triệu
-                    } else if (minPrice < 50000000) { // < 50 triệu
-                        suggestedMax = minPrice + 20000000; // +20 triệu
-                    } else {
-                        suggestedMax = minPrice * 2; // Double for high prices
-                    }
-                    maxPriceInput.value = suggestedMax;
-
-                    // Add visual feedback
-                    maxPriceInput.style.backgroundColor = '#e8f5e8';
-                    maxPriceInput.style.borderColor = '#27ae60';
-
-                    // Remove visual feedback after 2 seconds
-                    setTimeout(() => {
-                        maxPriceInput.style.backgroundColor = '#fff';
-                        maxPriceInput.style.borderColor = '#e1e5e9';
-                    }, 2000);
-                }
-            } else {
-                // Remove min constraint if no min price
-                maxPriceInput.removeAttribute('min');
-            }
-
-            validatePriceRange();
-        }
-
-        // Auto-fill and set min for area range
-        function handleMinAreaChange() {
-            const minArea = parseFloat(minAreaInput.value) || 0;
-
-            if (minArea > 0) {
-                // Set minimum value for max area input
-                maxAreaInput.setAttribute('min', minArea);
-
-                // Auto-fill max area if it's empty or less than min area
-                const currentMaxArea = parseFloat(maxAreaInput.value) || 0;
-                if (currentMaxArea === 0 || currentMaxArea < minArea) {
-                    // Auto-suggest a reasonable max area
-                    let suggestedMax;
-                    if (minArea < 50) { // < 50m2
-                        suggestedMax = minArea + 20; // +20m2
-                    } else if (minArea < 100) { // < 100m2
-                        suggestedMax = minArea + 50; // +50m2
-                    } else if (minArea < 200) { // < 200m2
-                        suggestedMax = minArea + 100; // +100m2
-                    } else {
-                        suggestedMax = minArea + 200; // +200m2 for large areas
-                    }
-                    maxAreaInput.value = suggestedMax;
-
-                    // Add visual feedback
-                    maxAreaInput.style.backgroundColor = '#e8f5e8';
-                    maxAreaInput.style.borderColor = '#27ae60';
-
-                    // Remove visual feedback after 2 seconds
-                    setTimeout(() => {
-                        maxAreaInput.style.backgroundColor = '#fff';
-                        maxAreaInput.style.borderColor = '#e1e5e9';
-                    }, 2000);
-                }
-            } else {
-                // Remove min constraint if no min area
-                maxAreaInput.removeAttribute('min');
-            }
-
-            validateAreaRange();
-        }
-
-        // Validate area range
-        function validateAreaRange() {
-            const minArea = parseFloat(minAreaInput.value) || 0;
-            const maxArea = parseFloat(maxAreaInput.value) || 0;
-
-            if (minArea > 0 && maxArea > 0 && minArea > maxArea) {
-                maxAreaInput.setCustomValidity('Diện tích đến phải lớn hơn diện tích từ');
-                maxAreaInput.style.borderColor = '#e74c3c';
-                return false;
-            } else {
-                maxAreaInput.setCustomValidity('');
-                maxAreaInput.style.borderColor = '#e1e5e9';
-                return true;
-            }
-        }
-
-        // Add event listeners
-        if (minPriceInput && maxPriceInput) {
-            minPriceInput.addEventListener('input', handleMinPriceChange);
-            minPriceInput.addEventListener('blur', handleMinPriceChange);
-            maxPriceInput.addEventListener('input', validatePriceRange);
-            maxPriceInput.addEventListener('blur', validatePriceRange);
-        }
-
-        if (minAreaInput && maxAreaInput) {
-            minAreaInput.addEventListener('input', handleMinAreaChange);
-            minAreaInput.addEventListener('blur', handleMinAreaChange);
-            maxAreaInput.addEventListener('input', validateAreaRange);
-            maxAreaInput.addEventListener('blur', validateAreaRange);
-        }
-
-        // Form submission validation
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const priceValid = validatePriceRange();
-                const areaValid = validateAreaRange();
-
-                if (!priceValid || !areaValid) {
-                    e.preventDefault();
-                    alert('Vui lòng kiểm tra lại các khoảng giá trị nhập vào!');
-                }
-            });
-        }
-
-        // Format number inputs
-        function formatNumberInput(input) {
-            input.addEventListener('blur', function() {
-                const value = parseFloat(this.value);
-                if (!isNaN(value) && value > 0) {
-                    this.value = Math.round(value).toString();
-                }
-            });
-        }
-
-        [minPriceInput, maxPriceInput, minAreaInput, maxAreaInput].forEach(input => {
-            if (input) formatNumberInput(input);
-        });
-    });
-
-    // Additional JavaScript for enhanced functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        initializePriceFormatter();
-        initializeFilterForm();
-        initializeSaveProperty();
-
-        function initializePriceFormatter() {
-            const priceInputs = document.querySelectorAll('.price-input');
-            priceInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    let value = this.value.replace(/[^\d]/g, '');
-                    if (value) {
-                        value = parseInt(value).toLocaleString('vi-VN');
-                        this.value = value;
-                    }
-                });
-            });
-        }
-
-        function initializeFilterForm() {
-            const filterForm = document.getElementById('property-filter-form');
-            const searchInput = document.querySelector('input[name="search"]');
-
-            // Real-time search with debounce
-            if (searchInput) {
-                let searchTimeout;
-                searchInput.addEventListener('input', function() {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        if (this.value.length >= 3 || this.value.length === 0) {
-                            filterForm.submit();
-                        }
-                    }, 500);
-                });
-            }
-
-            // Auto-submit on filter change
-            const filterElements = filterForm.querySelectorAll('select, input[type="radio"]');
-            filterElements.forEach(element => {
-                element.addEventListener('change', function() {
-                    if (this.type === 'radio' || this.tagName === 'SELECT') {
-                        setTimeout(() => filterForm.submit(), 100);
-                    }
-                });
-            });
-        }
-
-        function initializeSaveProperty() {
-            window.toggleSaveProperty = function(propertyId) {
-                const saveBtn = document.querySelector(`[data-property-id="${propertyId}"] .save-btn`);
-                const icon = saveBtn.querySelector('i');
-
-                // Toggle UI immediately
-                const isSaved = icon.classList.contains('fas');
-
-                if (isSaved) {
-                    icon.classList.remove('fas');
-                    icon.classList.add('far');
-                    saveBtn.classList.remove('saved');
-                } else {
-                    icon.classList.remove('far');
-                    icon.classList.add('fas');
-                    saveBtn.classList.add('saved');
-                }
-
-                // Send AJAX request (implement backend endpoint)
-                fetch('index.php?act=toggleSaveProperty', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            propertyId: propertyId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.success && data.message === 'login_required') {
-                            window.location.href = 'index.php?act=login';
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            };
-        }
-    });
-
-    // Sort and pagination functions
-    function updateSort(sortValue) {
-        const url = new URL(window.location);
-        url.searchParams.set('sortBy', sortValue);
-        window.location.href = url.toString();
-    }
-
-    function goToPage(page) {
-        const url = new URL(window.location);
-        url.searchParams.set('page', page);
-        window.location.href = url.toString();
-    }
-</script>
+<script src="./views/js/listProperty.js"></script>

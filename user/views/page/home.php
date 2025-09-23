@@ -385,7 +385,7 @@
                 <div class="news-content">
                     <div class="news-category"><?= ($pinNewsHome[0]['name']) ?></div>
                     <h3 class="news-title"><?= ($pinNewsHome[0]['title']) ?></h3>
-                    <p class="news-excerpt"><?= substr($pinNewsHome[0]['content'], 0, 200) ?>...</p>
+                    <p class="news-excerpt"><?= strip_tags($pinNewsHome[0]['content']) ?></p>
                     <div class="news-meta">
                         <span class="news-date">
                             <i class="fas fa-calendar"></i>
@@ -403,18 +403,18 @@
             <div class="news-list">
                 <?php foreach ($listNewsHome as $news): ?>
                 <article class="news-item">
-                    <div class="news-thumbnail">
-                        <img src="../admin/uploads/news/<?= $news['image'] ?>" alt="<?= $news['title'] ?>">
-                    </div>
                     <div class="news-info">
-                        
-                        <h4 class="news-title"><?= $news['title'] ?><div class="news-category small"><?= $news['name'] ?></div></h4>
-                        <p class="news-excerpt"><?= substr($news['content'], 0, 150) ?>...</p>
+                        <h4 class="news-title"><div class="news-category small"><?= $news['name'] ?></div><?= $news['title'] ?></h4>
+                        <p class="news-excerpt"><?= strip_tags($news['content']) ?></p>
                         <div class="news-meta">
                             <span class="news-date">
                                 <i class="fas fa-calendar"></i>
                                 <?= date('d/m/Y', strtotime($news['createdAt'])) ?>
                             </span>
+                             <span class="news-views">
+                            <i class="fas fa-eye"></i>
+                            <?= number_format($news['views']) ?> lượt xem
+                        </span>
                         </div>
                     </div>
                 </article>
@@ -423,27 +423,5 @@
         </div>
     </div>
 </section>
-
- <!--Newsletter Section
-<section class="newsletter-section">
-    <div class="container">
-        <div class="newsletter-content">
-            <div class="newsletter-text">
-                <h3>Đăng ký nhận tin tức mới nhất</h3>
-                <p>Nhận thông tin về những bất động sản mới và xu hướng thị trường</p>
-            </div>
-            <form class="newsletter-form">
-                <div class="input-group">
-                    <input type="email" placeholder="Nhập email của bạn" required>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i>
-                        Đăng ký
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
-</div> -->
 
 <script src="./views/js/home.js"></script>

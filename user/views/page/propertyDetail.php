@@ -7,49 +7,54 @@ if (!isset($property)) {
 ?>
 <section class="property-detail">
     <div class="container">
+         <section class="page-header">
         <div class="breadcrumb">
-            <a href="index.php">Trang chủ</a>
+              <a href="index.php">Trang chủ</a>
             <span>/</span>
-            <a href="index.php?act=property">Bất động sản</a>
+           <a href="index.php?act=property">Bất động sản</a>
             <span>/</span>
             <span><?= htmlspecialchars($property['title']) ?></span>
         </div>
-
+        </section>
         <div class="property-header">
             <h1><?= htmlspecialchars($property['title']) ?></h1>
-            <div class="property-meta">
-                <span class="location"><i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($property['address']) ?></span>
-                <span class="type"><?= htmlspecialchars($property['propertyType']) ?></span>
-                <span class="transaction-type <?= $property['transactionType'] ?>">
-                    <?= $property['transactionType'] === 'sale' ? 'Bán' : 'Cho thuê' ?>
-                </span>
-            </div>
         </div>
+ 
 
+  <!-- Swiper JS -->
+ 
         <div class="property-content">
             <div class="property-main">
                 <!-- Property Images -->
                 <div class="property-images">
-                    <?php if (!empty($propertyImages)): ?>
-                        <div class="main-image">
-                            <img src="<?= htmlspecialchars($propertyImages[0]['imagePath']) ?>" 
-                                 alt="<?= htmlspecialchars($property['title']) ?>">
-                        </div>
-                        <?php if (count($propertyImages) > 1): ?>
-                            <div class="image-gallery">
-                                <?php foreach (array_slice($propertyImages, 1, 4) as $image): ?>
-                                    <img src="<?= htmlspecialchars($image['imagePath']) ?>" 
-                                         alt="<?= htmlspecialchars($property['title']) ?>">
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <div class="main-image">
-                            <img src="placeholder.svg" alt="<?= htmlspecialchars($property['title']) ?>">
-                        </div>
-                    <?php endif; ?>
-                </div>
+    <?php if (!empty($propertyImages)): ?>
+        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+            <div class="swiper-wrapper">
+                <?php foreach ($propertyImages as $image): ?>
+                    <div class="swiper-slide">
+                        <img src="<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
 
+        <div thumbsSlider="" class="swiper mySwiper" style="width: 738px; !imortant"> 
+            <div class="swiper-wrapper">
+                <?php foreach ($propertyImages as $image): ?>
+                    <div class="swiper-slide">
+                        <img src="<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="main-image">
+            <img src="placeholder.svg" alt="<?= htmlspecialchars($property['title']) ?>">
+        </div>
+    <?php endif; ?>
+</div>
                 <!-- Property Info -->
                 <div class="property-info">
                     <div class="price-section">
@@ -90,8 +95,15 @@ if (!isset($property)) {
                             <strong>Khu vực:</strong>
                             <span><?= htmlspecialchars($property['locationName']) ?></span>
                         </div>
+                         <div class="detail-item">
+                            <strong>ĐC:</strong>
+                            <span><?= htmlspecialchars($property['address']) ?></span>
+                        </div>
+                         <div class="detail-item">
+                            <strong>Loại hình:</strong>
+                            <span>  <?= $property['transactionType'] === 'sale' ? 'Bán' : 'Cho thuê' ?></span>
+                        </div>
                     </div>
-
                     <?php if (!empty($property['description'])): ?>
                         <div class="description">
                             <h3>Mô tả chi tiết</h3>
@@ -103,17 +115,13 @@ if (!isset($property)) {
                 </div>
             </div>
 
-            <!-- Sidebar -->
             <div class="property-sidebar">
-                <!-- Broker Info -->
                 <div class="broker-card">
-                    <h3>Thông tin môi giới</h3>
                     <div class="broker-info">
-                        <?php if (!empty($property['brokerAvatar'])): ?>
+                        
                             <img src="<?= htmlspecialchars($property['brokerAvatar']) ?>" 
                                  alt="<?= htmlspecialchars($property['brokerName']) ?>" 
                                  class="broker-avatar">
-                        <?php endif; ?>
                         <div class="broker-details">
                             <h4><?= htmlspecialchars($property['brokerName']) ?></h4>
                             <?php if (!empty($property['brokerIntro'])): ?>
@@ -132,7 +140,6 @@ if (!isset($property)) {
                     <button class="btn btn-primary contact-btn">Liên hệ ngay</button>
                 </div>
 
-                <!-- Quick Actions -->
                 <div class="quick-actions">
                     <button class="btn btn-outline save-property">
                         <i class="far fa-heart"></i> Lưu tin
@@ -144,7 +151,6 @@ if (!isset($property)) {
             </div>
         </div>
 
-        <!-- Related Properties -->
         <?php if (!empty($relatedProperties)): ?>
             <div class="related-properties">
                 <h2>Bất động sản liên quan</h2>
@@ -184,3 +190,24 @@ if (!isset($property)) {
         <?php endif; ?>
     </div>
 </section>
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+    var swiper2 = new Swiper(".mySwiper2", {
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      thumbs: {
+        swiper: swiper,
+      },
+    });
+  </script>
