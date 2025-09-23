@@ -1,18 +1,16 @@
-<?php ?>
-<section class="page-header">
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="index.php">Trang chủ</a>
-            <span>/</span>
-            <span>Môi giới</span>
-        </div>
+<div class="broker-page"><section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.php">Trang chủ</a>
+                <span>/</span>
+                <span>Môi giới</span>
+            </div>
     </div>
 </section>
 
 <main class="main-content">
     <div class="container">
         <div class="content-layout">
-            <!-- Sidebar Filter -->
             <aside class="sidebar">
                 <form method="POST" id="filterForm">
                     <div class="filter-section">
@@ -23,7 +21,7 @@
                             <div class="collapsible-filter">
                                 <div class="checkbox-group-grid">
                                     <?php
-                                    $displayCount = 8; // Hiển thị 8 khu vực đầu tiên
+                                    $displayCount = 8;
                                     $districts_display = array_slice($districts, 0, $displayCount);
                                     $districts_hidden = array_slice($districts, $displayCount);
 
@@ -147,7 +145,6 @@
                 </form>
             </aside>
 
-            <!-- Main Content Area -->
             <div class="content-area">
                 <div class="content-header">
                     <div class="results-info">
@@ -167,11 +164,8 @@
 
                 <div class="brokers-grid">
                     <?php foreach ($listBrokers as $broker) {
-                        // Tính kinh nghiệm
                         $experienceYears = date('Y') - date('Y', strtotime($broker['createdAt']));
                         if ($experienceYears == 0) $experienceYears = "Dưới 1";
-
-                        // Xử lý avatar
                         $avatarPath = !empty($broker['avatar']) ? $broker['avatar'] : '/placeholder.svg?height=80&width=80';
                     ?>
                         <div class="broker-card-detailed">
@@ -204,23 +198,47 @@
                                 </div>
                             </div>
 
-                            <div class="broker-stats">
+                       <div class="broker-stats">
                                 <div class="stat-item">
                                     <i class="fas fa-clock"></i>
                                     <div class="stat-info">
-                                        <span class="stat-number"><?= htmlspecialchars($broker['workingHours']) ?></span>
+                                        <span class="stat-number">
+                                            <?php 
+                                            if (!empty($broker['workingHours'])) {
+                                                echo htmlspecialchars($broker['workingHours']);
+                                            } else {
+                                                echo "Chưa có thông tin";
+                                            }
+                                            ?>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <div class="stat-info">
-                                        <span class="stat-number"><?= htmlspecialchars($broker['mainArea']) ?></span>
+                                        <span class="stat-number">
+                                            <?php 
+                                            if (!empty($broker['mainArea'])) {
+                                                echo htmlspecialchars($broker['mainArea']);
+                                            } else {
+                                                echo "Chưa có thông tin";
+                                            }
+                                            ?>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-language"></i>
                                     <div class="stat-info">
-                                        <span class="stat-number"><?= htmlspecialchars($broker['language']) ?></span>
+                                        <span class="stat-number">
+                                            <?php 
+                                            if (!empty($broker['language'])) {
+                                                echo htmlspecialchars($broker['language']);
+                                            } else {
+                                                echo "Chưa có thông tin";
+                                            }
+                                            ?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -266,7 +284,6 @@
                     <?php } ?>
                 </div>
 
-                <!-- No Results Message -->
                 <?php if (empty($listBrokers)) { ?>
                     <div style="text-align: center; padding: 40px; color: #666;">
                         <h3>Không tìm thấy môi giới nào</h3>
@@ -274,7 +291,6 @@
                     </div>
                 <?php } ?>
 
-                <!-- Pagination -->
                 <?php if ($total_page > 1) { ?>
                     <div class="pagination">
                         <?php if ($current_page > 1) { ?>
@@ -301,108 +317,6 @@
             </div>
         </div>
     </div>
-</main>
+</main></div>
 
-<style>
-    .checkbox-group-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-bottom: 10px;
-    }
-
-    .checkbox-item {
-        display: flex;
-        align-items: center;
-        padding: 6px 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        font-size: 14px;
-    }
-
-    .checkbox-item:hover {
-        background-color: #f5f5f5;
-    }
-
-    .checkbox-item input[type="checkbox"] {
-        margin-right: 8px;
-        margin-top: 0;
-    }
-
-    .show-more-btn {
-        background: none;
-        border: 1px solid #ddd;
-        color: #666;
-        padding: 6px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 13px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.2s;
-    }
-
-    .show-more-btn:hover {
-        background-color: #f8f9fa;
-        border-color: #007bff;
-        color: #007bff;
-    }
-
-    .show-more-btn i {
-        transition: transform 0.2s;
-    }
-
-    .show-more-btn.expanded i {
-        transform: rotate(180deg);
-    }
-
-    .more-options {
-        margin-bottom: 10px;
-    }
-
-    /* Responsive cho mobile */
-    @media (max-width: 768px) {
-        .checkbox-group-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-
-<script>
-    function toggleMoreOptions(button) {
-        const moreOptions = button.previousElementSibling;
-        const showText = button.querySelector('.show-text');
-        const hideText = button.querySelector('.hide-text');
-        const icon = button.querySelector('i');
-
-        if (moreOptions.style.display === 'none') {
-            moreOptions.style.display = 'block';
-            showText.style.display = 'none';
-            hideText.style.display = 'inline';
-            button.classList.add('expanded');
-        } else {
-            moreOptions.style.display = 'none';
-            showText.style.display = 'inline';
-            hideText.style.display = 'none';
-            button.classList.remove('expanded');
-        }
-    }
-
-    // Auto-expand nếu có checkbox được chọn trong phần ẩn
-    document.addEventListener('DOMContentLoaded', function() {
-        const moreOptions = document.querySelector('.more-options');
-        if (moreOptions) {
-            const checkedHidden = moreOptions.querySelectorAll('input[type="checkbox"]:checked');
-            if (checkedHidden.length > 0) {
-                const showMoreBtn = moreOptions.nextElementSibling;
-                if (showMoreBtn && showMoreBtn.classList.contains('show-more-btn')) {
-                    toggleMoreOptions(showMoreBtn);
-                }
-            }
-        }
-    });
-</script>
+<script src="./views/js/listBroker.js"></script>

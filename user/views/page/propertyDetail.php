@@ -1,5 +1,4 @@
 <?php
-// propertyDetail.php view
 if (!isset($property)) {
     echo "Không tìm thấy thông tin bất động sản!";
     return;
@@ -20,12 +19,8 @@ if (!isset($property)) {
             <h1><?= htmlspecialchars($property['title']) ?></h1>
         </div>
  
-
-  <!-- Swiper JS -->
- 
         <div class="property-content">
             <div class="property-main">
-                <!-- Property Images -->
                 <div class="property-images">
     <?php if (!empty($propertyImages)): ?>
         <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
@@ -55,7 +50,7 @@ if (!isset($property)) {
         </div>
     <?php endif; ?>
 </div>
-                <!-- Property Info -->
+
                 <div class="property-info">
                     <div class="price-section">
                         <h2 class="price">
@@ -192,7 +187,6 @@ if (!isset($property)) {
 </section>
  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-  <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper(".mySwiper", {
       spaceBetween: 10,

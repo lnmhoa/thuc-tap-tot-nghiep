@@ -1,28 +1,28 @@
 <main class="broker-detail">
-    <div class="container">
+    <section class="page-header">
         <div class="breadcrumb">
             <a href="index.php">Trang chủ</a>
             <span>/</span>
             <a href="index.php?act=listBroker">Môi giới</a>
             <span>/</span>
-            <span><?php echo htmlspecialchars($account['fullName'] ?? 'Chưa có tên'); ?></span>
+            <span><?= htmlspecialchars($account['fullName']) ?></span>
         </div>
+</section>
 
-        <!-- broker Profile -->
         <div class="broker-profile">
             <div class="broker-profile-header">
                 <div class="broker-avatar-large">
-                    <img src="<?php echo !empty($account['avatar']) ? $account['avatar'] : '/placeholder.svg?height=150&width=150'; ?>"
-                        alt="<?php echo htmlspecialchars($account['fullName'] ?? 'Broker'); ?>">
+                    <img src="<?= !empty($account['avatar']) ? $account['avatar'] : '/placeholder.svg?height=150&width=150'; ?>"
+                        alt="<?= htmlspecialchars($account['fullName'] ?? 'Broker'); ?>">
                     <div class="online-status"></div>
                     <div class="verified-badge">
                         <i class="fas fa-check"></i>
                     </div>
                 </div>
                 <div class="broker-info">
-                    <h1><?php echo htmlspecialchars($account['fullName'] ?? 'Chưa có tên'); ?></h1>
+                    <h1><?= htmlspecialchars($account['fullName'] ?? 'Chưa có tên'); ?></h1>
                     <p class="broker-title">
-                        <?php echo htmlspecialchars($broker['shortIntro'] ?? 'Chuyên viên tư vấn BĐS cao cấp'); ?></p>
+                        <?= htmlspecialchars($broker['shortIntro'] ?? 'Chuyên viên tư vấn BĐS cao cấp'); ?></p>
                     <div class="broker-rating-large">
                         <div class="stars">
                             <?php
@@ -36,14 +36,14 @@
                             }
                             ?>
                         </div>
-                        <span><?php echo number_format($rating, 1); ?>/5 (127 đánh giá)</span>
+                        <span><?= number_format($rating, 1); ?>/5 (127 đánh giá)</span>
                     </div>
                     <div class="broker-meta">
                         <span><i class="fas fa-briefcase"></i> 5 năm kinh nghiệm</span>
                         <span><i class="fas fa-calendar"></i> Tham gia từ
-                            <?php echo date('Y', strtotime($account['createdAt'] ?? '2019-01-01')); ?></span>
+                            <?= date('Y', strtotime($account['createdAt'] ?? '2019-01-01')); ?></span>
                         <span><i class="fas fa-map-marker-alt"></i>
-                            <?php echo htmlspecialchars($broker['mainArea'] ?? 'TP. Hồ Chí Minh'); ?></span>
+                            <?= htmlspecialchars($broker['mainArea'] ?? 'TP. Hồ Chí Minh'); ?></span>
                     </div>
                     <div class="broker-languages">
                         <?php
@@ -76,7 +76,7 @@
                         <i class="fas fa-home"></i>
                     </div>
                     <div class="stat-content">
-                        <h3><?php echo $propertyCount; ?>+</h3>
+                        <h3><?= $propertyCount; ?>+</h3>
                         <p>Bất động sản đang bán</p>
                     </div>
                 </div>
@@ -98,33 +98,20 @@
                         <p>Khách hàng hài lòng</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>
-                            < 2h</h3>
-                                <p>Thời gian phản hồi</p>
-                    </div>
-                </div>
             </div>
         </div>
-
-        <!-- broker Details -->
         <div class="broker-details">
             <div class="detail-tabs">
                 <button class="tab-btn active" data-tab="about">Giới thiệu</button>
                 <button class="tab-btn" data-tab="properties">BĐS đăng bán</button>
                 <button class="tab-btn" data-tab="reviews">Đánh giá</button>
-                <button class="tab-btn" data-tab="contact">Liên hệ</button>
             </div>
 
             <div class="tab-content active" id="about">
                 <div class="about-content">
                     <div class="about-section">
                         <h3>Về tôi</h3>
-                        <p><?php echo htmlspecialchars($broker['shortIntro']); ?></p>
+                        <p><?= htmlspecialchars($broker['shortIntro']); ?></p>
 
                         <p>Với phương châm "Khách hàng là trung tâm", tôi luôn đặt lợi ích của khách hàng lên hàng đầu
                             và cam kết mang đến những dịch vụ tư vấn chuyên nghiệp, uy tín và hiệu quả nhất.</p>
@@ -199,7 +186,7 @@
             <div class="tab-content" id="properties">
                 <div class="properties-section">
                     <div class="section-header">
-                        <h3>Bất động sản đang bán (<?php echo $propertyCount; ?>)</h3>
+                        <h3>Bất động sản đang bán (<?= $propertyCount; ?>)</h3>
                         <div class="property-filters">
                             <select class="form-select">
                                 <option value="all">Tất cả</option>
@@ -286,10 +273,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="view-all-properties">
-                        <button class="btn btn-outline">Xem tất cả BĐS (150)</button>
                     </div>
                 </div>
             </div>
@@ -430,88 +413,128 @@
                         </div>
                     </div>
 
-                    <div class="load-more-reviews">
-                        <button class="btn btn-outline">Xem thêm đánh giá</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="contact">
-                <div class="contact-section">
-                    <div class="contact-info-detailed">
-                        <h3>Thông tin liên hệ</h3>
-                        <div class="contact-methods">
-                            <div class="contact-method">
-                                <div class="contact-icon">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <h4>Điện thoại</h4>
-                                    <p><?php echo htmlspecialchars($account['phone'] ?? '0901 234 567'); ?></p>
-                                    <button class="btn btn-primary">Gọi ngay</button>
-                                </div>
-                            </div>
-                            <div class="contact-method">
-                                <div class="contact-icon">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <h4>Email</h4>
-                                    <p><?php echo htmlspecialchars($account['email'] ?? 'nguyenvanan@email.com'); ?></p>
-                                    <button class="btn btn-outline">Gửi email</button>
-                                </div>
-                            </div>
-                            <div class="contact-method">
-                                <div class="contact-icon">
-                                    <i class="fab fa-zalo"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <h4>Zalo</h4>
-                                    <p>0901 234 567</p>
-                                    <button class="btn btn-outline">Chat Zalo</button>
+                    <!-- Add Review Form -->
+                    <div class="add-review-section">
+                        <button class="btn btn-primary" id="add-review-btn">
+                            <i class="fas fa-plus"></i>
+                            Thêm đánh giá
+                        </button>
+                        
+                        <div class="review-form-container" id="review-form-container" style="display: none;">
+                            <div class="review-form-overlay">
+                                <div class="review-form">
+                                    <div class="form-header">
+                                        <h3>Đánh giá môi giới</h3>
+                                        <button class="close-form" id="close-review-form">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <form id="review-form">
+                                        <div class="form-group">
+                                            <label>Đánh giá của bạn *</label>
+                                            <div class="rating-input">
+                                                <input type="radio" id="star5" name="rating" value="5" />
+                                                <label for="star5" title="5 sao"><i class="fas fa-star"></i></label>
+                                                <input type="radio" id="star4" name="rating" value="4" />
+                                                <label for="star4" title="4 sao"><i class="fas fa-star"></i></label>
+                                                <input type="radio" id="star3" name="rating" value="3" />
+                                                <label for="star3" title="3 sao"><i class="fas fa-star"></i></label>
+                                                <input type="radio" id="star2" name="rating" value="2" />
+                                                <label for="star2" title="2 sao"><i class="fas fa-star"></i></label>
+                                                <input type="radio" id="star1" name="rating" value="1" />
+                                                <label for="star1" title="1 sao"><i class="fas fa-star"></i></label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="reviewer-name">Họ và tên *</label>
+                                            <input type="text" id="reviewer-name" name="name" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="review-content">Nội dung đánh giá *</label>
+                                            <textarea id="review-content" name="content" rows="4" required 
+                                                placeholder="Chia sẻ trải nghiệm của bạn với môi giới này..."></textarea>
+                                        </div>
+                                        
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-outline" id="cancel-review">Hủy</button>
+                                            <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="contact-form-section">
-                        <h3>Gửi tin nhắn</h3>
-                        <form class="contact-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="name">Họ và tên *</label>
-                                    <input type="text" id="name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Số điện thoại *</label>
-                                    <input type="tel" id="phone" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email">
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Chủ đề</label>
-                                <select id="subject">
-                                    <option value="">Chọn chủ đề</option>
-                                    <option value="buy">Mua bất động sản</option>
-                                    <option value="sell">Bán bất động sản</option>
-                                    <option value="rent">Cho thuê</option>
-                                    <option value="invest">Tư vấn đầu tư</option>
-                                    <option value="other">Khác</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Tin nhắn *</label>
-                                <textarea id="message" rows="5" required
-                                    placeholder="Nhập nội dung tin nhắn..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Gửi tin nhắn</button>
-                        </form>
+                    <div class="load-more-reviews">
+                        <button class="btn btn-outline">Xem thêm đánh giá</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            this.classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+    
+    // Review form functionality
+    const addReviewBtn = document.getElementById('add-review-btn');
+    const reviewFormContainer = document.getElementById('review-form-container');
+    const closeReviewForm = document.getElementById('close-review-form');
+    const cancelReview = document.getElementById('cancel-review');
+    
+    if (addReviewBtn && reviewFormContainer) {
+        // Show review form
+        addReviewBtn.addEventListener('click', function() {
+            reviewFormContainer.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+        
+        // Hide review form
+        function hideReviewForm() {
+            reviewFormContainer.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+        
+        if (closeReviewForm) {
+            closeReviewForm.addEventListener('click', hideReviewForm);
+        }
+        
+        if (cancelReview) {
+            cancelReview.addEventListener('click', hideReviewForm);
+        }
+        
+        // Close form when clicking on overlay
+        reviewFormContainer.addEventListener('click', function(e) {
+            if (e.target === reviewFormContainer) {
+                hideReviewForm();
+            }
+        });
+        
+        // Close form with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && reviewFormContainer.style.display === 'flex') {
+                hideReviewForm();
+            }
+        });
+    }
+});
+</script>
