@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 24, 2025 lúc 02:47 PM
+-- Thời gian đã tạo: Th9 24, 2025 lúc 04:42 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -98,7 +98,7 @@ CREATE TABLE `account` (
   `password` varchar(255) NOT NULL,
   `avatar` varchar(500) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `role` enum('1','2','3') NOT NULL COMMENT '1=Admin, 2=Broker, 3=User',
+  `role` enum('1','2','3','4','5') NOT NULL COMMENT '1=User, 2=Broker, 3=Admin, 4=UserLock, 5=BrokerLock',
   `status` enum('active','inactive') DEFAULT 'active',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -109,7 +109,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id`, `fullName`, `email`, `phoneNumber`, `password`, `avatar`, `address`, `role`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, 'Nguyễn Văn A', 'nguyenvana@email.com', '0901234567', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, '2', 'active', '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
+(1, 'Nguyễn Văn A', 'nguyenvana@email.com', '0901234567', '$2y$10$iQIkanH64dRU5O0Us8z2YuwZ299v5zOjQbVHuYALsznF7x8yDWl.K', NULL, NULL, '2', 'active', '2025-09-11 06:59:16', '2025-09-24 13:32:05'),
 (2, 'Trần Thị B', 'tranthib@email.com', '0907654321', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, '2', 'active', '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (3, 'Lê Văn C', 'levanc@email.com', '0903456789', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, '2', 'active', '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (4, 'Phạm Thị D', 'phamthid@email.com', '0909876543', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, '2', 'active', '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
@@ -268,6 +268,13 @@ CREATE TABLE `contact_requests` (
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `contact_requests`
+--
+
+INSERT INTO `contact_requests` (`id`, `userId`, `brokerId`, `name`, `phone`, `message`, `location`, `subject`, `price`, `note`, `status`, `createdAt`, `updatedAt`) VALUES
+(2, NULL, 1, 'dsv', '0000000000', 'sgsgsdgsd', '0900900000', 'Tư vấn mua bán', '000099999', '', 'pending', '2025-09-24 12:53:45', '2025-09-24 12:53:45');
 
 -- --------------------------------------------------------
 
@@ -587,9 +594,9 @@ CREATE TABLE `rental_property` (
 --
 
 INSERT INTO `rental_property` (`id`, `title`, `description`, `address`, `locationId`, `typeId`, `brokerId`, `userId`, `transactionType`, `price`, `priceUnit`, `area`, `bedrooms`, `bathrooms`, `floors`, `frontage`, `direction`, `legalStatus`, `furniture`, `parking`, `images`, `imageCount`, `featured`, `status`, `views`, `createdAt`, `updatedAt`) VALUES
-(1, 'Căn hộ cao cấp Vinhomes Central Park', 'Căn hộ đầy đủ nội thất, view đẹp', 'Đường Nguyễn Hữu Cảnh, Quận 1', 2, 1, 1, NULL, 'rent', 25000000.00, 'month', 80.00, 2, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 12, 0, 'active', 64, '2025-09-11 06:59:16', '2025-09-24 04:49:10'),
-(2, 'Nhà phố mặt tiền đường lớn', 'Nhà phố kinh doanh tốt, vị trí đẹp', 'Đường Huỳnh Tấn Phát, Quận 7', 5, 2, 2, NULL, 'sale', 8500000000.00, 'month', 120.00, 4, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 8, 0, 'active', 1, '2025-09-11 06:59:16', '2025-09-23 13:31:24'),
-(3, 'Văn phòng hạng A tòa nhà Bitexco', 'Văn phòng cao cấp, đầy đủ tiện ích', 'Đường Đồng Khởi, Quận 1', 2, 3, 3, NULL, 'rent', 50000000.00, 'month', 200.00, 0, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 15, 0, 'active', 1, '2025-09-11 06:59:16', '2025-09-24 02:23:14'),
+(1, 'Căn hộ cao cấp Vinhomes Central Park', 'Căn hộ đầy đủ nội thất, view đẹp', 'Đường Nguyễn Hữu Cảnh, Quận 1', 2, 1, 1, NULL, 'rent', 25000000.00, 'month', 80.00, 2, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 12, 0, 'active', 66, '2025-09-11 06:59:16', '2025-09-24 14:28:14'),
+(2, 'Nhà phố mặt tiền đường lớn', 'Nhà phố kinh doanh tốt, vị trí đẹp', 'Đường Huỳnh Tấn Phát, Quận 7', 5, 2, 2, NULL, 'sale', 8500000000.00, 'month', 120.00, 4, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 8, 0, 'active', 6, '2025-09-11 06:59:16', '2025-09-24 14:33:26'),
+(3, 'Văn phòng hạng A tòa nhà Bitexco', 'Văn phòng cao cấp, đầy đủ tiện ích', 'Đường Đồng Khởi, Quận 1', 2, 3, 3, NULL, 'rent', 50000000.00, 'month', 200.00, 0, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 15, 0, 'active', 2, '2025-09-11 06:59:16', '2025-09-24 14:20:07'),
 (4, 'Phòng trọ cao cấp full nội thất', 'Phòng trọ sạch sẽ, an ninh tốt', 'Đường Phan Văn Hân, Bình Thạnh', 7, 4, 4, NULL, 'rent', 6000000.00, 'month', 25.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 6, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (5, 'Đất nền khu dân cư cao cấp', 'Đất nền sổ hồng riêng, vị trí đẹp', 'Đường Võ Văn Kiệt, Quận 9', 6, 5, 5, NULL, 'sale', 3200000000.00, 'month', 100.00, 0, 0, 1, NULL, NULL, NULL, 'none', 0, NULL, 4, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (6, 'Penthouse view sông Sài Gòn', 'Penthouse luxury với view tuyệt đẹp', 'Đường Thảo Điền, Quận 2', 3, 1, 6, NULL, 'rent', 80000000.00, 'month', 150.00, 3, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 20, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
@@ -603,7 +610,7 @@ INSERT INTO `rental_property` (`id`, `title`, `description`, `address`, `locatio
 (89, 'Nhà phố 1 trệt 2 lầu Quận 9', 'Mặt tiền kinh doanh, cách Vincom 5 phút.', '', 4, 2, 15, 16, '', 15000000000.00, 'month', 90.00, 3, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-19 17:00:00', '2025-09-12 16:04:18'),
 (90, 'Biệt thự ven sông Sài Gòn', 'Không gian yên tĩnh, an ninh, view sông lãng mạn.', '', 2, 3, 17, 18, '', 80000000000.00, 'month', 400.00, 6, 5, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 1, '2024-03-21 17:00:00', '2025-09-14 16:47:30'),
 (91, 'Đất nền dự án ven biển Vũng Tàu', 'Sổ hồng riêng, xây dựng tự do, tiềm năng du lịch.', '', 6, 4, 19, 20, '', 5000000000.00, 'month', 150.00, 0, 0, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-24 17:00:00', '2025-09-12 16:04:18'),
-(92, 'Văn phòng cho thuê Quận 3', 'Gần các tòa nhà lớn, giao thông thuận tiện.', '', 5, 5, 21, 22, '', 18000000.00, 'month', 95.00, 0, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 25, '2024-03-27 17:00:00', '2025-09-23 13:41:17'),
+(92, 'Văn phòng cho thuê Quận 3', 'Gần các tòa nhà lớn, giao thông thuận tiện.', '', 5, 5, 21, 22, '', 18000000.00, 'month', 95.00, 0, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 26, '2024-03-27 17:00:00', '2025-09-24 14:20:18'),
 (93, 'Nhà trọ giá rẻ gần KTX ĐH Quốc Gia', 'Phòng sạch sẽ, an toàn, có nhà bếp chung.', '', 4, 1, 23, 24, '', 2500000.00, 'month', 20.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-29 17:00:00', '2025-09-12 16:04:18'),
 (94, 'Căn hộ Penthouse Quận 1', 'Thiết kế độc đáo, view thành phố tuyệt đẹp.', '', 1, 1, 25, 26, '', 30000000000.00, 'month', 200.00, 4, 4, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-31 17:00:00', '2025-09-12 16:04:18'),
 (95, 'Nhà riêng hẻm lớn Quận 10', 'Yên tĩnh, an ninh, gần chợ, trường học.', '', 5, 2, 27, 28, '', 10000000000.00, 'month', 75.00, 3, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-04-04 17:00:00', '2025-09-12 16:04:18'),
@@ -617,7 +624,7 @@ INSERT INTO `rental_property` (`id`, `title`, `description`, `address`, `locatio
 (103, 'Đất nền ven sông Quận 9', 'Lô góc 2 mặt tiền, view sông thoáng mát.', '', 4, 4, 4, 44, '', 9000000000.00, 'month', 130.00, 0, 0, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-04-24 17:00:00', '2025-09-12 16:04:18'),
 (104, 'Văn phòng cho thuê Quận 10', 'Tòa nhà mới xây, tiện nghi đầy đủ.', '', 5, 5, 5, 46, '', 12000000.00, 'month', 70.00, 0, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-04-27 17:00:00', '2025-09-12 16:04:18'),
 (105, 'Nhà trọ giá tốt Thủ Đức', 'Phòng rộng, sạch sẽ, khu vực yên tĩnh.', '', 4, 2, 7, 48, '', 2000000.00, 'month', 20.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-04-29 17:00:00', '2025-09-12 16:04:18'),
-(106, 'Căn hộ 1PN Vinhomes Central Park', 'View công viên, tiện ích 5 sao.', '', 1, 1, 9, 50, '', 10000000.00, 'month', 50.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 1, '2024-04-30 17:00:00', '2025-09-17 03:16:21');
+(106, 'Căn hộ 1PN Vinhomes Central Park', 'View công viên, tiện ích 5 sao.', '', 1, 1, 9, 50, '', 10000000.00, 'month', 50.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 2, '2024-04-30 17:00:00', '2025-09-24 14:20:05');
 
 -- --------------------------------------------------------
 
@@ -888,7 +895,7 @@ ALTER TABLE `broker_ratings`
 -- AUTO_INCREMENT cho bảng `contact_requests`
 --
 ALTER TABLE `contact_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `expertises`

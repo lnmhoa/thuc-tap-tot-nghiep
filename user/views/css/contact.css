@@ -213,9 +213,8 @@
         text-decoration: underline;
     }
 
-    /* Emergency Card */
     .emergency-card .card-header {
-        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .hotline-number {

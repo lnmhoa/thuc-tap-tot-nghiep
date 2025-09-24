@@ -20,6 +20,13 @@
                     <h1><?= htmlspecialchars($account['fullName'] ?? 'Chưa có tên'); ?></h1>
                     <p class="broker-title">
                         <?= htmlspecialchars($broker['shortIntro'] ?? 'Chuyên viên tư vấn BĐS cao cấp'); ?></p>
+
+                        <div style="display: flex; gap: 3rem; color: #e74c3c;">
+                                <p style="font-size: 1.5rem; font-weight: 600;"><i class="fas fa-phone"></i>
+                                    <?= htmlspecialchars($account['phoneNumber'] ?? 'Chưa có số điện thoại'); ?></p>
+                                <p style="font-size: 1.5rem; font-weight: 600;">   <i class="fas fa-envelope"></i>
+                                    <?= htmlspecialchars($account['email'] ?? 'Chưa có email'); ?></p>
+                        </div>
                     <div class="broker-rating-large">
                         <div class="stars">
                             <?php

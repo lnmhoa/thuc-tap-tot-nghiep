@@ -34,7 +34,7 @@
                                 <i class="fas fa-chart-line"></i>
                                 Bắt đầu đầu tư
                             </a>
-                            <a href="?act=consultationRequest" class="btn btn-secondary">
+                            <a href="?act=contact" class="btn btn-secondary">
                                 <i class="fas fa-handshake"></i>
                                 Tư vấn miễn phí
                             </a>
@@ -54,7 +54,7 @@
                                 <i class="fas fa-users"></i>
                                 Xem môi giới
                             </a>
-                            <a href="?act=consultationRequest" class="btn btn-secondary">
+                            <a href="?act=contact" class="btn btn-secondary">
                                 <i class="fas fa-phone"></i>
                                 Liên hệ ngay
                             </a>
@@ -120,92 +120,78 @@
         </div>
         
         <div class="properties-carousel">
+            <?php if (!empty($featuredProperties)) { 
+                foreach ($featuredProperties as $property) { 
+                    $images = json_decode($property['images'], true);
+                    $firstImage = !empty($images) ? '../admin/uploads/rentalProperty/' . $images[0] : '../logo.jpg';
+                    
+                    // Format giá tiền
+                    $price = number_format($property['price'], 0, ',', '.') . ' ';
+                    if ($property['transactionType'] == 'rent') {
+                        $price .= ($property['priceUnit'] == 'month') ? 'đ/tháng' : 'đ';
+                    } else {
+                        $price .= 'đ';
+                    }
+            ?>
             <div class="property-card">
                 <div class="property-image">
-                    <img src="../4.webp" alt="Căn hộ cao cấp">
-                    <div class="property-badge rent">Cho thuê</div>
+                    <img src="<?= $firstImage ?>" alt="<?= htmlspecialchars($property['title']) ?>" onerror="this.src='../logo.jpg'">
+                    <div class="property-badge <?= $property['transactionType'] ?>">
+                        <?= $property['transactionType'] == 'rent' ? 'Cho thuê' : 'Bán' ?>
+                    </div>
+                    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
                     <button class="save-btn" onclick="toggleSave(this)">
                         <i class="far fa-heart"></i>
                     </button>
+                    <?php } ?>
                 </div>
                 <div class="property-content">
-                    <h3 class="property-title">Căn hộ cao cấp Vinhomes Central Park</h3>
+                    <h3 class="property-title" onclick="window.location.href='?act=property&id=<?= $property['id'] ?>'"><?= htmlspecialchars($property['title']) ?></h3>
                     <p class="property-location">
                         <i class="fas fa-map-marker-alt"></i>
-                        Quận Bình Thạnh, TP.HCM
+                        <?= htmlspecialchars($property['locationName'] ?? $property['address']) ?>
                     </p>
-                    <div class="property-price">25 triệu/tháng</div>
+                    <div class="property-price"><?= $price ?></div>
                     <div class="property-features">
-                        <span><i class="fas fa-bed"></i> 2 PN</span>
-                        <span><i class="fas fa-bath"></i> 2 WC</span>
-                        <span><i class="fas fa-expand-arrows-alt"></i> 80m²</span>
+                        <?php if ($property['bedrooms'] > 0) { ?>
+                        <span><i class="fas fa-bed"></i> <?= $property['bedrooms'] ?> PN</span>
+                        <?php } ?>
+                        <?php if ($property['bathrooms'] > 0) { ?>
+                        <span><i class="fas fa-bath"></i> <?= $property['bathrooms'] ?> WC</span>
+                        <?php } ?>
+                        <?php if ($property['area'] > 0) { ?>
+                        <span><i class="fas fa-expand-arrows-alt"></i> <?= number_format($property['area'], 0) ?>m²</span>
+                        <?php } ?>
                     </div>
                     <div class="property-meta">
                         <div class="property-views">
-                            <i class="fas fa-eye"></i> 1,234 lượt xem
+                            <i class="fas fa-eye"></i> <?= number_format($property['views']) ?> lượt xem
                         </div>
-                        <div class="property-date">2 ngày trước</div>
+                        <div class="property-date">
+                            <?php
+                            $createdDate = new DateTime($property['createdAt']);
+                            $now = new DateTime();
+                            $interval = $now->diff($createdDate);
+                            if ($interval->days == 0) {
+                                echo "Hôm nay";
+                            } elseif ($interval->days == 1) {
+                                echo "1 ngày trước";
+                            } else {
+                                echo $interval->days . " ngày trước";
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="property-card">
-                <div class="property-image">
-                    <img src="../1.jpg" alt="Nhà phố">
-                    <div class="property-badge sale">Bán</div>
-                    <button class="save-btn" onclick="toggleSave(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <div class="property-content">
-                    <h3 class="property-title">Nhà phố liền kề khu Sài Gòn South</h3>
-                    <p class="property-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Quận 7, TP.HCM
-                    </p>
-                    <div class="property-price">8.5 tỷ</div>
-                    <div class="property-features">
-                        <span><i class="fas fa-bed"></i> 4 PN</span>
-                        <span><i class="fas fa-bath"></i> 3 WC</span>
-                        <span><i class="fas fa-expand-arrows-alt"></i> 120m²</span>
-                    </div>
-                    <div class="property-meta">
-                        <div class="property-views">
-                            <i class="fas fa-eye"></i> 892 lượt xem
-                        </div>
-                        <div class="property-date">1 tuần trước</div>
-                    </div>
-                </div>
+            <?php 
+                } 
+            } else { 
+            ?>
+            <div class="no-properties">
+                <p>Chưa có bất động sản nào được đăng</p>
             </div>
-            
-            <div class="property-card">
-                <div class="property-image">
-                    <img src="../3.jpg" alt="Chung cư">
-                    <div class="property-badge rent">Cho thuê</div>
-                    <button class="save-btn" onclick="toggleSave(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <div class="property-content">
-                    <h3 class="property-title">Chung cư Masteri Thảo Điền</h3>
-                    <p class="property-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Quận 2, TP.HCM
-                    </p>
-                    <div class="property-price">18 triệu/tháng</div>
-                    <div class="property-features">
-                        <span><i class="fas fa-bed"></i> 1 PN</span>
-                        <span><i class="fas fa-bath"></i> 1 WC</span>
-                        <span><i class="fas fa-expand-arrows-alt"></i> 55m²</span>
-                    </div>
-                    <div class="property-meta">
-                        <div class="property-views">
-                            <i class="fas fa-eye"></i> 567 lượt xem
-                        </div>
-                        <div class="property-date">3 ngày trước</div>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </div>
 </section>
@@ -224,141 +210,59 @@
         </div>
         
         <div class="brokers-grid">
+            <?php if (!empty($topBrokers)) { 
+                foreach ($topBrokers as $broker) { 
+                    $avatar = $broker['avatar'] ? '../admin/uploads/broker/' . $broker['avatar'] : '../logo.jpg';
+                    $rating = $broker['avgRating'] ? number_format($broker['avgRating'], 1) : '0';
+                    $ratingCount = $broker['ratingCount'] ? $broker['ratingCount'] : 0;
+            ?>
             <div class="broker-card">
                 <div class="broker-avatar">
-                    <img src="../admin/uploads/broker/688614ebb3040.png" alt="Môi giới" onerror="this.src='../logo.jpg'">
+                    <img src="<?= $avatar ?>" alt="<?= htmlspecialchars($broker['fullName']) ?>" onerror="this.src='../logo.jpg'">
                 </div>
                 <div class="broker-info">
-                    <h3 class="broker-name">Nguyễn Văn Minh</h3>
-                    <p class="broker-title">Chuyên viên tư vấn BĐS</p>
+                    <h3 class="broker-name" onclick="window.location.href='?act=broker&id=<?= $broker['id'] ?>'"><?= htmlspecialchars($broker['fullName']) ?></h3>
+                    <p class="broker-title"><?= htmlspecialchars($broker['shortIntro'] ?? 'Chuyên viên tư vấn BĐS') ?></p>
                     <div class="broker-stats">
                         <div class="stat-item">
                             <i class="fas fa-home"></i>
-                            <span>150+ BĐS</span>
+                            <span><?= number_format($broker['propertyCount']) ?>+ BĐS</span>
                         </div>
                         <div class="stat-item">
                             <i class="fas fa-star"></i>
-                            <span>4.8/5</span>
+                            <span><?= $rating ?>/5 (<?= $ratingCount ?>)</span>
                         </div>
                         <div class="stat-item">
                             <i class="fas fa-handshake"></i>
-                            <span>200+ GD</span>
+                            <span><?= number_format($broker['dealCount']) ?>+ GD</span>
                         </div>
                     </div>
                     <div class="broker-actions">
-                        <button class="btn btn-primary btn-sm">
+                        <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                        <a href="tel:<?= htmlspecialchars($broker['phoneNumber']) ?>" class="btn btn-primary btn-sm">
                             <i class="fas fa-phone"></i>
                             Liên hệ
-                        </button>
-                        <button class="btn btn-outline btn-sm">
-                            <i class="fas fa-user-plus"></i>
-                            Theo dõi
-                        </button>
+                        </a>
+                        <?php }else{ ?>
+                        <button disabled  class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                <i class="fas fa-phone"></i> Liên hệ
+                                                            </button>
+                        <?php } ?>
+                        <a href="?act=broker&id=<?= $broker['id'] ?>" class="btn btn-outline btn-sm">
+                            <i class="fas fa-user"></i>
+                            Xem hồ sơ
+                        </a>
                     </div>
                 </div>
             </div>
-            
-            <div class="broker-card">
-                <div class="broker-avatar">
-                    <img src="../admin/uploads/broker/688615b882eef.png" alt="Môi giới" onerror="this.src='../logo.jpg'">
-                </div>
-                <div class="broker-info">
-                    <h3 class="broker-name">Trần Thị Hương</h3>
-                    <p class="broker-title">Chuyên gia đầu tư BĐS</p>
-                    <div class="broker-stats">
-                        <div class="stat-item">
-                            <i class="fas fa-home"></i>
-                            <span>200+ BĐS</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-star"></i>
-                            <span>4.9/5</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-handshake"></i>
-                            <span>350+ GD</span>
-                        </div>
-                    </div>
-                    <div class="broker-actions">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="fas fa-phone"></i>
-                            Liên hệ
-                        </button>
-                        <button class="btn btn-outline btn-sm">
-                            <i class="fas fa-user-plus"></i>
-                            Theo dõi
-                        </button>
-                    </div>
-                </div>
+            <?php 
+                } 
+            } else { 
+            ?>
+            <div class="no-brokers">
+                <p>Chưa có thông tin môi giới</p>
             </div>
-            
-            <div class="broker-card">
-                <div class="broker-avatar">
-                    <img src="../admin/uploads/broker/68861612add95.png" alt="Môi giới" onerror="this.src='../logo.jpg'">
-                </div>
-                <div class="broker-info">
-                    <h3 class="broker-name">Lê Văn Cường</h3>
-                    <p class="broker-title">Chuyên viên cho thuê</p>
-                    <div class="broker-stats">
-                        <div class="stat-item">
-                            <i class="fas fa-home"></i>
-                            <span>120+ BĐS</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-star"></i>
-                            <span>4.7/5</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-handshake"></i>
-                            <span>180+ GD</span>
-                        </div>
-                    </div>
-                    <div class="broker-actions">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="fas fa-phone"></i>
-                            Liên hệ
-                        </button>
-                        <button class="btn btn-outline btn-sm">
-                            <i class="fas fa-user-plus"></i>
-                            Theo dõi
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="broker-card">
-                <div class="broker-avatar">
-                    <img src="../admin/uploads/broker/6886164232e4f.png" alt="Môi giới" onerror="this.src='../logo.jpg'">
-                </div>
-                <div class="broker-info">
-                    <h3 class="broker-name">Phạm Thị Lan</h3>
-                    <p class="broker-title">Giám đốc kinh doanh</p>
-                    <div class="broker-stats">
-                        <div class="stat-item">
-                            <i class="fas fa-home"></i>
-                            <span>300+ BĐS</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-star"></i>
-                            <span>5.0/5</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-handshake"></i>
-                            <span>500+ GD</span>
-                        </div>
-                    </div>
-                    <div class="broker-actions">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="fas fa-phone"></i>
-                            Liên hệ
-                        </button>
-                        <button class="btn btn-outline btn-sm">
-                            <i class="fas fa-user-plus"></i>
-                            Theo dõi
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </div>
 </section>

@@ -24,31 +24,42 @@
                                 </div>
                             </div>
 
-                          <div class="form-row">
-                                <div class="form-group">
-                                    <label for="location"><i class="fas fa-map-marker-alt"></i> Khu vực *</label>
-                                    <input type="text" id="location" name="location" 
-                                           value="<?php echo isset($_SESSION['form_data']['location']) ? htmlspecialchars($_SESSION['form_data']['location']) : ''; ?>" 
-                                           required>
+                       <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="location"><i class="fas fa-map-marker-alt"></i> Khu vực *</label>
+                                        <select id="location" name="location" required>
+                                            <option value="">-- Chọn khu vực --</option>
+                                            <?php foreach ($locations as $loc) { ?>
+                                                <option value="<?= $loc['name'] ?>" 
+                                                    <?= (isset($_SESSION['mainArea']['location']) && $_SESSION['mainArea']['location'] == $loc['name']) ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($loc['name']) ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subject"><i class="fas fa-tag"></i> Chủ đề *</label>
+                                        <select id="subject" name="subject" required>
+                                            <option value="">-- Chọn chủ đề --</option>
+                                            <option value="Tư vấn mua bán">Tư vấn mua bán</option>
+                                            <option value="Tư vấn cho thuê">Tư vấn cho thuê</option>
+                                            <option value="Khiếu nại">Khiếu nại</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                 <div class="form-group">
-                                <label for="subject"><i class="fas fa-tag"></i> Chủ đề *</label>
-                                <select id="subject" name="subject" required>
-                                    <option value="">-- Chọn chủ đề --</option>
-                                    <option value="Tư vấn mua bán" <?php echo (isset($_SESSION['form_data']['subject']) && $_SESSION['form_data']['subject'] == 'Tư vấn mua bán') ? 'selected' : ''; ?>>Tư vấn mua bán</option>
-                                    <option value="Tư vấn cho thuê" <?php echo (isset($_SESSION['form_data']['subject']) && $_SESSION['form_data']['subject'] == 'Tư vấn cho thuê') ? 'selected' : ''; ?>>Tư vấn cho thuê</option>
-                                    <option value="Khiếu nại" <?php echo (isset($_SESSION['form_data']['subject']) && $_SESSION['form_data']['subject'] == 'Khiếu nại') ? 'selected' : ''; ?>>Khiếu nại</option>
-                                    <option value="Khác" <?php echo (isset($_SESSION['form_data']['subject']) && $_SESSION['form_data']['subject'] == 'Khác') ? 'selected' : ''; ?>>Khác</option>
-                                </select>
-                            </div>
                                 <div class="form-group">
                                     <label for="price"><i class="fas fa-dollar-sign"></i> Giá mong muốn</label>
-                                    <input type="text" id="price" name="price" 
-                                           value="<?php echo isset($_SESSION['form_data']['price']) ? htmlspecialchars($_SESSION['form_data']['price']) : ''; ?>" >
-                                </div>
+                                    <select id="price" name="price" required>
+                                    <option value="">-- Chọn giá mong muốn --</option>
+                                    <option value="Dưới 3 triệu">Dưới 3 triệu</option>
+                                    <option value="3 - 5 triệu">3 - 5 triệu</option>
+                                    <option value="5 - 8 triệu">5 - 8 triệu</option>
+                                    <option value="Trên 8 triệu">Trên 8 triệu</option>
+                                </select>
+                             
                             </div>
                            
-
                             <div class="form-group">
                                 <label for="message"><i class="fas fa-comment"></i> Nội dung tin nhắn *</label>
                                 <textarea id="message" name="message" rows="6" 
@@ -64,7 +75,6 @@
                                 </button>
                             </div>
                         </form>
-                        <?php unset($_SESSION['form_data']); ?>
                     </div>
                 </div>
 
@@ -80,7 +90,7 @@
                                 </div>
                                 <div class="info-details">
                                     <strong>Địa chỉ</strong>
-                                    <p><?php echo $contact_info['address']; ?></p>
+                                    <p>123 Nguyễn Huệ, Q1, TP.HCM</p>
                                 </div>
                             </div>
 
@@ -90,7 +100,7 @@
                                 </div>
                                 <div class="info-details">
                                     <strong>Điện thoại</strong>
-                                    <p><a href="tel:<?php echo str_replace(['-', ' '], '', $contact_info['phone']); ?>"><?php echo $contact_info['phone']; ?></a></p>
+                                    <p><a href="tel:1900 1234">1900 1234</a></p>
                                 </div>
                             </div>
 
@@ -100,7 +110,7 @@
                                 </div>
                                 <div class="info-details">
                                     <strong>Email</strong>
-                                    <p><a href="mailto:<?php echo $contact_info['email']; ?>"><?php echo $contact_info['email']; ?></a></p>
+                                    <p><a href="mailto:info@ehome.vn">info@ehome.vn</a></p>
                                 </div>
                             </div>
 
@@ -110,7 +120,7 @@
                                 </div>
                                 <div class="info-details">
                                     <strong>Giờ làm việc</strong>
-                                    <p><?php echo $contact_info['working_hours']; ?></p>
+                                    <p>8:00 - 17:00</p>
                                 </div>
                             </div>
                         </div>
@@ -123,8 +133,8 @@
                         </div>
                         <div class="card-content">
                             <div class="hotline-number">
-                                <a href="tel:<?php echo str_replace(['-', ' '], '', $contact_info['hotline']); ?>">
-                                    <?php echo $contact_info['hotline']; ?>
+                                <a href="tel:1900 1234">
+                                    1900 1234
                                 </a>
                             </div>
                             <p>Hỗ trợ khách hàng 24/7</p>

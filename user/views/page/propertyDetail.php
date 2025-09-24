@@ -123,9 +123,11 @@ if (!isset($property)) {
                                 <p><?= htmlspecialchars($property['brokerIntro']) ?></p>
                             <?php endif; ?>
                             <div class="broker-contact">
-                                <?php if (!empty($property['brokerPhone'])): ?>
-                                    <p><i class="fas fa-phone"></i> <?= htmlspecialchars($property['brokerPhone']) ?></p>
-                                <?php endif; ?>
+                                    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
+                                    <span><?= htmlspecialchars($property['brokerPhone']) ?></span>
+                                    <?php } else { ?>
+                                   <span><?= substr($property['brokerPhone'], 0 , 7) ?>***</span>
+                                    <?php } ?>
                                 <?php if (!empty($property['brokerEmail'])): ?>
                                     <p><i class="fas fa-envelope"></i> <?= htmlspecialchars($property['brokerEmail']) ?></p>
                                 <?php endif; ?>

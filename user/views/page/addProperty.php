@@ -1,40 +1,63 @@
-<div class="page-header add-property-page">
-        <div class="container">
-            <h1>Đăng tin bất động sản</h1>
-            <div class="breadcrumb">
-                <a href="http://localhost/luan_van_tot_nghiep/user">Trang chủ</a>
-                <i class="fas fa-chevron-right"></i>
-                <span>Đăng tin mới</span>
-            </div>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tin bất động sản - PropertyHub</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/addProperty.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <?php 
+    // Display error messages if exist
+    if (isset($_SESSION['errors'])) {
+        echo '<script>window.formErrors = ' . json_encode($_SESSION['errors']) . ';</script>';
+        unset($_SESSION['errors']);
+    }
+    if (isset($_SESSION['success'])) {
+        echo '<script>window.formSuccess = ' . json_encode($_SESSION['success']) . ';</script>';
+        unset($_SESSION['success']);
+    }
+    ?>
+</head>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
+<body>
+    <?php require_once('../header.php'); ?>
+
+    <main class="add-property-container">
+        <div class="form-container">
             <!-- Progress Steps -->
-            <div class="progress-steps">
-                <div class="step active" data-step="1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Thông tin cơ bản</div>
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Thông tin cơ bản</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Chi tiết BĐS</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Hình ảnh</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Xác nhận</div>
+                    </div>
                 </div>
-                <div class="step" data-step="2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Chi tiết BĐS</div>
-                </div>
-                <div class="step" data-step="3">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Hình ảnh</div>
-                </div>
-                <div class="step" data-step="4">
-                    <div class="step-number">4</div>
-                    <div class="step-label">Xác nhận</div>
+            </div>
+
+            <!-- Form Content -->
+            <div class="form-content">
+                <form class="property-form" method="POST" enctype="multipart/form-data"
                 </div>
             </div>
 
             <!-- Add Property Form -->
             <div class="add-property-form">
-                <form id="addPropertyForm">
+                <form id="addPropertyForm" method="POST" enctype="multipart/form-data">
                     <!-- Step 1: Basic Information -->
                     <div class="form-step active" id="step1">
                         <div class="step-header">
@@ -44,23 +67,20 @@
 
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="propertyType">Loại bất động sản <span class="required">*</span></label>
-                                <select id="propertyType" name="propertyType" class="form-select" required>
+                                <label for="typeId">Loại bất động sản <span class="required">*</span></label>
+                                <select id="typeId" name="typeId" class="form-select" required>
                                     <option value="">Chọn loại bất động sản</option>
-                                    <option value="apartment">Chung cư</option>
-                                    <option value="house">Nhà riêng</option>
-                                    <option value="villa">Biệt thự</option>
-                                    <option value="land">Đất nền</option>
-                                    <option value="office">Văn phòng</option>
-                                    <option value="shop">Cửa hàng</option>
+                                    <?php foreach ($propertyTypes as $type): ?>
+                                        <option value="<?= $type['id'] ?>"><?= htmlspecialchars($type['name']) ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="purpose">Mục đích <span class="required">*</span></label>
-                                <select id="purpose" name="purpose" class="form-select" required>
+                                <label for="transactionType">Mục đích <span class="required">*</span></label>
+                                <select id="transactionType" name="transactionType" class="form-select" required>
                                     <option value="">Chọn mục đích</option>
-                                    <option value="sell">Bán</option>
+                                    <option value="sale">Bán</option>
                                     <option value="rent">Cho thuê</option>
                                 </select>
                             </div>
@@ -68,44 +88,35 @@
                             <div class="form-group full-width">
                                 <label for="title">Tiêu đề tin đăng <span class="required">*</span></label>
                                 <input type="text" id="title" name="title" class="form-input" 
-                                       placeholder="VD: Chung cư cao cấp 2PN view sông Sài Gòn" required>
+                                       placeholder="VD: Chung cư cao cấp 2PN view sông Sài Gòn" required maxlength="255">
                                 <div class="char-count">
-                                    <span id="titleCount">0</span>/100 ký tự
+                                    <span id="titleCount">0</span>/255 ký tự
                                 </div>
                             </div>
 
                             <div class="form-group full-width">
-                                <label for="description">Mô tả chi tiết <span class="required">*</span></label>
+                                <label for="description">Mô tả chi tiết</label>
                                 <textarea id="description" name="description" class="form-textarea" rows="6"
-                                          placeholder="Mô tả chi tiết về bất động sản, vị trí, tiện ích xung quanh..." required></textarea>
+                                          placeholder="Mô tả chi tiết về bất động sản, vị trí, tiện ích xung quanh..."></textarea>
                                 <div class="char-count">
                                     <span id="descCount">0</span>/2000 ký tự
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="province">Tỉnh/Thành phố <span class="required">*</span></label>
-                                <select id="province" name="province" class="form-select" required>
-                                    <option value="">Chọn tỉnh/thành</option>
-                                    <option value="hanoi">Hà Nội</option>
-                                    <option value="hcm">TP. Hồ Chí Minh</option>
-                                    <option value="danang">Đà Nẵng</option>
-                                    <option value="haiphong">Hải Phòng</option>
-                                    <option value="cantho">Cần Thơ</option>
+                                <label for="locationId">Khu vực</label>
+                                <select id="locationId" name="locationId" class="form-select">
+                                    <option value="">Chọn khu vực</option>
+                                    <?php foreach ($locations as $location): ?>
+                                        <option value="<?= $location['id'] ?>"><?= htmlspecialchars($location['name']) ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="district">Quận/Huyện <span class="required">*</span></label>
-                                <select id="district" name="district" class="form-select" required>
-                                    <option value="">Chọn quận/huyện</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group full-width">
                                 <label for="address">Địa chỉ cụ thể <span class="required">*</span></label>
                                 <input type="text" id="address" name="address" class="form-input" 
-                                       placeholder="VD: 123 Đường Nguyễn Văn A, Phường 1" required>
+                                       placeholder="VD: 123 Đường Nguyễn Văn A, Phường 1, Quận 1" required>
                             </div>
                         </div>
 
@@ -128,50 +139,61 @@
                             <div class="form-group">
                                 <label for="area">Diện tích (m²) <span class="required">*</span></label>
                                 <input type="number" id="area" name="area" class="form-input" 
-                                       placeholder="VD: 85" min="1" required>
+                                       placeholder="VD: 85" min="1" step="0.1" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="price">Giá <span class="required">*</span></label>
+                                <label for="price">Giá (VNĐ) <span class="required">*</span></label>
                                 <input type="number" id="price" name="price" class="form-input" 
-                                       placeholder="VD: 3200000000" min="0" required>
+                                       placeholder="VD: 15000000" min="0" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="bedrooms">Số phòng ngủ</label>
                                 <select id="bedrooms" name="bedrooms" class="form-select">
-                                    <option value="">Chọn số phòng</option>
+                                    <option value="0">Studio</option>
                                     <option value="1">1 phòng</option>
                                     <option value="2">2 phòng</option>
                                     <option value="3">3 phòng</option>
                                     <option value="4">4 phòng</option>
-                                    <option value="5+">5+ phòng</option>
+                                    <option value="5">5+ phòng</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="bathrooms">Số phòng tắm</label>
                                 <select id="bathrooms" name="bathrooms" class="form-select">
-                                    <option value="">Chọn số phòng</option>
                                     <option value="1">1 phòng</option>
                                     <option value="2">2 phòng</option>
                                     <option value="3">3 phòng</option>
-                                    <option value="4+">4+ phòng</option>
+                                    <option value="4">4+ phòng</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="floors">Số tầng</label>
+                                <input type="number" id="floors" name="floors" class="form-input" 
+                                       placeholder="VD: 2" min="1" value="1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="frontage">Mặt tiền (m)</label>
+                                <input type="number" id="frontage" name="frontage" class="form-input" 
+                                       placeholder="VD: 5.2" min="0" step="0.1">
                             </div>
 
                             <div class="form-group">
                                 <label for="direction">Hướng nhà</label>
                                 <select id="direction" name="direction" class="form-select">
                                     <option value="">Chọn hướng</option>
-                                    <option value="north">Bắc</option>
-                                    <option value="south">Nam</option>
-                                    <option value="east">Đông</option>
-                                    <option value="west">Tây</option>
-                                    <option value="northeast">Đông Bắc</option>
-                                    <option value="northwest">Tây Bắc</option>
-                                    <option value="southeast">Đông Nam</option>
-                                    <option value="southwest">Tây Nam</option>
+                                    <option value="Bắc">Bắc</option>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Đông">Đông</option>
+                                    <option value="Tây">Tây</option>
+                                    <option value="Đông Bắc">Đông Bắc</option>
+                                    <option value="Tây Bắc">Tây Bắc</option>
+                                    <option value="Đông Nam">Đông Nam</option>
+                                    <option value="Tây Nam">Tây Nam</option>
                                 </select>
                             </div>
 
@@ -179,10 +201,19 @@
                                 <label for="legalStatus">Tình trạng pháp lý</label>
                                 <select id="legalStatus" name="legalStatus" class="form-select">
                                     <option value="">Chọn tình trạng</option>
-                                    <option value="red-book">Sổ đỏ</option>
-                                    <option value="pink-book">Sổ hồng</option>
-                                    <option value="waiting">Đang chờ sổ</option>
-                                    <option value="contract">Hợp đồng mua bán</option>
+                                    <option value="Sổ đỏ">Sổ đỏ</option>
+                                    <option value="Sổ hồng">Sổ hồng</option>
+                                    <option value="Đang chờ sổ">Đang chờ sổ</option>
+                                    <option value="Hợp đồng mua bán">Hợp đồng mua bán</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="furniture">Nội thất</label>
+                                <select id="furniture" name="furniture" class="form-select">
+                                    <option value="none">Không có nội thất</option>
+                                    <option value="basic">Nội thất cơ bản</option>
+                                    <option value="full">Nội thất đầy đủ</option>
                                 </select>
                             </div>
                         </div>
@@ -192,34 +223,13 @@
                             <h3>Tiện ích</h3>
                             <div class="amenities-grid">
                                 <label class="amenity-item">
-                                    <input type="checkbox" name="amenities" value="parking">
+                                    <input type="checkbox" name="parking" value="1">
                                     <span class="checkmark"></span>
                                     <i class="fas fa-car"></i>
                                     Chỗ đậu xe
                                 </label>
-                                <label class="amenity-item">
-                                    <input type="checkbox" name="amenities" value="elevator">
-                                    <span class="checkmark"></span>
-                                    <i class="fas fa-elevator"></i>
-                                    Thang máy
-                                </label>
-                                <label class="amenity-item">
-                                    <input type="checkbox" name="amenities" value="balcony">
-                                    <span class="checkmark"></span>
-                                    <i class="fas fa-building"></i>
-                                    Ban công
-                                </label>
-                                <label class="amenity-item">
-                                    <input type="checkbox" name="amenities" value="garden">
-                                    <span class="checkmark"></span>
-                                    <i class="fas fa-seedling"></i>
-                                    Sân vườn
-                                </label>
-                                <label class="amenity-item">
-                                    <input type="checkbox" name="amenities" value="pool">
-                                    <span class="checkmark"></span>
-                                    <i class="fas fa-swimming-pool"></i>
-                                    Hồ bơi
+                            </div>
+                        </div>
                                 </label>
                                 <label class="amenity-item">
                                     <input type="checkbox" name="amenities" value="gym">
@@ -268,15 +278,21 @@
                                     <h3>Kéo thả ảnh vào đây</h3>
                                     <p>hoặc <span class="upload-link">chọn từ máy tính</span></p>
                                     <div class="upload-info">
-                                        <small>Hỗ trợ: JPG, PNG, GIF (tối đa 5MB/ảnh)</small>
+                                        <small>Hỗ trợ: JPG, PNG, WEBP (tối đa 5MB/ảnh, tối đa 20 ảnh)</small>
                                     </div>
                                 </div>
-                                <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+                                <input type="file" name="images[]" id="imageInput" multiple accept="image/jpeg,image/png,image/webp" style="display: none;">
                             </div>
 
                             <div class="image-preview" id="imagePreview">
                                 <!-- Uploaded images will appear here -->
                             </div>
+
+                            <?php if (isset($_SESSION['errors']['images'])): ?>
+                                <div class="error-message">
+                                    <?php echo $_SESSION['errors']['images']; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="step-actions">
@@ -303,7 +319,7 @@
                             <h3>Xem trước tin đăng</h3>
                             <div class="preview-card">
                                 <div class="preview-image">
-                                    <img id="previewMainImage" src="/placeholder.svg?height=200&width=300" alt="Preview">
+                                    <img id="previewMainImage" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwTDE3MCA4MEwxMzAgODBMMTUwIDEwMFoiIGZpbGw9IiNBN0I3QzgiLz4KPHN2Zz4K" alt="Preview">
                                     <div class="preview-badge">
                                         <span id="previewPurpose">Bán</span>
                                     </div>
@@ -434,13 +450,24 @@
                                 <i class="fas fa-arrow-left"></i>
                                 Quay lại
                             </button>
-                            <button type="submit" class="btn btn-primary submit-btn">
+                            <button type="submit" class="btn btn-primary submit-btn" name="submit_property">
                                 <i class="fas fa-check"></i>
                                 Đăng tin ngay
                             </button>
                         </div>
+
+                        <!-- Hidden fields -->
+                        <input type="hidden" name="status" value="1">
+                        <input type="hidden" name="featured" value="0">
                     </div>
                 </form>
             </div>
         </div>
     </main>
+
+    <?php require_once('../footer.php'); ?>
+
+    <!-- JavaScript -->
+    <script src="../js/addProperty.js"></script>
+</body>
+</html>

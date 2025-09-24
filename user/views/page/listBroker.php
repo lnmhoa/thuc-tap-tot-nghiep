@@ -191,11 +191,13 @@
                                         <span><?= $experienceYears ?> năm kinh nghiệm</span>
                                     </div>
                                 </div>
+                                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
                                 <div class="broker-actions">
                                     <button class="follow-btn">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+                                <?php } ?>
                             </div>
 
                        <div class="broker-stats">
@@ -258,7 +260,11 @@
                             <div class="broker-contact-info">
                                 <div class="contact-item">
                                     <i class="fas fa-phone"></i>
+                                    <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                     <span><?= htmlspecialchars($broker['phoneNumber']) ?></span>
+                                    <?php } else { ?>
+                                   <span><?= substr($broker['phoneNumber'], 0 , 7) ?>***</span>
+                                    <?php } ?>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fas fa-envelope"></i>
@@ -267,14 +273,26 @@
                             </div>
 
                             <div class="broker-footer">
-                                <button class="btn btn-primary" onclick="window.open('tel:<?= $broker['phoneNumber'] ?>')">
-                                    <i class="fas fa-phone"></i>
-                                    Gọi ngay
-                                </button>
-                                <button class="btn btn-outline" onclick="window.open('mailto:<?= $broker['email'] ?>')">
-                                    <i class="fas fa-envelope"></i>
-                                    Nhắn tin
-                                </button>
+                                  <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                                        <a href="tel:<?= htmlspecialchars($broker['phoneNumber']) ?>" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-phone"></i>
+                                            Liên hệ
+                                        </a>
+                                        <?php }else{ ?>
+                                        <button disabled  class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                                <i class="fas fa-phone"></i> Liên hệ
+                                                                            </button>
+                                        <?php } ?>
+                                         <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                                        <a href="mailto:<?= htmlspecialchars($broker['email']) ?>" class="btn btn btn-outline btn-sm">
+                                            <i class="fas fa-envelope"></i>
+                                            Nhắn tin
+                                        </a>
+                                        <?php }else{ ?>
+                                        <button disabled  class="btn btn-sm btn btn-outline" title="Vui lòng đăng nhập để nhắn tin" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                                <i class="fas fa-envelope"></i> Nhắn tin
+                                                                            </button>
+                                        <?php } ?>
                                 <button class="btn btn-outline" onclick="window.location.href='index.php?act=broker&id=<?= $broker['id'] ?>'">
                                     <i class="fas fa-eye"></i>
                                     Xem chi tiết

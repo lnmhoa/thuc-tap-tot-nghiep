@@ -156,13 +156,13 @@
                                         <div class="property-badge <?= $item['transactionType'] === 'sale' ? 'sale' : 'rent' ?>">
                                             <?= $item['transactionType'] === 'sale' ? 'Bán' : 'Thuê' ?>
                                         </div>
-
+                                        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
                                         <button class="save-btn <?= isset($item['saveCount']) && $item['saveCount'] > 0 ? 'saved' : '' ?>"
                                             onclick="toggleSaveProperty(<?= $item['id'] ?>)"
                                             title="Lưu bất động sản">
                                             <i class="<?= isset($item['saveCount']) && $item['saveCount'] > 0 ? 'fas' : 'far' ?> fa-heart"></i>
                                         </button>
-
+                                            <?php } ?>
                                         <?php if (isset($item['saveCount']) && $item['saveCount'] > 0): ?>
                                             <div class="save-count">
                                                 <i class="fas fa-heart"></i>
@@ -228,9 +228,11 @@
                                                     </div>
                                                     <div class="agent-details">
                                                         <span class="agent-name"><?= htmlspecialchars($item['brokerName']) ?></span>
-                                                        <?php if (!empty($item['brokerPhone'])): ?>
+                                                        <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                                             <span class="agent-phone"><?= htmlspecialchars($item['brokerPhone']) ?></span>
-                                                        <?php endif; ?>
+                                                        <?php }else{ ?>
+                                                        <span class="agent-phone"><?= substr($item['brokerPhone'], 0 , 7) ?>***</span>
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="agent-actions">
@@ -238,12 +240,16 @@
                                                         class="btn btn-outline" style="padding: 0.475rem 1rem;" title="Xem hồ sơ">
                                                         <i class="fas fa-user"></i>
                                                     </a>
-                                                    <?php if (!empty($item['brokerPhone'])): ?>
+                                                    <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                                         <a href="tel:<?= $item['brokerPhone'] ?>"
                                                             class="btn btn-sm btn-primary" style="padding: 0.475rem 1rem;" title="Gọi điện">
                                                             <i class="fas fa-phone"></i>
                                                         </a>
-                                                    <?php endif; ?>
+                                                    <?php }else{
+                                                        echo '<button disabled  class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                <i class="fas fa-phone"></i>
+                                                            </button>';
+                                                    } ?>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
@@ -284,25 +290,24 @@
 
                     <?php if (!empty($properties)): ?>
                         <?php
-                        // Các biến phân trang đã được tính toán ở file PHP
                         $totalPages = isset($totalPage) ? $totalPage : 1;
                         $currentPage = isset($currentPage) ? $currentPage : 1;
                         ?>
                         <div class="pagination">
                             <?php if ($currentPage > 1): ?>
-                                <a href="?page=<?= $currentPage - 1 ?>" class="page-btn">
+                                <a href="index.php?act=listProperty&page=<?= $currentPage - 1 ?>" class="page-btn">
                                     <i class="fas fa-chevron-left"></i>
                                 </a>
                             <?php endif; ?>
 
                             <?php for ($i = max(1, $currentPage - 2); $i <= min($totalPages, $currentPage + 2); $i++): ?>
-                                <a href="?page=<?= $i ?>" class="page-btn<?= $i == $currentPage ? ' active' : '' ?>">
+                                <a href="index.php?act=listProperty&page=<?= $i ?>" class="page-btn<?= $i == $currentPage ? ' active' : '' ?>">
                                     <?= $i ?>
                                 </a>
                             <?php endfor; ?>
 
                             <?php if ($currentPage < $totalPages): ?>
-                                <a href="?page=<?= $currentPage + 1 ?>" class="page-btn">
+                                <a href="index.php?act=listProperty&page=<?= $currentPage + 1 ?>" class="page-btn">
                                     <i class="fas fa-chevron-right"></i>
                                 </a>
                             <?php endif; ?>

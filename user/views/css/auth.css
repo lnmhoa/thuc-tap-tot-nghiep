@@ -102,12 +102,6 @@ input.form-input.is-invalid {
     margin-bottom: 2px;
 }
 
-.checkbox-inline {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
 .btn {
     padding: 12px 10px;
     border-radius: 8px;

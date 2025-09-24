@@ -15,11 +15,6 @@
                     <label for="login-password">Mật khẩu</label>
                     <input type="password" id="login-password" name="password" class="form-input" placeholder="Nhập mật khẩu" required>
                 </div>
-                <div class="form-options">
-                    <label class="checkbox-inline" for="remember-me">
-                        <input type="checkbox" id="remember-me" name="remember_me"> Ghi nhớ đăng nhập
-                    </label>
-                </div>
                 <button type="submit" name="login_submit" class="btn btn-primary btn-block">Đăng nhập</button>
             </form>
             <div class="auth-footer">

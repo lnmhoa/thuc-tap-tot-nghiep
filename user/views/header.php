@@ -54,17 +54,20 @@
                         <div class="dropdown">
                             <button class="dropdown-btn">
                                 <i class="fas fa-user"></i>
-                                Môi giới
+                                <?php echo htmlspecialchars($_SESSION['user_name'] ?? $_SESSION['user']['fullName'] ?? 'Người dùng'); ?>
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
-                                <a href="?act=profile"><i class="fas fa-user"></i> Hồ sơ cá nhân</a>
-                                <a href="?act=brokerProperty"><i class="fas fa-home"></i> BĐS của tôi</a>
-                                <a href="?act=addProperty"><i class="fas fa-plus"></i> Đăng tin mới</a>
-                                <a href="?act=userRentals"><i class="fas fa-history"></i> Lịch sử thuê</a>
+                                <a href="?act=profile"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a>
+                                
+                                <?php if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == '2' || $_SESSION['user_role'] == '1')): ?>
+                                    <a href="?act=brokerProperty"><i class="fas fa-building"></i> BĐS của tôi</a>
+                                    <a href="?act=addProperty"><i class="fas fa-plus-circle"></i> Đăng tin mới</a>
+                                <?php endif; ?>
+                                
                                 <a href="?act=saveProperty"><i class="fas fa-heart"></i> BĐS đã lưu</a>
-                                <a href="?act=consultationRequest"><i class="fas fa-comments"></i> Yêu cầu tư vấn</a>
-                                <a href="?act=changePassword"><i class="fas fa-lock"></i> Đổi mật khẩu</a>
+                                <a href="?act=consultationRequest"><i class="fas fa-headset"></i> Yêu cầu tư vấn</a>
+                                <a href="?act=changePassword"><i class="fas fa-key"></i> Đổi mật khẩu</a>
                                 <a href="?act=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                             </div>
                         </div>

@@ -9,27 +9,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $message = trim($_POST['message']);
     
     if (empty($name)) {
-        $errors[] = 'Vui lòng nhập họ tên';
+        errorNotLoad('Vui lòng nhập họ tên');
     }
     
     if (empty($phone)) {
-        $errors[] = 'Vui lòng nhập số điện thoại';
+        errorNotLoad('Vui lòng nhập số điện thoại');
     } elseif (!preg_match('/^[0-9\-\+\(\)\s]{10,15}$/', $phone)) {
-        $errors[] = 'Số điện thoại không hợp lệ';
+        errorNotLoad('Số điện thoại không hợp lệ');
     }
     
     if (empty($location)) {
-        $errors[] = 'Vui lòng nhập khu vực';
+        errorNotLoad('Vui lòng nhập khu vực');
     }
     
     if (empty($subject)) {
-        $errors[] = 'Vui lòng chọn chủ đề';
+        errorNotLoad('Vui lòng chọn chủ đề');
     }
     
     if (empty($message)) {
-        $errors[] = 'Vui lòng nhập nội dung tin nhắn';
+        errorNotLoad('Vui lòng nhập nội dung tin nhắn');
     }
-            // Lấy userId nếu user đã đăng nhập
             $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
             $brokerId = 1; // Có thể để mặc định hoặc chọn broker
             
@@ -48,5 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        
  
 }
-include ".//views/page/contact.php";
+
+$sqlLocations = "SELECT id, name FROM location WHERE status = 1 ORDER BY name ASC";
+$resultLocations = mysqli_query($conn, $sqlLocations);
+$locations = [];
+if ($resultLocations) {
+    $locations = mysqli_fetch_all($resultLocations, MYSQLI_ASSOC);
+}
+include "./views/page/contact.php";
 return;
