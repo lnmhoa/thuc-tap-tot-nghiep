@@ -7,7 +7,6 @@ $_SESSION['search-news'] = isset($_SESSION['search-news']) ? $_SESSION['search-n
 $_SESSION['filter-category'] = isset($_SESSION['filter-category']) ? $_SESSION['filter-category'] : array();
 $_SESSION['filter-time'] = isset($_SESSION['filter-time']) ? $_SESSION['filter-time'] : '';
 
-// Xử lý filter theo category từ URL
 if (isset($_GET['category']) && !empty($_GET['category'])) {
   $categoryFromUrl = (int)$_GET['category'];
   if ($categoryFromUrl > 0) {
@@ -15,7 +14,6 @@ if (isset($_GET['category']) && !empty($_GET['category'])) {
   }
 }
 
-// Xử lý POST requests và redirect về URL gốc
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['sort-news'])) {
     $_SESSION['sort-news'] = $_POST['sort-news'];
@@ -38,12 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['search-news'] = '';
   }
   
-  // Redirect về URL gốc sau khi xử lý POST
   header('Location: index.php?act=listNews');
   exit();
 }
-
-// Chỉ xử lý GET requests từ đây trở xuống
 if (isset($_POST['sort-news'])) {
   $_SESSION['sort-news'] = $_POST['sort-news'];
 }

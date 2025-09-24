@@ -1,81 +1,109 @@
 <?php
+$_SESSION['limit'] = isset($_SESSION['limit']) ? $_SESSION['limit'] : 10;
+$_SESSION['sort-property'] = isset($_SESSION['sort-property']) ? $_SESSION['sort-property'] : 'newest';
+$_SESSION['search-property'] = isset($_SESSION['search-property']) ? $_SESSION['search-property'] : '';
+$_SESSION['filter-type'] = isset($_SESSION['filter-type']) ? $_SESSION['filter-type'] : 0;
+$_SESSION['filter-location'] = isset($_SESSION['filter-location']) ? $_SESSION['filter-location'] : 0;
+$_SESSION['filter-minPrice'] = isset($_SESSION['filter-minPrice']) ? $_SESSION['filter-minPrice'] : 0;
+$_SESSION['filter-maxPrice'] = isset($_SESSION['filter-maxPrice']) ? $_SESSION['filter-maxPrice'] : 0;
+$_SESSION['filter-minArea'] = isset($_SESSION['filter-minArea']) ? $_SESSION['filter-minArea'] : 0;
+$_SESSION['filter-maxArea'] = isset($_SESSION['filter-maxArea']) ? $_SESSION['filter-maxArea'] : 0;
+$_SESSION['filter-bedrooms'] = isset($_SESSION['filter-bedrooms']) ? $_SESSION['filter-bedrooms'] : 0;
+$_SESSION['filter-transactionType'] = isset($_SESSION['filter-transactionType']) ? $_SESSION['filter-transactionType'] : '';
 
-function validateTransactionType($value) {
-    return in_array($value, ['rent', 'sale']) ? $value : '';
-}
-function validateInteger($value) {
-    return is_numeric($value) && $value > 0 ? intval($value) : 0;
-}
-function validatePrice($value) {
-    if (empty($value)) return 0;
-    $cleanValue = preg_replace('/[^\d]/', '', $value);
-    return floatval($cleanValue);
-}
-function validateArea($value) {
-    return is_numeric($value) && $value > 0 ? floatval($value) : 0;
-}
-function validateSortBy($value) {
-    $allowed = ['newest', 'oldest', 'price-low', 'price-high', 'area-small', 'area-large'];
-    return in_array($value, $allowed) ? $value : 'newest';
-}
-function validateSearch($value) {
-    return trim(strip_tags($value));
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['sort-property'])) {
+        $_SESSION['sort-property'] = $_POST['sort-property'];
+    }
+    if (isset($_POST['search-property'])) {
+        $_SESSION['search-property'] = $_POST['search-property'];
+    }
+    if (isset($_POST['filter-type'])) {
+        $_SESSION['filter-type'] = (int)$_POST['filter-type'];
+    }
+    if (isset($_POST['filter-location'])) {
+        $_SESSION['filter-location'] = (int)$_POST['filter-location'];
+    }
+    if (isset($_POST['filter-minPrice'])) {
+        $_SESSION['filter-minPrice'] = (float)preg_replace('/[^\d]/', '', $_POST['filter-minPrice']);
+    }
+    if (isset($_POST['filter-maxPrice'])) {
+        $_SESSION['filter-maxPrice'] = (float)preg_replace('/[^\d]/', '', $_POST['filter-maxPrice']);
+    }
+    if (isset($_POST['filter-minArea'])) {
+        $_SESSION['filter-minArea'] = (float)$_POST['filter-minArea'];
+    }
+    if (isset($_POST['filter-maxArea'])) {
+        $_SESSION['filter-maxArea'] = (float)$_POST['filter-maxArea'];
+    }
+    if (isset($_POST['filter-bedrooms'])) {
+        $_SESSION['filter-bedrooms'] = (int)$_POST['filter-bedrooms'];
+    }
+    if (isset($_POST['filter-transactionType'])) {
+        $_SESSION['filter-transactionType'] = $_POST['filter-transactionType'];
+    }
+    if (isset($_POST['clear-filter'])) {
+        $_SESSION['sort-property'] = 'newest';
+        $_SESSION['search-property'] = '';
+        $_SESSION['filter-type'] = 0;
+        $_SESSION['filter-location'] = 0;
+        $_SESSION['filter-minPrice'] = 0;
+        $_SESSION['filter-maxPrice'] = 0;
+        $_SESSION['filter-minArea'] = 0;
+        $_SESSION['filter-maxArea'] = 0;
+        $_SESSION['filter-bedrooms'] = 0;
+        $_SESSION['filter-transactionType'] = '';
+    }
+
+    header('Location: index.php?act=listProperty');
+    exit();
 }
 
-$filters = [
-    'transactionType' => validateTransactionType($_GET['transactionType'] ?? ''),
-    'propertyType' => validateInteger($_GET['propertyType'] ?? 0),
-    'locationId' => validateInteger($_GET['locationId'] ?? 0),
-    'minPrice' => validatePrice($_GET['minPrice'] ?? ''),
-    'maxPrice' => validatePrice($_GET['maxPrice'] ?? ''),
-    'minArea' => validateArea($_GET['minArea'] ?? ''),
-    'maxArea' => validateArea($_GET['maxArea'] ?? ''),
-    'bedrooms' => validateInteger($_GET['bedrooms'] ?? 0),
-    'sortBy' => validateSortBy($_GET['sortBy'] ?? 'newest'),
-    'search' => validateSearch($_GET['search'] ?? '')
-];
-$limit = 10;
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-$offset = ($page - 1) * $limit;
-$whereClauses = ["rp.status = 'active'"];
-$whereClauses[] = "(l.status IS NULL OR l.status = 1)";
-$whereClauses[] = "(a.status IS NULL OR a.status = 'active')";
-if (!empty($filters['transactionType'])) {
-    $whereClauses[] = "rp.transactionType = '" . $filters['transactionType'] . "'";
+if (isset($_GET['transactionType']) && in_array($_GET['transactionType'], ['rent', 'sale'])) {
+    $_SESSION['filter-transactionType'] = $_GET['transactionType'];
 }
-if ($filters['propertyType'] > 0) {
-    $whereClauses[] = "rp.typeId = " . $filters['propertyType'];
+
+$whereConditions = ["rp.status = 'active'"];
+$whereConditions[] = "(l.status IS NULL OR l.status = 1)";
+$whereConditions[] = "(a.status IS NULL OR a.status = 'active')";
+
+if (!empty($_SESSION['search-property'])) {
+    $searchTerm = $_SESSION['search-property'];
+    $whereConditions[] = "rp.title LIKE '%$searchTerm%'";
 }
-if ($filters['locationId'] > 0) {
-    $whereClauses[] = "rp.locationId = " . $filters['locationId'];
+if (!empty($_SESSION['filter-transactionType'])) {
+    $whereConditions[] = "rp.transactionType = '" . $_SESSION['filter-transactionType'] . "'";
 }
-if ($filters['minPrice'] > 0) {
-    $whereClauses[] = "rp.price >= " . $filters['minPrice'];
+if ($_SESSION['filter-type'] > 0) {
+    $whereConditions[] = "rp.typeId = " . $_SESSION['filter-type'];
 }
-if ($filters['maxPrice'] > 0) {
-    $whereClauses[] = "rp.price <= " . $filters['maxPrice'];
+if ($_SESSION['filter-location'] > 0) {
+    $whereConditions[] = "rp.locationId = " . $_SESSION['filter-location'];
 }
-if ($filters['minArea'] > 0) {
-    $whereClauses[] = "rp.area >= " . $filters['minArea'];
+if ($_SESSION['filter-minPrice'] > 0) {
+    $whereConditions[] = "rp.price >= " . $_SESSION['filter-minPrice'];
 }
-if ($filters['maxArea'] > 0) {
-    $whereClauses[] = "rp.area <= " . $filters['maxArea'];
+if ($_SESSION['filter-maxPrice'] > 0) {
+    $whereConditions[] = "rp.price <= " . $_SESSION['filter-maxPrice'];
 }
-if ($filters['bedrooms'] > 0) {
-    if ($filters['bedrooms'] >= 4) {
-        $whereClauses[] = "rp.bedrooms >= " . $filters['bedrooms'];
+if ($_SESSION['filter-minArea'] > 0) {
+    $whereConditions[] = "rp.area >= " . $_SESSION['filter-minArea'];
+}
+if ($_SESSION['filter-maxArea'] > 0) {
+    $whereConditions[] = "rp.area <= " . $_SESSION['filter-maxArea'];
+}
+if ($_SESSION['filter-bedrooms'] > 0) {
+    if ($_SESSION['filter-bedrooms'] >= 4) {
+        $whereConditions[] = "rp.bedrooms >= " . $_SESSION['filter-bedrooms'];
     } else {
-        $whereClauses[] = "rp.bedrooms = " . $filters['bedrooms'];
+        $whereConditions[] = "rp.bedrooms = " . $_SESSION['filter-bedrooms'];
     }
 }
-if (!empty($filters['search'])) {
-    $searchTerm = $filters['search'];
-    $whereClauses[] = "rp.title LIKE '%$searchTerm%'";
-}
-$whereClause = implode(' AND ', $whereClauses);
+
+$whereClause = implode(' AND ', $whereConditions);
 
 $orderBy = "rp.createdAt DESC";
-switch ($filters['sortBy']) {
+switch ($_SESSION['sort-property']) {
     case 'oldest':
         $orderBy = "rp.createdAt ASC";
         break;
@@ -93,61 +121,61 @@ switch ($filters['sortBy']) {
         break;
 }
 
-$sql_properties = "SELECT rp.id, rp.title, rp.address, rp.price, rp.area, rp.bedrooms, rp.bathrooms, 
-                            rp.transactionType, rp.description, rp.createdAt, rp.updatedAt, rp.views,
-                            t.name as propertyType, 
-                            l.name as locationName,
-                            a.fullName as brokerName, 
-                            a.avatar as brokerAvatar, a.phoneNumber as brokerPhone,
-                            pi.imagePath as mainImage
-                    FROM rental_property rp
-                    LEFT JOIN type_rental_property t ON rp.typeId = t.id
-                    LEFT JOIN location l ON rp.locationId = l.id
-                    LEFT JOIN broker b ON rp.brokerId = b.id
-                    LEFT JOIN account a ON b.accountId = a.id
-                    LEFT JOIN property_images pi ON rp.id = pi.propertyId AND pi.isMain = 1
-                    WHERE $whereClause
-                    ORDER BY $orderBy
-                    LIMIT $limit OFFSET $offset";
+$limit = $_SESSION['limit'];
+$totalSql = "SELECT COUNT(DISTINCT rp.id) as total FROM rental_property rp 
+             LEFT JOIN type_rental_property t ON rp.typeId = t.id
+             LEFT JOIN location l ON rp.locationId = l.id
+             LEFT JOIN broker b ON rp.brokerId = b.id
+             LEFT JOIN account a ON b.accountId = a.id
+             WHERE $whereClause";
+$totalResult = mysqli_query($conn, $totalSql);
+$totalRecords = 0;
+if ($totalResult) {
+    $row = mysqli_fetch_assoc($totalResult);
+    $totalRecords = (int)$row['total'];
+}
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$totalPage = ceil($totalRecords / $limit);
+if ($currentPage > $totalPage && $totalPage > 0) {
+    $currentPage = $totalPage;
+}
+if ($currentPage < 1) {
+    $currentPage = 1;
+}
+$start = ($currentPage - 1) * $limit;
 
-$result_properties = mysqli_query($conn, $sql_properties);
+$sqlList = "SELECT rp.id, rp.title, rp.address, rp.price, rp.area, rp.bedrooms, rp.bathrooms, 
+            rp.transactionType, rp.description, rp.createdAt, rp.updatedAt, rp.views,
+            t.name as propertyType, l.name as locationName,
+            a.fullName as brokerName, a.avatar as brokerAvatar, a.phoneNumber as brokerPhone,
+            pi.imagePath as mainImage
+            FROM rental_property rp
+            LEFT JOIN type_rental_property t ON rp.typeId = t.id
+            LEFT JOIN location l ON rp.locationId = l.id
+            LEFT JOIN broker b ON rp.brokerId = b.id
+            LEFT JOIN account a ON b.accountId = a.id
+            LEFT JOIN property_images pi ON rp.id = pi.propertyId AND pi.isMain = 1
+            WHERE $whereClause
+            ORDER BY $orderBy
+            LIMIT $start, $limit";
+
+$listPropertiesResult = mysqli_query($conn, $sqlList);
 $properties = [];
-if ($result_properties) {
-    $properties = mysqli_fetch_all($result_properties, MYSQLI_ASSOC);
+if ($listPropertiesResult) {
+    $properties = mysqli_fetch_all($listPropertiesResult, MYSQLI_ASSOC);
 }
 
-$sql_count = "SELECT COUNT(DISTINCT rp.id) as total 
-              FROM rental_property rp
-              LEFT JOIN type_rental_property t ON rp.typeId = t.id
-              LEFT JOIN location l ON rp.locationId = l.id
-              LEFT JOIN broker b ON rp.brokerId = b.id
-              LEFT JOIN account a ON b.accountId = a.id
-              WHERE $whereClause";
-
-$result_count = mysqli_query($conn, $sql_count);
-$total = 0;
-if ($result_count) {
-    $row = mysqli_fetch_assoc($result_count);
-    $total = intval($row['total']);
-}
-
-$sql_locations = "SELECT id, name FROM location WHERE status = 1 ORDER BY name ASC";
-$result_locations = mysqli_query($conn, $sql_locations);
+$sqlLocations = "SELECT id, name FROM location WHERE status = 1 ORDER BY name ASC";
+$resultLocations = mysqli_query($conn, $sqlLocations);
 $locations = [];
-if ($result_locations) {
-    $locations = mysqli_fetch_all($result_locations, MYSQLI_ASSOC);
+if ($resultLocations) {
+    $locations = mysqli_fetch_all($resultLocations, MYSQLI_ASSOC);
 }
-
-$totalPages = ceil($total / $limit);
-$currentPage = $page;
-$stats = [
-    'total' => $total,
-    'current_showing' => count($properties),
-    'page_start' => $offset + 1,
-    'page_end' => min($offset + $limit, $total),
-    'current_page' => $currentPage,
-    'total_pages' => $totalPages
-];
-$page = $currentPage;
+$sqlPropertyTypes = "SELECT id, name FROM type_rental_property";
+$resultPropertyTypes = mysqli_query($conn, $sqlPropertyTypes);
+$propertyTypes = [];
+if ($resultPropertyTypes) {
+    $propertyTypes = mysqli_fetch_all($resultPropertyTypes, MYSQLI_ASSOC);
+}
 include "./views/page/listProperty.php";
 return;

@@ -14,10 +14,7 @@
                 <div class="broker-avatar-large">
                     <img src="<?= !empty($account['avatar']) ? $account['avatar'] : '/placeholder.svg?height=150&width=150'; ?>"
                         alt="<?= htmlspecialchars($account['fullName'] ?? 'Broker'); ?>">
-                    <div class="online-status"></div>
-                    <div class="verified-badge">
-                        <i class="fas fa-check"></i>
-                    </div>
+
                 </div>
                 <div class="broker-info">
                     <h1><?= htmlspecialchars($account['fullName'] ?? 'Chưa có tên'); ?></h1>
@@ -63,7 +60,7 @@
                         <i class="fas fa-envelope"></i>
                         Nhắn tin
                     </button>
-                    <button class="follow-btn">
+                    <button class="btn btn-secondary btn-follow">
                         <i class="fas fa-plus"></i>
                         Theo dõi
                     </button>
@@ -112,42 +109,30 @@
                     <div class="about-section">
                         <h3>Về tôi</h3>
                         <p><?= htmlspecialchars($broker['shortIntro']); ?></p>
-
-                        <p>Với phương châm "Khách hàng là trung tâm", tôi luôn đặt lợi ích của khách hàng lên hàng đầu
-                            và cam kết mang đến những dịch vụ tư vấn chuyên nghiệp, uy tín và hiệu quả nhất.</p>
                     </div>
 
                     <div class="about-section">
                         <h3>Chuyên môn</h3>
                         <div class="specialties-grid">
-                            <div class="specialty-item">
-                                <i class="fas fa-building"></i>
-                                <div>
-                                    <h4>Căn hộ cao cấp</h4>
-                                    <p>Chuyên tư vấn các dự án căn hộ luxury, penthouse</p>
+                            <?php if (!empty($brokerExpertises)): ?>
+                                <?php foreach ($brokerExpertises as $expertise): ?>
+                                    <div class="specialty-item">
+                                        <i class="<?= htmlspecialchars($expertise['icon'] ?? 'fas fa-briefcase'); ?>"></i>
+                                        <div>
+                                            <h4><?= htmlspecialchars($expertise['name']); ?></h4>
+                                            <p><?= htmlspecialchars($expertise['description'] ?? 'Chuyên tư vấn về lĩnh vực này'); ?></p>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="specialty-item">
+                                    <i class="fas fa-home"></i>
+                                    <div>
+                                        <h4>Bất động sản</h4>
+                                        <p>Tư vấn chuyên nghiệp về bất động sản</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="specialty-item">
-                                <i class="fas fa-chart-line"></i>
-                                <div>
-                                    <h4>Đầu tư BĐS</h4>
-                                    <p>Tư vấn đầu tư sinh lời, phân tích thị trường</p>
-                                </div>
-                            </div>
-                            <div class="specialty-item">
-                                <i class="fas fa-handshake"></i>
-                                <div>
-                                    <h4>Mua bán</h4>
-                                    <p>Hỗ trợ thủ tục pháp lý, thương lượng giá</p>
-                                </div>
-                            </div>
-                            <div class="specialty-item">
-                                <i class="fas fa-home"></i>
-                                <div>
-                                    <h4>Cho thuê</h4>
-                                    <p>Tìm kiếm khách thuê uy tín, quản lý tài sản</p>
-                                </div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -162,43 +147,13 @@
                             ?>
                         </div>
                     </div>
-
-                    <div class="about-section">
-                        <h3>Chứng chỉ & Thành tích</h3>
-                        <div class="achievements">
-                            <div class="achievement-item">
-                                <i class="fas fa-certificate"></i>
-                                <span>Chứng chỉ hành nghề BĐS</span>
-                            </div>
-                            <div class="achievement-item">
-                                <i class="fas fa-trophy"></i>
-                                <span>Top 10 môi giới xuất sắc 2023</span>
-                            </div>
-                            <div class="achievement-item">
-                                <i class="fas fa-medal"></i>
-                                <span>Giải thưởng dịch vụ khách hàng</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="tab-content" id="properties">
                 <div class="properties-section">
                     <div class="section-header">
-                        <h3>Bất động sản đang bán (<?= $propertyCount; ?>)</h3>
-                        <div class="property-filters">
-                            <select class="form-select">
-                                <option value="all">Tất cả</option>
-                                <option value="sale">Bán</option>
-                                <option value="rent">Cho thuê</option>
-                            </select>
-                            <select class="form-select">
-                                <option value="newest">Mới nhất</option>
-                                <option value="price-low">Giá thấp đến cao</option>
-                                <option value="price-high">Giá cao đến thấp</option>
-                            </select>
-                        </div>
+                        <h3>Bất động sản (<?= $propertyCount; ?>)</h3>
                     </div>
 
                     <div class="broker-properties-grid">
@@ -331,9 +286,13 @@
                             </div>
                         </div>
                     </div>
-
+                        <button class="btn btn-primary" id="add-review-btn" style="margin-bottom: 0.5rem">
+                            <i class="fas fa-plus"></i>
+                            Thêm đánh giá
+                        </button>
                     <div class="reviews-list">
-                        <div class="review-item">
+                        <h1>Danh sách đánh giá</h1>
+                        <div class="review-item" data-review-index="1">
                             <div class="review-header">
                                 <div class="reviewer-info">
                                     <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
@@ -360,7 +319,7 @@
                             </div>
                         </div>
 
-                        <div class="review-item">
+                        <div class="review-item" data-review-index="2">
                             <div class="review-header">
                                 <div class="reviewer-info">
                                     <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
@@ -386,7 +345,7 @@
                             </div>
                         </div>
 
-                        <div class="review-item">
+                        <div class="review-item" data-review-index="3">
                             <div class="review-header">
                                 <div class="reviewer-info">
                                     <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
@@ -411,15 +370,198 @@
                                     cách định giá hợp lý. Sẽ tiếp tục hợp tác trong tương lai.</p>
                             </div>
                         </div>
+                        
+                        <!-- Hidden reviews - Review 4 -->
+                        <div class="review-item hidden-review" data-review-index="4" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Phạm Minh Tuấn</h4>
+                                        <p>Khách hàng mua căn hộ</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span>02/12/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Rất hài lòng với dịch vụ tư vấn. Anh An đã giúp tôi tìm được căn hộ phù hợp với ngân sách 
+                                và yêu cầu. Quá trình giao dịch diễn ra thuận lợi và minh bạch.</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 5 -->
+                        <div class="review-item hidden-review" data-review-index="5" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Võ Thị Lan</h4>
+                                        <p>Khách hàng bán nhà</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span>28/11/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Anh An hỗ trợ bán nhà rất tốt, tìm được khách mua nhanh chóng với giá hợp lý. 
+                                Thái độ phục vụ chuyên nghiệp, luôn cập nhật tình hình thị trường.</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 6 -->
+                        <div class="review-item hidden-review" data-review-index="6" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Nguyễn Văn Đức</h4>
+                                        <p>Khách hàng đầu tư</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span>25/11/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Tư vấn đầu tư bất động sản rất chi tiết và chính xác. Anh An có kinh nghiệm và hiểu biết sâu 
+                                về thị trường, giúp tôi đưa ra quyết định đầu tư đúng đắn.</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 7 -->
+                        <div class="review-item hidden-review" data-review-index="7" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Trần Thị Kim</h4>
+                                        <p>Khách hàng thuê văn phòng</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span>20/11/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Dịch vụ tư vấn thuê văn phòng tốt, tìm được địa điểm phù hợp với nhu cầu kinh doanh. 
+                                Giá cả hợp lý và thủ tục nhanh gọn.</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 8 -->
+                        <div class="review-item hidden-review" data-review-index="8" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Lê Minh Hoàng</h4>
+                                        <p>Khách hàng mua đất</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span>18/11/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Anh An tư vấn mua đất rất chi tiết, từ pháp lý đến tiềm năng phát triển. 
+                                Nhờ tư vấn của anh mà tôi mua được lô đất có vị trí tốt với giá hợp lý.</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 9 -->
+                        <div class="review-item hidden-review" data-review-index="9" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Phạm Thị Nga</h4>
+                                        <p>Khách hàng cho thuê</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span>15/11/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Hỗ trợ cho thuê căn hộ rất tốt, tìm được khách thuê uy tín nhanh chóng. 
+                                Anh An rất nhiệt tình và chu đáo trong quá trình hỗ trợ.</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 10 -->
+                        <div class="review-item hidden-review" data-review-index="10" style="display: none;">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <div>
+                                        <h4>Đặng Văn Long</h4>
+                                        <p>Khách hàng mua biệt thự</p>
+                                    </div>
+                                </div>
+                                <div class="review-meta">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span>12/11/2024</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>Dịch vụ tư vấn mua biệt thự xuất sắc! Anh An hiểu rõ nhu cầu và tìm được căn biệt thự 
+                                hoàn hảo cho gia đình tôi. Quá trình giao dịch minh bạch và chuyên nghiệp.</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Add Review Form -->
-                    <div class="add-review-section">
-                        <button class="btn btn-primary" id="add-review-btn">
-                            <i class="fas fa-plus"></i>
-                            Thêm đánh giá
-                        </button>
-                        
+                    <div class="add-review-section"> 
                         <div class="review-form-container" id="review-form-container" style="display: none;">
                             <div class="review-form-overlay">
                                 <div class="review-form">
@@ -445,13 +587,7 @@
                                                 <input type="radio" id="star1" name="rating" value="1" />
                                                 <label for="star1" title="1 sao"><i class="fas fa-star"></i></label>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="reviewer-name">Họ và tên *</label>
-                                            <input type="text" id="reviewer-name" name="name" required>
-                                        </div>
-                                        
+                                        </div>                                  
                                         <div class="form-group">
                                             <label for="review-content">Nội dung đánh giá *</label>
                                             <textarea id="review-content" name="content" rows="4" required 
@@ -468,8 +604,8 @@
                         </div>
                     </div>
 
-                    <div class="load-more-reviews">
-                        <button class="btn btn-outline">Xem thêm đánh giá</button>
+                    <div class="load-more-reviews" id="load-more-section">
+                        <button class="btn btn-outline" id="load-more-btn">Xem thêm đánh giá</button>
                     </div>
                 </div>
             </div>
@@ -477,64 +613,4 @@
     </div>
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetTab = this.getAttribute('data-tab');
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            this.classList.add('active');
-            const targetContent = document.getElementById(targetTab);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            }
-        });
-    });
-    
-    // Review form functionality
-    const addReviewBtn = document.getElementById('add-review-btn');
-    const reviewFormContainer = document.getElementById('review-form-container');
-    const closeReviewForm = document.getElementById('close-review-form');
-    const cancelReview = document.getElementById('cancel-review');
-    
-    if (addReviewBtn && reviewFormContainer) {
-        // Show review form
-        addReviewBtn.addEventListener('click', function() {
-            reviewFormContainer.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        });
-        
-        // Hide review form
-        function hideReviewForm() {
-            reviewFormContainer.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Restore scrolling
-        }
-        
-        if (closeReviewForm) {
-            closeReviewForm.addEventListener('click', hideReviewForm);
-        }
-        
-        if (cancelReview) {
-            cancelReview.addEventListener('click', hideReviewForm);
-        }
-        
-        // Close form when clicking on overlay
-        reviewFormContainer.addEventListener('click', function(e) {
-            if (e.target === reviewFormContainer) {
-                hideReviewForm();
-            }
-        });
-        
-        // Close form with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && reviewFormContainer.style.display === 'flex') {
-                hideReviewForm();
-            }
-        });
-    }
-});
-</script>
+<script src="./views/js/brokerDetail.js"></script>

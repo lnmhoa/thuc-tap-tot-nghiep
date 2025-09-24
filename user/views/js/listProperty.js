@@ -1,17 +1,8 @@
-function updateSort(sortValue) {
-    const url = new URL(window.location.href);
-    url.searchParams.set('sortBy', sortValue);
-    window.location.href = url.toString();
-}
-
-function clearFilters() {
-    window.location.href = 'index.php?act=listProperty';
-}
-
 function toggleSaveProperty(propertyId) {
     const saveBtn = document.querySelector(`[data-property-id="${propertyId}"] .save-btn`);
     const icon = saveBtn.querySelector('i');
     const isSaved = icon.classList.contains('fas');
+
     if (isSaved) {
         icon.classList.remove('fas');
         icon.classList.add('far');
@@ -23,26 +14,25 @@ function toggleSaveProperty(propertyId) {
     }
 
     fetch('index.php?act=toggleSaveProperty', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                propertyId: propertyId
-            })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            propertyId: propertyId
         })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success && data.message === 'login_required') {
-                window.location.href = 'index.php?act=login';
-            }
-        });
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success && data.message === 'login_required') {
+            window.location.href = 'index.php?act=login';
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
-    const minPriceInput = document.querySelector('input[name="minPrice"]');
-    const maxPriceInput = document.querySelector('input[name="maxPrice"]');
+    const minPriceInput = document.querySelector('input[name="filter-minPrice"]');
+    const maxPriceInput = document.querySelector('input[name="filter-maxPrice"]');
 
     function formatNumber(input) {
         let value = input.value.replace(/\./g, '');
@@ -50,10 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
             value = parseInt(value, 10).toLocaleString('vi-VN');
             input.value = value;
         }
-    }
-
-    function cleanNumber(input) {
-        return input.value.replace(/\./g, '');
     }
 
     if (minPriceInput) {
@@ -67,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const filterForm = document.getElementById('property-filter-form');
     if (filterForm) {
-        const searchInput = filterForm.querySelector('input[name="search"]');
+        const searchInput = filterForm.querySelector('input[name="search-property"]');
         if (searchInput) {
             let searchTimeout;
             searchInput.addEventListener('input', function() {
@@ -86,18 +72,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => filterForm.submit(), 100);
             });
         });
-
-        if (minPriceInput) {
-            minPriceInput.addEventListener('blur', () => {
-                const rawValue = cleanNumber(minPriceInput);
-                minPriceInput.value = rawValue;
-            });
-        }
-        if (maxPriceInput) {
-            maxPriceInput.addEventListener('blur', () => {
-                const rawValue = cleanNumber(maxPriceInput);
-                maxPriceInput.value = rawValue;
-            });
-        }
     }
 });

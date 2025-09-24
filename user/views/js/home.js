@@ -22,12 +22,10 @@ function setHeroSlide(index) {
     showHeroSlide(currentHeroSlide);
 }
 
-// Auto-play hero slider
 setInterval(() => {
     changeHeroSlide(1);
 }, 5000);
 
-// Save property functionality
 function toggleSave(button) {
     const icon = button.querySelector('i');
     if (icon.classList.contains('far')) {

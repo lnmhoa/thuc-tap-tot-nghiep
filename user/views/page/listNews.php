@@ -1,4 +1,5 @@
 <div class="news-page">
+     
     <section class="page-header">
     <div class="container">
         <div class="breadcrumb">
@@ -61,44 +62,15 @@
                         </div>
                     </div>
                 </form>
-
-                <!-- Popular News -->
-                <div class="popular-news">
-                    <h3>Tin nổi bật</h3>
-                    <div class="popular-news-list">
-                        <?php
-                        // Hiển thị 3 tin nổi bật đầu tiên
-                        $popularCount = 0;
-                        foreach ($listNews as $key => $value) {
-                            if ($popularCount >= 3)
-                                break;
-                        ?>
-                            <div class="popular-news-item">
-                                <div class="popular-news-content">
-                                    <h4><a
-                                            href="index.php?act=news&id=<?= $value['id'] ?>"><?= substr($value['title'], 0, 50) ?>...</a>
-                                    </h4>
-                                    <span class="news-date"><?= date('d/m/Y', strtotime($value['createdAt'])) ?></span>
-                                </div>
-                            </div>
-                        <?php
-                            $popularCount++;
-                        } ?>
-                    </div>
-                </div>
             </aside>
 
-            <!-- Main Content Area -->
             <div class="content-area">
                 <div class="content-header">
                     <div class="results-info">
                         <span>Tìm thấy <strong><?= mysqli_num_rows($total) ?></strong> tin tức</span>
-                        <?php if (!empty($_SESSION['filter-category']) || !empty($_SESSION['filter-time'])) { ?>
-                            <span style="color: #666; font-size: 14px;">(Đã áp dụng bộ lọc)</span>
-                        <?php } ?>
                     </div>
                     <div class="sort-options">
-                        <label style="width: 100px">Sắp xếp:</label>
+                        <label style="width: 70px">Sắp xếp:</label>
                         <form method="POST" style="display: inline;">
                             <select class="form-select" name="sort-news" onchange="this.form.submit()">
                                 <option value="desc" <?= $_SESSION['sort-news'] == 'desc' ? 'selected' : '' ?>>Mới nhất
@@ -110,9 +82,7 @@
                     </div>
                 </div>
 
-                <!-- Featured News -->
                 <?php
-                // Tin nổi bật luôn là tin đầu tiên nếu có pin = 1
                 $featuredNews = null;
                 if (!empty($listNews) && $listNews[0]['pin'] == 1) {
                     $featuredNews = $listNews[0];
@@ -122,13 +92,16 @@
                     <div class="featured-news">
                         <article class="news-card-large">
                             <div class="news-image">
-                                <img src="../1.jpg" alt="" style="height: 200px; object-fit: fill; width: 420px;">
-                                <div class="news-category"><?= $featuredNews['typeName'] ?></div>
+                                <img src="../1.jpg" alt="" style="height: 240px; object-fit: fill; width: 420px;">
+                            
                             </div>
                             <div class="news-content">
+                                <div>
+                                    <div class="news-category"><?= $featuredNews['typeName'] ?></div>
                                 <h2><a
                                         href="index.php?act=news&id=<?= $featuredNews['id'] ?>"><?= $featuredNews['title'] ?></a>
                                 </h2>
+                                </div>
                                 <p class="news-excerpt"><?= substr(strip_tags($featuredNews['content']), 0, 200) ?>...</p>
                                 <div class="news-meta">
                                     <div class="author-info">
@@ -144,27 +117,26 @@
                                 </div>
                             </div>
                         </article>
-                    </div>  <img src="<?= !empty($value['image']) ? $value['image'] : '../1.jpg' ?>" alt="<?= $value['title'] ?>">
+                   
                 <?php } ?>
                               
-
-                <!-- News Grid -->
                 <div class="news-grid-list">
                     <?php
-                    // Hiển thị các tin tức còn lại, bỏ qua tin nổi bật ở đầu
-                    $startIndex = ($featuredNews) ? 1 : 0; // Bỏ qua tin đầu tiên nếu là tin nổi bật
+                    $startIndex = ($featuredNews) ? 1 : 0;
                     for ($i = $startIndex; $i < count($listNews); $i++) {
                         $value = $listNews[$i];
                     ?>
                         <article class="news-card-horizontal">
                             <div class="news-image">
                                   <img src="../1.jpg" alt="" style="object-fit: fill;">
-                            
-                                <div class="news-category"><?= $value['typeName'] ?></div>
                             </div>
                             <div class="news-content">
-                                <h3><a href="index.php?act=news&id=<?= $value['id'] ?>"><?= $value['title'] ?></a>
-                                </h3>
+                                <div> 
+                                    <div class="news-category"><?= $value['typeName'] ?></div>                         
+                                    <h3>
+                                        <a href="index.php?act=news&id=<?= $value['id'] ?>"><?= $value['title'] ?></a>
+                                    </h3>
+                                </div>
                                 <p class="news-excerpt"><?= substr(strip_tags($value['content']), 0, 150) ?>...</p>
                                 <div class="news-meta">
                                     <div class="author-info">
@@ -191,7 +163,6 @@
                     </div>
                 <?php } ?>
 
-                <!-- Pagination -->
                 <?php if ($total_page > 1) { ?>
                     <div class="pagination">
                         <?php if ($current_page > 1) { ?>

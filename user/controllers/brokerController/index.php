@@ -46,5 +46,32 @@ if ($propertiesStmt) {
     }
 }
 
+$expertisesSql = "SELECT * FROM expertises WHERE status = 1";
+$expertisesResult = mysqli_query($conn, $expertisesSql);
+$allExpertises = [];
+if ($expertisesResult) {
+    while ($expertise = mysqli_fetch_assoc($expertisesResult)) {
+        $allExpertises[] = $expertise;
+    }
+}
+
+$brokerExpertises = [];
+if (!empty($broker['expertise'])) {
+    $brokerExpertiseNames = explode(',', $broker['expertise']);
+    foreach ($brokerExpertiseNames as $expertiseName) {
+        $expertiseName = trim($expertiseName);
+        foreach ($allExpertises as $expertise) {
+            if (stripos($expertise['name'], $expertiseName) !== false || stripos($expertiseName, $expertise['name']) !== false) {
+                $brokerExpertises[] = $expertise;
+                break;
+            }
+        }
+    }
+}
+
+if (empty($brokerExpertises)) {
+    $brokerExpertises = $allExpertises;
+}
+
 include "./views/page/brokerDetail.php";
 return;
