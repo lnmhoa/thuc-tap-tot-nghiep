@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.querySelector('.auth-form');
     const phoneInput = document.getElementById('login-phone');
     const passwordInput = document.getElementById('login-password');
-    
-    // Create error message elements and append them
+
     const phoneError = document.createElement('span');
     const passwordError = document.createElement('span');
     phoneError.className = 'error-message';
@@ -11,21 +10,18 @@ document.addEventListener('DOMContentLoaded', function() {
     phoneInput.parentNode.insertBefore(phoneError, phoneInput.nextSibling);
     passwordInput.parentNode.insertBefore(passwordError, passwordInput.nextSibling);
 
-    // Function to show error messages and add invalid class
     function showError(input, errorElement, message) {
         errorElement.textContent = message;
         errorElement.style.display = 'block';
         input.classList.add('is-invalid');
     }
 
-    // Function to hide error messages and remove invalid class
     function hideError(input, errorElement) {
         errorElement.textContent = '';
         errorElement.style.display = 'none';
         input.classList.remove('is-invalid');
     }
 
-    // --- Validation functions for each field ---
     function validatePhone() {
         const phoneValue = phoneInput.value.trim();
         const phoneRegex = /^(0|\+84)[3|5|7|8|9][0-9]{8}$/;
@@ -61,17 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
-    // --- Add event listeners for real-time validation (on blur) ---
     phoneInput.addEventListener('blur', validatePhone);
     passwordInput.addEventListener('blur', validatePassword);
 
-    // --- Main form submission handler ---
     loginForm.addEventListener('submit', function(event) {
-        // Run all validation functions on submit
         const isPhoneValid = validatePhone();
         const isPasswordValid = validatePassword();
-        
-        // If any validation fails, prevent form submission
         if (!isPhoneValid || !isPasswordValid) {
             event.preventDefault();
         }

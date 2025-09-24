@@ -1,0 +1,247 @@
+/* Contact Page Styles */
+.contact-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0;
+
+    .contact-content {
+        margin-bottom: 3rem;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        align-items: start;
+    }   
+
+    .contact-form-section {
+        order: 1;
+    }
+
+    .form-card {
+        background: white;
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        overflow: hidden;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .form-header h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+
+    .form-header p {
+        opacity: 0.9;
+        font-weight: 300;
+        margin: 0;
+    }
+
+    .contact-form {
+        padding: 2rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-group label i {
+        color: #e74c3c;
+        margin-right: 0.5rem;
+        width: 16px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e0e6ed;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        background: #fff;
+        transform: translateY(-1px);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+        font-family: inherit;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f8f9fa;
+    }
+
+    .btn-secondary{
+        border: 1px solid #e74c3c;
+    }
+
+    .contact-info-section {
+        order: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .info-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .card-header h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        color: white;
+    }
+
+    .card-header h3 i {
+        margin-right: 0.5rem;
+        color: white;
+    }
+
+    .card-content {
+        padding: 1.5rem;
+    }
+
+    /* Info Items */
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        background: #e74c3c;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .info-details strong {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .info-details p {
+        color: #666;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .info-details a {
+        color: #e74c3c;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .info-details a:hover {
+        color: #c0392b;
+        text-decoration: underline;
+    }
+
+    /* Emergency Card */
+    .emergency-card .card-header {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+    }
+
+    .hotline-number {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .hotline-number a {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #e74c3c;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .hotline-number a:hover {
+        color: #c0392b;
+    }
+
+    .emergency-card .card-content p {
+        text-align: center;
+        color: #666;
+        margin: 0;
+        font-weight: 500;
+    }
+
+}

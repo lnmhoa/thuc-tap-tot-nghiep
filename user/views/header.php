@@ -8,7 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="./views/css/index.css">
     <link rel="stylesheet" href="./views/css/home.css">
-    <link rel="stylesheet" href="./views/css/modern-home.css">
     <link rel="stylesheet" href="./views/css/modern-profile.css">
     <link rel="stylesheet" href="./views/css/header.css">
     <link rel="stylesheet" href="./views/css/footer.css">
@@ -21,8 +20,10 @@
     <link rel="stylesheet" href="./views/css/propertyDetail.css">
     <link rel="stylesheet" href="./views/css/addProperty.css">
     <link rel="stylesheet" href="./views/css/brokerProperty.css">
+    <link rel="stylesheet" href="./views/css/consultationRequest.css">
     <link rel="stylesheet" href="./views/css/auth.css">
     <link rel="stylesheet" href="./views/css/about.css">
+    <link rel="stylesheet" href="./views/css/contact.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.28/sweetalert2.all.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.28/sweetalert2.css">
@@ -43,7 +44,7 @@
                             <li><a href="?act=listProperty">Bất động sản</a></li>
                             <li><a href="?act=listBroker">Môi giới</a></li>
                             <li><a href="?act=listNews">Tin tức</a></li>
-                            <li><a href="?act=consultationRequest">Tư vấn</a></li>
+                            <li><a href="?act=contact">Tư vấn</a></li>
                             <li><a href="?act=about">Giới thiệu</a></li>
                         </ul>
                     </nav>

@@ -1,4 +1,5 @@
-<section class="auth-section login-section">
+<div class="auth-page">
+    <section class="auth-section login-section">
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -28,4 +29,5 @@
         </div>
     </div>
 </section>
+</div>
 <script src="./views/js/login.js"></script>

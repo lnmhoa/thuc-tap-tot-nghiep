@@ -1,4 +1,4 @@
-<section class="auth-section register-section">
+<div class="auth-page"><section class="auth-section register-section">
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -35,5 +35,5 @@
             </div>
         </div>
     </div>
-</section>
+</section></div>
 <script src="./views/js/register.js"></script>

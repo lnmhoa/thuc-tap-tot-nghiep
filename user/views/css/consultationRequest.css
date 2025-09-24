@@ -2,9 +2,8 @@
 .consultation-page {
   background-color: #f8f9fa;
   min-height: 100vh;
-}
 
-.consultation-page .container {
+  .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
@@ -665,3 +664,6 @@
     gap: 0.5rem;
   }
 }
+}
+
+ 

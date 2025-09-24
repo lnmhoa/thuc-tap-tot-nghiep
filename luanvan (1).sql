@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 17, 2025 lúc 06:10 AM
+-- Thời gian đã tạo: Th9 24, 2025 lúc 02:47 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Phiên bản PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -242,7 +242,9 @@ CREATE TABLE `broker_ratings` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `brokerId` int(11) NOT NULL,
-  `rating` float(1,1) NOT NULL
+  `rating` float(1,1) NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `createdAt` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -253,13 +255,15 @@ CREATE TABLE `broker_ratings` (
 
 CREATE TABLE `contact_requests` (
   `id` int(11) NOT NULL,
-  `propertyId` int(11) NOT NULL,
   `userId` int(11) DEFAULT NULL,
   `brokerId` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
   `message` text DEFAULT NULL,
+  `location` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `price` varchar(255) NOT NULL DEFAULT '0',
+  `note` text NOT NULL,
   `status` enum('pending','contacted','closed') DEFAULT 'pending',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -288,6 +292,18 @@ INSERT INTO `expertises` (`id`, `name`, `description`, `icon`, `status`) VALUES
 (2, 'Chung cư', 'Chuyên về căn hộ chung cư, condotel', 'fas fa-building', 1),
 (3, 'Đất nền', 'Chuyên về đất nền, đất thổ cư, đất dự án', 'fas fa-map', 1),
 (4, 'Văn phòng', 'Chuyên về cho thuê văn phòng, mặt bằng kinh doanh', 'fas fa-briefcase', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `follow_broker`
+--
+
+CREATE TABLE `follow_broker` (
+  `id` int(11) NOT NULL,
+  `idBroker` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -354,12 +370,12 @@ CREATE TABLE `news` (
 --
 
 INSERT INTO `news` (`id`, `title`, `image`, `content`, `createdAt`, `views`, `pin`, `typeId`) VALUES
-(14, 'Thị trường bất động sản TP.HCM: Xu hướng phục hồi mạnh mẽ trong quý 4/2024', '/uploads/news/thi-truong-hcm-q4-2024.jpg', '<div style=\"background:#f8fafc;border:1px solid #e5e7eb;padding:16px;border-radius:8px;margin:12px 0;\">\r\n  <p><strong>Tóm tắt:</strong> Thị trường TP.HCM ghi nhận phục hồi rõ rệt ở quý 4/2024 với giao dịch tăng, giá ổn định, tâm lý nhà đầu tư cải thiện. Các phân khúc dẫn dắt gồm căn hộ trung cấp và cao cấp tại khu trung tâm mở rộng.</p>\r\n  <ul style=\"margin:8px 0 0 18px;\">\r\n    <li>Giao dịch tăng 25% so với cùng kỳ</li>\r\n    <li>Giá bán giữ mức ổn định, một số khu vực tăng nhẹ</li>\r\n    <li>Tỷ lệ hấp thụ cao ở Quận 1, Quận 2, Quận 7, Bình Thạnh</li>\r\n  </ul>\r\n</div>\r\n\r\n<h2>Tình hình thị trường quý 4/2024</h2>\r\n<p>Thanh khoản cải thiện nhờ nguồn cung pháp lý hoàn thiện và chính sách tín dụng linh hoạt. Mở bán tập trung ở dự án hạ tầng tốt, pháp lý rõ ràng, tiện ích đầy đủ.</p>\r\n\r\n<div style=\"display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0;\">\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;\">\r\n    <h4>Thanh khoản</h4><p>Tăng đều theo tuần, nhất là dự án bàn giao trong 12–18 tháng.</p>\r\n  </div>\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;\">\r\n    <h4>Giá bán</h4><p>Ổn định, tăng 3–5% ở sản phẩm khan hiếm.</p>\r\n  </div>\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;\">\r\n    <h4>Nhu cầu thuê</h4><p>Phục hồi tại khu trung tâm và dọc tuyến metro.</p>\r\n  </div>\r\n</div>\r\n\r\n<h2>Phân tích theo phân khúc</h2>\r\n<h3>Căn hộ cao cấp</h3>\r\n<p>Quan tâm nổi bật ở trục ven sông, tiện ích khép kín. Giá 50–80 triệu/m², ưu tiên tầm nhìn thoáng, tầng cao, căn 2PN.</p>\r\n\r\n<blockquote style=\"border-left:4px solid #0ea5e9;padding:8px 12px;background:#f0f9ff;border-radius:6px;\">\r\n  <p>“Căn hộ cao cấp thu hút nhóm khách có năng lực tài chính ổn định, pháp lý sạch và tiến độ minh bạch.”</p>\r\n</blockquote>\r\n\r\n<h3>Nhà phố & biệt thự</h3>\r\n<p>Giá thứ cấp khu Đông/Nam tăng nhẹ 5–8% YTD. Sản phẩm pháp lý hoàn thiện, vận hành tốt dễ giao dịch.</p>\r\n\r\n<h3>BĐS thương mại</h3>\r\n<p>Tỷ lệ lấp đầy văn phòng tăng, đặc biệt hạng B ở trung tâm mở rộng. Bán lẻ phục hồi trên các trục lớn.</p>\r\n\r\n<h2>Yếu tố thúc đẩy</h2>\r\n<ul>\r\n  <li>Tín dụng ổn định, gói vay ưu đãi</li>\r\n  <li>Pháp lý dự án cải thiện</li>\r\n  <li>Hạ tầng khu vực (metro, cầu) phát triển</li>\r\n</ul>\r\n\r\n<h2>Số liệu nhanh</h2>\r\n<table style=\"width:100%;border-collapse:collapse;margin:12px 0;\">\r\n  <thead>\r\n    <tr>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Chỉ tiêu</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Q4/2023</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Q4/2024</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Biến động</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Giao dịch</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">100</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">125</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">+25%</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Giá bán TB</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">100</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">103–105</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng nhẹ</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Lấp đầy thuê</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">88%</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">92%</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Cải thiện</td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n\r\n<h2>Dự báo 2025</h2>\r\n<ol>\r\n  <li>Tăng trưởng giao dịch 10–15%</li>\r\n  <li>Giá tăng 3–5% ở vị trí tốt</li>\r\n  <li>Tiện ích thông minh, quản trị chuẩn quốc tế là điểm cộng</li>\r\n</ol>\r\n\r\n<div style=\"background:#f1f5f9;border:1px dashed #cbd5e1;padding:12px;border-radius:8px;margin-top:12px;\">\r\n  <h4>Lời khuyên cho nhà đầu tư</h4>\r\n  <ul>\r\n    <li>Ưu tiên pháp lý minh bạch, chủ đầu tư uy tín</li>\r\n    <li>Quản trị dòng tiền & lộ trình giải ngân</li>\r\n    <li>Đa dạng hóa danh mục để cân bằng rủi ro</li>\r\n  </ul>\r\n</div>\r\n\r\n<h2>Kết luận</h2>\r\n<p>Xu hướng phục hồi đã rõ. Chọn đúng sản phẩm & chiến lược nắm giữ sẽ quyết định hiệu quả.</p>', '2024-12-15', 2363, 1, 1),
+(14, 'Thị trường bất động sản TP.HCM: Xu hướng phục hồi mạnh mẽ trong quý 4/2024', '688f90c859639.png', '<strong>Tóm tắt:</strong> Thị trường TP.HCM ghi nhận phục hồi rõ rệt ở quý 4/2024 với giao dịch tăng, giá ổn định, tâm lý nhà đầu tư cải thiện. Các phân khúc dẫn dắt gồm căn hộ trung cấp và cao cấp tại khu trung tâm mở rộng.</p>\r\n  <ul style=\"margin:8px 0 0 18px;\">\r\n    <li>Giao dịch tăng 25% so với cùng kỳ</li>\r\n    <li>Giá bán giữ mức ổn định, một số khu vực tăng nhẹ</li>\r\n    <li>Tỷ lệ hấp thụ cao ở Quận 1, Quận 2, Quận 7, Bình Thạnh</li>\r\n  </ul>\r\n</div>\r\n\r\n<h2>Tình hình thị trường quý 4/2024</h2>\r\n<p>Thanh khoản cải thiện nhờ nguồn cung pháp lý hoàn thiện và chính sách tín dụng linh hoạt. Mở bán tập trung ở dự án hạ tầng tốt, pháp lý rõ ràng, tiện ích đầy đủ.</p>\r\n\r\n<div style=\"display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0;\">\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;\">\r\n    <h4>Thanh khoản</h4><p>Tăng đều theo tuần, nhất là dự án bàn giao trong 12–18 tháng.</p>\r\n  </div>\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;\">\r\n    <h4>Giá bán</h4><p>Ổn định, tăng 3–5% ở sản phẩm khan hiếm.</p>\r\n  </div>\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;\">\r\n    <h4>Nhu cầu thuê</h4><p>Phục hồi tại khu trung tâm và dọc tuyến metro.</p>\r\n  </div>\r\n</div>\r\n\r\n<h2>Phân tích theo phân khúc</h2>\r\n<h3>Căn hộ cao cấp</h3>\r\n<p>Quan tâm nổi bật ở trục ven sông, tiện ích khép kín. Giá 50–80 triệu/m², ưu tiên tầm nhìn thoáng, tầng cao, căn 2PN.</p>\r\n\r\n<blockquote style=\"border-left:4px solid #0ea5e9;padding:8px 12px;background:#f0f9ff;border-radius:6px;\">\r\n  <p>“Căn hộ cao cấp thu hút nhóm khách có năng lực tài chính ổn định, pháp lý sạch và tiến độ minh bạch.”</p>\r\n</blockquote>\r\n\r\n<h3>Nhà phố & biệt thự</h3>\r\n<p>Giá thứ cấp khu Đông/Nam tăng nhẹ 5–8% YTD. Sản phẩm pháp lý hoàn thiện, vận hành tốt dễ giao dịch.</p>\r\n\r\n<h3>BĐS thương mại</h3>\r\n<p>Tỷ lệ lấp đầy văn phòng tăng, đặc biệt hạng B ở trung tâm mở rộng. Bán lẻ phục hồi trên các trục lớn.</p>\r\n\r\n<h2>Yếu tố thúc đẩy</h2>\r\n<ul>\r\n  <li>Tín dụng ổn định, gói vay ưu đãi</li>\r\n  <li>Pháp lý dự án cải thiện</li>\r\n  <li>Hạ tầng khu vực (metro, cầu) phát triển</li>\r\n</ul>\r\n\r\n<h2>Số liệu nhanh</h2>\r\n<table style=\"width:100%;border-collapse:collapse;margin:12px 0;\">\r\n  <thead>\r\n    <tr>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Chỉ tiêu</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Q4/2023</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Q4/2024</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Biến động</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Giao dịch</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">100</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">125</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">+25%</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Giá bán TB</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">100</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">103–105</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng nhẹ</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Lấp đầy thuê</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">88%</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">92%</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Cải thiện</td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n\r\n<h2>Dự báo 2025</h2>\r\n<ol>\r\n  <li>Tăng trưởng giao dịch 10–15%</li>\r\n  <li>Giá tăng 3–5% ở vị trí tốt</li>\r\n  <li>Tiện ích thông minh, quản trị chuẩn quốc tế là điểm cộng</li>\r\n</ol>\r\n\r\n<div style=\"background:#f1f5f9;border:1px dashed #cbd5e1;padding:12px;border-radius:8px;margin-top:12px;\">\r\n  <h4>Lời khuyên cho nhà đầu tư</h4>\r\n  <ul>\r\n    <li>Ưu tiên pháp lý minh bạch, chủ đầu tư uy tín</li>\r\n    <li>Quản trị dòng tiền & lộ trình giải ngân</li>\r\n    <li>Đa dạng hóa danh mục để cân bằng rủi ro</li>\r\n  </ul>\r\n</div>\r\n\r\n<h2>Kết luận</h2>\r\n<p>Xu hướng phục hồi đã rõ. Chọn đúng sản phẩm & chiến lược nắm giữ sẽ quyết định hiệu quả.</p>', '2024-12-15', 2422, 1, 1),
 (15, 'Báo cáo nhanh thị trường TP.HCM ngày 22/08/2025', '/uploads/news/bao-cao-nhanh-22082025.jpg', '<div style=\"background:#f8fafc;border:1px solid #e5e7eb;padding:16px;border-radius:8px;margin:12px 0;\">\r\n  <p><strong>Báo cáo nhanh:</strong> Ngày 22/08/2025, giao dịch thứ cấp tăng ở khu Đông; giá giữ ổn định; một số dự án công bố chính sách thanh toán mới.</p>\r\n</div>\r\n\r\n<h2>Điểm nhấn trong ngày</h2>\r\n<ul style=\"margin-left:18px;\">\r\n  <li>Lượng khách tham quan tăng tại các sàn ở TP. Thủ Đức</li>\r\n  <li>Quan tâm tới căn hộ bàn giao trong 12 tháng tới</li>\r\n  <li>Chiết khấu theo tiến độ linh hoạt</li>\r\n</ul>\r\n\r\n<h2>Giao dịch theo khu vực</h2>\r\n<table style=\"width:100%;border-collapse:collapse;margin:12px 0;\">\r\n  <thead>\r\n    <tr>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Khu vực</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Loại hình</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Xu hướng giá</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;text-align:left;\">Ghi chú</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Khu Đông</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Căn hộ trung cấp</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Ổn định</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Ưu tiên gần metro</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Khu Nam</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Nhà phố</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng nhẹ</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Hạ tầng nội khu tốt</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Trung tâm mở rộng</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Văn phòng hạng B</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Ổn định</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Nhu cầu thuê cải thiện</td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n\r\n<h2>Tin dự án nổi bật</h2>\r\n<div style=\"display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;\">\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:10px;\">\r\n    <h4>Block mới dự án ven sông</h4><p>Thanh toán 30% đến khi nhận nhà, tặng gói nội thất.</p>\r\n  </div>\r\n  <div style=\"border:1px solid #e5e7eb;border-radius:10px;padding:10px;\">\r\n    <h4>Tháp văn phòng hạng B</h4><p>Giá thuê cạnh tranh, hỗ trợ fit-out ban đầu.</p>\r\n  </div>\r\n</div>\r\n\r\n<h2>Rủi ro cần theo dõi</h2>\r\n<ul>\r\n  <li>Tiến độ pháp lý dự án mới</li>\r\n  <li>Biến động chi phí lãi vay</li>\r\n  <li>Thanh khoản thứ cấp giữa các phân khúc</li>\r\n</ul>', '2025-08-22', 420, 0, 1),
 (16, 'Thủ tục sang tên sổ hồng 2025: Chi tiết từng bước', '/uploads/news/thu-tuc-sang-ten-2025.jpg', '<div style=\"background:#f8fafc;border:1px solid #e5e7eb;padding:16px;border-radius:8px;margin:12px 0;\">\r\n  <p><strong>Tóm lược:</strong> Hướng dẫn từng bước sang tên sổ hồng năm 2025, kèm danh mục hồ sơ, thời hạn và lệ phí để người mua lần đầu dễ theo dõi.</p>\r\n</div>\r\n\r\n<h2>Các bước thực hiện</h2>\r\n<ol style=\"margin-left:18px;\">\r\n  <li>Kiểm tra pháp lý BĐS & tình trạng quy hoạch</li>\r\n  <li>Ký hợp đồng chuyển nhượng tại tổ chức công chứng</li>\r\n  <li>Nộp hồ sơ tại VP đăng ký đất đai</li>\r\n  <li>Nộp lệ phí trước bạ & nghĩa vụ tài chính</li>\r\n  <li>Nhận kết quả, cập nhật chủ sở hữu mới</li>\r\n</ol>\r\n\r\n<h2>Hồ sơ cần chuẩn bị</h2>\r\n<ul>\r\n  <li>CMND/CCCD, sổ hộ khẩu/cư trú</li>\r\n  <li>Sổ hồng bản gốc & bản sao</li>\r\n  <li>Hợp đồng công chứng</li>\r\n  <li>Tờ khai lệ phí trước bạ, thuế TNCN (nếu có)</li>\r\n</ul>\r\n\r\n<h2>Bảng lệ phí tham khảo</h2>\r\n<table style=\"width:100%;border-collapse:collapse;margin:12px 0;\">\r\n  <thead>\r\n    <tr>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Khoản mục</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Mức thu</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Ghi chú</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Lệ phí trước bạ</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">~1% giá trị chuyển nhượng</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Theo quy định</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Phí công chứng</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Theo bậc thang</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Phụ thuộc giá trị HĐ</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Phí thẩm định</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tùy địa phương</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tra cứu biểu phí</td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n\r\n<div style=\"background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:8px;\">\r\n  <strong>Lưu ý:</strong> Giữ toàn bộ biên lai & phiếu hẹn; kiểm tra kỹ thông tin cá nhân trước khi nhận kết quả.\r\n</div>\r\n\r\n<h2>Câu hỏi thường gặp</h2>\r\n<div>\r\n  <h4>Trường hợp ủy quyền có khác biệt gì?</h4>\r\n  <p>Cần giấy ủy quyền được công chứng, trong đó ghi rõ phạm vi và thời hạn.</p>\r\n  <h4>Thời hạn xử lý có thể rút ngắn không?</h4>\r\n  <p>Tùy địa phương có dịch vụ một cửa và lịch hẹn trực tuyến, nên đặt lịch sớm.</p>\r\n</div>', '2025-07-20', 733, 0, 4),
 (17, 'Mẹo thương lượng giá khi mua căn hộ lần đầu', '/uploads/news/meo-thuong-luong-gia-can-ho.jpg', '<div style=\"background:#f8fafc;border:1px solid #e5e7eb;padding:16px;border-radius:8px;margin:12px 0;\">\r\n  <p><strong>Mục tiêu:</strong> Bộ khung thương lượng thực tế cho người mua lần đầu: chuẩn bị dữ liệu, hỏi mở, chốt điều kiện thanh toán có lợi.</p>\r\n</div>\r\n\r\n<h2>Chuẩn bị trước khi thương lượng</h2>\r\n<ul style=\"margin-left:18px;\">\r\n  <li>Khảo sát giá theo tầng, hướng, diện tích, nội thất</li>\r\n  <li>Ghi nhận giao dịch gần đây ở dự án tương đồng</li>\r\n  <li>Xác định ngân sách tối đa & phương án vay</li>\r\n</ul>\r\n\r\n<h2>Kịch bản trao đổi</h2>\r\n<div>\r\n  <p style=\"margin:6px 0;\"><strong>Khách hàng:</strong> Tôi quan tâm căn 2PN, xin báo giá & chính sách thanh toán.</p>\r\n  <p style=\"margin:6px 0;\"><strong>Tư vấn:</strong> Đang có tiến độ linh hoạt, chiết khấu theo tỉ lệ giải ngân.</p>\r\n  <p style=\"margin:6px 0;\"><strong>Khách hàng:</strong> Nếu thanh toán nhanh, mức chiết khấu & ưu đãi nội thất điều chỉnh thế nào?</p>\r\n</div>\r\n\r\n<h2>Nguyên tắc</h2>\r\n<ol>\r\n  <li>Bám dữ liệu giá & tiện ích</li>\r\n  <li>Giữ không gian đôi bên cùng có lợi</li>\r\n  <li>Chốt các điều kiện cụ thể: giá, thời hạn, bàn giao, bảo hành</li>\r\n</ol>\r\n\r\n<div style=\"background:#f1f5f9;border:1px dashed #cbd5e1;padding:12px;border-radius:8px;\">\r\n  <h4>Mẹo nhanh</h4>\r\n  <ul>\r\n    <li>Ưu tiên layout vuông vắn, view thoáng</li>\r\n    <li>So sánh tổng chi phí sở hữu, không chỉ giá bán</li>\r\n    <li>Ghi nhận cam kết bằng văn bản</li>\r\n  </ul>\r\n</div>\r\n\r\n<h2>Kết luận</h2>\r\n<p>Khi có dữ liệu tốt và chiến lược trao đổi rõ ràng, cơ hội đạt giá tối ưu & điều kiện bàn giao thuận lợi sẽ cao hơn.</p>', '2025-08-22', 314, 0, 3),
-(18, 'Xu hướng vốn FDI vào BĐS công nghiệp nửa đầu 2025', '/uploads/news/xu-huong-fdi-bds-cn-2025.jpg', '<p>Dòng vốn FDI tiếp tục ưu tiên khu công nghiệp phía Nam; diện tích thuê mới tập trung ở các ngành công nghệ, logistics. Quỹ đất sạch, hạ tầng kết nối và chất lượng vận hành là yếu tố quyết định.</p>\r\n<ul style=\"margin-left:18px;\">\r\n  <li>Mặt bằng giá thuê ổn định</li>\r\n  <li>Tỷ lệ lấp đầy cao ở khu trung tâm công nghiệp</li>\r\n  <li>Nhu cầu nhà xưởng xây sẵn tăng</li>\r\n</ul>', '2025-06-30', 926, 0, 5),
-(19, 'Giá BĐS Hà Nội tăng 12% trong quý 4', '/uploads/news/gia-bds-ha-noi-q4.jpg', '<p>Giá bán tăng 12% so với cùng kỳ; nguồn cung mới tập trung quanh vành đai. Người mua ở thực quan tâm căn hộ 2PN, tiện ích nội khu đầy đủ.</p>\r\n<table style=\"width:100%;border-collapse:collapse;margin:12px 0;\">\r\n  <thead>\r\n    <tr>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Khu vực</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Xu hướng</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Ghi chú</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Đông Anh</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Hưởng lợi từ hạ tầng</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Hà Đông</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Ổn định</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Nguồn cung dồi dào</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Cầu Giấy</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng nhẹ</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Văn phòng & dịch vụ phát triển</td>\r\n    </tr>\r\n  </tbody>\r\n</table>', '2024-12-14', 1891, 0, 1);
+(18, 'Xu hướng vốn FDI vào BĐS công nghiệp nửa đầu 2025', '688f8ad121596.png', '<p>Dòng vốn FDI tiếp tục ưu tiên khu công nghiệp phía Nam; diện tích thuê mới tập trung ở các ngành công nghệ, logistics. Quỹ đất sạch, hạ tầng kết nối và chất lượng vận hành là yếu tố quyết định.</p>\r\n<ul style=\"margin-left:18px;\">\r\n  <li>Mặt bằng giá thuê ổn định</li>\r\n  <li>Tỷ lệ lấp đầy cao ở khu trung tâm công nghiệp</li>\r\n  <li>Nhu cầu nhà xưởng xây sẵn tăng</li>\r\n</ul>', '2025-06-30', 926, 0, 5),
+(19, 'Giá BĐS Hà Nội tăng 12% trong quý 4', '688f8ad121596.png', '<p>Giá bán tăng 12% so với cùng kỳ; nguồn cung mới tập trung quanh vành đai. Người mua ở thực quan tâm căn hộ 2PN, tiện ích nội khu đầy đủ.</p>\r\n<table style=\"width:100%;border-collapse:collapse;margin:12px 0;\">\r\n  <thead>\r\n    <tr>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Khu vực</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Xu hướng</th>\r\n      <th style=\"border:1px solid #e5e7eb;padding:8px;\">Ghi chú</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Đông Anh</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Hưởng lợi từ hạ tầng</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Hà Đông</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Ổn định</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Nguồn cung dồi dào</td>\r\n    </tr>\r\n    <tr>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Cầu Giấy</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Tăng nhẹ</td>\r\n      <td style=\"border:1px solid #e5e7eb;padding:8px;\">Văn phòng & dịch vụ phát triển</td>\r\n    </tr>\r\n  </tbody>\r\n</table>', '2024-12-14', 1891, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -435,8 +451,7 @@ INSERT INTO `property_images` (`id`, `propertyId`, `imagePath`, `altText`, `isMa
 (580, 83, 'logo.jpg', NULL, 0, 3, '2025-09-12 16:23:07'),
 (581, 83, 'logo.jpg', NULL, 0, 4, '2025-09-12 16:23:07'),
 (582, 83, 'logo.jpg', NULL, 0, 5, '2025-09-12 16:23:07'),
-(583, 83, 'logo.jpg', NULL, 0, 6, '2025-09-12 16:23:07'),
-(584, 84, 'logo.jpg', NULL, 1, 1, '2025-09-12 16:23:15'),
+(584, 83, 'logo.jpg', NULL, 0, 1, '2025-09-12 16:23:15'),
 (585, 84, 'logo.jpg', NULL, 0, 2, '2025-09-12 16:23:15'),
 (586, 84, 'logo.jpg', NULL, 0, 3, '2025-09-12 16:23:15'),
 (587, 84, 'logo.jpg', NULL, 0, 4, '2025-09-12 16:23:15'),
@@ -513,6 +528,27 @@ CREATE TABLE `property_list_view` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `rental_contract`
+--
+
+CREATE TABLE `rental_contract` (
+  `id` int(11) NOT NULL,
+  `image` text NOT NULL,
+  `idBroker` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `real_price` varchar(255) NOT NULL,
+  `rental price` varchar(255) NOT NULL,
+  `note` text NOT NULL,
+  `deposit` int(11) NOT NULL,
+  `duration` varchar(50) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `note_status` varchar(255) NOT NULL DEFAULT '1',
+  `createdAt` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `rental_property`
 --
 
@@ -551,14 +587,14 @@ CREATE TABLE `rental_property` (
 --
 
 INSERT INTO `rental_property` (`id`, `title`, `description`, `address`, `locationId`, `typeId`, `brokerId`, `userId`, `transactionType`, `price`, `priceUnit`, `area`, `bedrooms`, `bathrooms`, `floors`, `frontage`, `direction`, `legalStatus`, `furniture`, `parking`, `images`, `imageCount`, `featured`, `status`, `views`, `createdAt`, `updatedAt`) VALUES
-(1, 'Căn hộ cao cấp Vinhomes Central Park', 'Căn hộ đầy đủ nội thất, view đẹp', 'Đường Nguyễn Hữu Cảnh, Quận 1', 2, 1, 1, NULL, 'rent', 25000000.00, 'month', 80.00, 2, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 12, 0, 'active', 1, '2025-09-11 06:59:16', '2025-09-17 04:02:47'),
-(2, 'Nhà phố mặt tiền đường lớn', 'Nhà phố kinh doanh tốt, vị trí đẹp', 'Đường Huỳnh Tấn Phát, Quận 7', 5, 2, 2, NULL, 'sale', 8500000000.00, 'month', 120.00, 4, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 8, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
-(3, 'Văn phòng hạng A tòa nhà Bitexco', 'Văn phòng cao cấp, đầy đủ tiện ích', 'Đường Đồng Khởi, Quận 1', 2, 3, 3, NULL, 'rent', 50000000.00, 'month', 200.00, 0, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 15, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
+(1, 'Căn hộ cao cấp Vinhomes Central Park', 'Căn hộ đầy đủ nội thất, view đẹp', 'Đường Nguyễn Hữu Cảnh, Quận 1', 2, 1, 1, NULL, 'rent', 25000000.00, 'month', 80.00, 2, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 12, 0, 'active', 64, '2025-09-11 06:59:16', '2025-09-24 04:49:10'),
+(2, 'Nhà phố mặt tiền đường lớn', 'Nhà phố kinh doanh tốt, vị trí đẹp', 'Đường Huỳnh Tấn Phát, Quận 7', 5, 2, 2, NULL, 'sale', 8500000000.00, 'month', 120.00, 4, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 8, 0, 'active', 1, '2025-09-11 06:59:16', '2025-09-23 13:31:24'),
+(3, 'Văn phòng hạng A tòa nhà Bitexco', 'Văn phòng cao cấp, đầy đủ tiện ích', 'Đường Đồng Khởi, Quận 1', 2, 3, 3, NULL, 'rent', 50000000.00, 'month', 200.00, 0, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 15, 0, 'active', 1, '2025-09-11 06:59:16', '2025-09-24 02:23:14'),
 (4, 'Phòng trọ cao cấp full nội thất', 'Phòng trọ sạch sẽ, an ninh tốt', 'Đường Phan Văn Hân, Bình Thạnh', 7, 4, 4, NULL, 'rent', 6000000.00, 'month', 25.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 6, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (5, 'Đất nền khu dân cư cao cấp', 'Đất nền sổ hồng riêng, vị trí đẹp', 'Đường Võ Văn Kiệt, Quận 9', 6, 5, 5, NULL, 'sale', 3200000000.00, 'month', 100.00, 0, 0, 1, NULL, NULL, NULL, 'none', 0, NULL, 4, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (6, 'Penthouse view sông Sài Gòn', 'Penthouse luxury với view tuyệt đẹp', 'Đường Thảo Điền, Quận 2', 3, 1, 6, NULL, 'rent', 80000000.00, 'month', 150.00, 3, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 20, 0, 'active', 0, '2025-09-11 06:59:16', '2025-09-11 06:59:16'),
 (82, 'Căn hộ 2PN view sông Quận 2', 'Nội thất cao cấp, ban công rộng, an ninh 24/7.', '', 3, 1, 1, 2, '', 15000000.00, 'month', 85.00, 2, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-02-29 17:00:00', '2025-09-12 16:04:18'),
-(83, 'Nhà phố mặt tiền đường lớn Quận 1', 'Vị trí đắc địa, tiện kinh doanh mọi ngành nghề.', '', 1, 1, 3, 4, '', 25000000000.00, 'month', 150.00, 4, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-04 17:00:00', '2025-09-12 16:04:18'),
+(83, 'Nhà phố mặt tiền đường lớn Quận 1', 'Vị trí đắc địa, tiện kinh doanh mọi ngành nghề.', '', 1, 1, 3, 4, '', 25000000000.00, 'month', 150.00, 4, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 6, '2024-03-04 17:00:00', '2025-09-23 13:43:16'),
 (84, 'Biệt thự sân vườn Quận 7', 'Thiết kế hiện đại, không gian xanh mát, hồ bơi riêng.', '', 2, 3, 5, 6, '', 45000000000.00, 'month', 300.00, 5, 4, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-07 17:00:00', '2025-09-12 16:04:18'),
 (85, 'Đất nền KDC Thủ Đức', 'Sổ đỏ chính chủ, đường nhựa 12m, gần trường học.', '', 4, 4, 7, 8, '', 7500000000.00, 'month', 100.00, 0, 0, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-09 17:00:00', '2025-09-12 16:04:18'),
 (86, 'Văn phòng cho thuê trung tâm Quận 1', 'Đầy đủ tiện ích, diện tích linh hoạt, giá tốt.', '', 1, 5, 9, 10, '', 25000000.00, 'month', 120.00, 0, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-11 17:00:00', '2025-09-12 16:04:18'),
@@ -567,7 +603,7 @@ INSERT INTO `rental_property` (`id`, `title`, `description`, `address`, `locatio
 (89, 'Nhà phố 1 trệt 2 lầu Quận 9', 'Mặt tiền kinh doanh, cách Vincom 5 phút.', '', 4, 2, 15, 16, '', 15000000000.00, 'month', 90.00, 3, 3, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-19 17:00:00', '2025-09-12 16:04:18'),
 (90, 'Biệt thự ven sông Sài Gòn', 'Không gian yên tĩnh, an ninh, view sông lãng mạn.', '', 2, 3, 17, 18, '', 80000000000.00, 'month', 400.00, 6, 5, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 1, '2024-03-21 17:00:00', '2025-09-14 16:47:30'),
 (91, 'Đất nền dự án ven biển Vũng Tàu', 'Sổ hồng riêng, xây dựng tự do, tiềm năng du lịch.', '', 6, 4, 19, 20, '', 5000000000.00, 'month', 150.00, 0, 0, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-24 17:00:00', '2025-09-12 16:04:18'),
-(92, 'Văn phòng cho thuê Quận 3', 'Gần các tòa nhà lớn, giao thông thuận tiện.', '', 5, 5, 21, 22, '', 18000000.00, 'month', 95.00, 0, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-27 17:00:00', '2025-09-12 16:04:18'),
+(92, 'Văn phòng cho thuê Quận 3', 'Gần các tòa nhà lớn, giao thông thuận tiện.', '', 5, 5, 21, 22, '', 18000000.00, 'month', 95.00, 0, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 25, '2024-03-27 17:00:00', '2025-09-23 13:41:17'),
 (93, 'Nhà trọ giá rẻ gần KTX ĐH Quốc Gia', 'Phòng sạch sẽ, an toàn, có nhà bếp chung.', '', 4, 1, 23, 24, '', 2500000.00, 'month', 20.00, 1, 1, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-29 17:00:00', '2025-09-12 16:04:18'),
 (94, 'Căn hộ Penthouse Quận 1', 'Thiết kế độc đáo, view thành phố tuyệt đẹp.', '', 1, 1, 25, 26, '', 30000000000.00, 'month', 200.00, 4, 4, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-03-31 17:00:00', '2025-09-12 16:04:18'),
 (95, 'Nhà riêng hẻm lớn Quận 10', 'Yên tĩnh, an ninh, gần chợ, trường học.', '', 5, 2, 27, 28, '', 10000000000.00, 'month', 75.00, 3, 2, 1, NULL, NULL, NULL, 'none', 0, NULL, 0, 0, 'active', 0, '2024-04-04 17:00:00', '2025-09-12 16:04:18'),
@@ -687,7 +723,6 @@ CREATE TABLE `type_rental_property` (
   `slug` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
   `icon` varchar(100) DEFAULT NULL,
-  `status` enum('active','inactive') DEFAULT 'active',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -695,12 +730,12 @@ CREATE TABLE `type_rental_property` (
 -- Đang đổ dữ liệu cho bảng `type_rental_property`
 --
 
-INSERT INTO `type_rental_property` (`id`, `name`, `slug`, `description`, `icon`, `status`, `createdAt`) VALUES
-(1, 'Căn hộ', 'apartment', 'Căn hộ chung cư, condotel', 'fas fa-building', 'active', '2025-09-11 06:59:16'),
-(2, 'Nhà phố', 'house', 'Nhà phố, nhà riêng', 'fas fa-home', 'active', '2025-09-11 06:59:16'),
-(3, 'Văn phòng', 'office', 'Văn phòng cho thuê', 'fas fa-briefcase', 'active', '2025-09-11 06:59:16'),
-(4, 'Phòng trọ', 'room', 'Phòng trọ, homestay', 'fas fa-bed', 'active', '2025-09-11 06:59:16'),
-(5, 'Đất nền', 'land', 'Đất nền, đất thổ cư', 'fas fa-map', 'active', '2025-09-11 06:59:16');
+INSERT INTO `type_rental_property` (`id`, `name`, `slug`, `description`, `icon`, `createdAt`) VALUES
+(1, 'Căn hộ', 'apartment', 'Căn hộ chung cư, condotel', 'fas fa-building', '2025-09-11 06:59:16'),
+(2, 'Nhà phố', 'house', 'Nhà phố, nhà riêng', 'fas fa-home', '2025-09-11 06:59:16'),
+(3, 'Văn phòng', 'office', 'Văn phòng cho thuê', 'fas fa-briefcase', '2025-09-11 06:59:16'),
+(4, 'Phòng trọ', 'room', 'Phòng trọ, homestay', 'fas fa-bed', '2025-09-11 06:59:16'),
+(5, 'Đất nền', 'land', 'Đất nền, đất thổ cư', 'fas fa-map', '2025-09-11 06:59:16');
 
 -- --------------------------------------------------------
 
@@ -740,7 +775,6 @@ ALTER TABLE `broker_ratings`
 --
 ALTER TABLE `contact_requests`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `propertyId` (`propertyId`),
   ADD KEY `userId` (`userId`),
   ADD KEY `brokerId` (`brokerId`);
 
@@ -749,6 +783,14 @@ ALTER TABLE `contact_requests`
 --
 ALTER TABLE `expertises`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `follow_broker`
+--
+ALTER TABLE `follow_broker`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `follow_broker_fk1` (`idBroker`),
+  ADD KEY `follow_broker_fk2` (`idUser`);
 
 --
 -- Chỉ mục cho bảng `location`
@@ -775,6 +817,12 @@ ALTER TABLE `property_amenities`
 ALTER TABLE `property_images`
   ADD PRIMARY KEY (`id`),
   ADD KEY `propertyId` (`propertyId`);
+
+--
+-- Chỉ mục cho bảng `rental_contract`
+--
+ALTER TABLE `rental_contract`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `rental_property`
@@ -840,13 +888,19 @@ ALTER TABLE `broker_ratings`
 -- AUTO_INCREMENT cho bảng `contact_requests`
 --
 ALTER TABLE `contact_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `expertises`
 --
 ALTER TABLE `expertises`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `follow_broker`
+--
+ALTER TABLE `follow_broker`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `location`
@@ -871,6 +925,12 @@ ALTER TABLE `property_amenities`
 --
 ALTER TABLE `property_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=638;
+
+--
+-- AUTO_INCREMENT cho bảng `rental_contract`
+--
+ALTER TABLE `rental_contract`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `rental_property`
@@ -907,12 +967,11 @@ ALTER TABLE `broker`
   ADD CONSTRAINT `broker_ibfk_1` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `contact_requests`
+-- Các ràng buộc cho bảng `follow_broker`
 --
-ALTER TABLE `contact_requests`
-  ADD CONSTRAINT `contact_requests_ibfk_1` FOREIGN KEY (`propertyId`) REFERENCES `rental_property` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `contact_requests_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `account` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `contact_requests_ibfk_3` FOREIGN KEY (`brokerId`) REFERENCES `broker` (`id`) ON DELETE CASCADE;
+ALTER TABLE `follow_broker`
+  ADD CONSTRAINT `follow_broker_fk1` FOREIGN KEY (`idBroker`) REFERENCES `broker` (`id`),
+  ADD CONSTRAINT `follow_broker_fk2` FOREIGN KEY (`idUser`) REFERENCES `account` (`id`);
 
 --
 -- Các ràng buộc cho bảng `news`

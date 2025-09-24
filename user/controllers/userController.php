@@ -56,6 +56,9 @@ if (isset($_GET['act'])) {
     case 'consultationRequest':
       include './controllers/consultationRequestController/index.php';
       break;
+    case 'contact':
+      include './controllers/contactController/index.php';
+      break;
     case 'followBroker':
       include './controllers/followBrokerController/index.php';
       break;
