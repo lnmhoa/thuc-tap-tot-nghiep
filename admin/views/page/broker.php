@@ -194,7 +194,7 @@
                             <?php } ?>
                         </select>
                         <label for="add-area"><i class="fa-solid fa-earth-americas"></i> Khu vực:</label>
-                        <select id="add-area" multiple size="3">
+                        <select id="add-area">
                             <?php foreach ($listLocation as $location) { ?>
                                 <option value="<?php echo htmlspecialchars($location['name']); ?>">
                                     <?php echo htmlspecialchars($location['name']); ?>
@@ -249,7 +249,7 @@
                 </div>
                 <div>
                     <label for="modal-area"><i class="fa-solid fa-earth-americas"></i> Khu vực:</label>
-                    <select id="modal-area" multiple size="2">
+                    <select id="modal-area">
                         <?php foreach ($listLocation as $location) { ?>
                             <option value="<?php echo htmlspecialchars($location['name']); ?>">
                                 <?php echo htmlspecialchars($location['name']); ?>

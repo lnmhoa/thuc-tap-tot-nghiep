@@ -5,10 +5,6 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 $vndtousd = 24385;
 $itemOnePage = 10;
-// if (!isset($_SESSION['user']) || $_SESSION['user']['loai'] != '3') {
-//     header("Location: http://localhost/DA1/display/index.php");
-//     exit();
-// } else {
 if (isset($_GET['act'])) {
   $act = $_GET['act'];
   switch ($act) {
@@ -21,7 +17,6 @@ if (isset($_GET['act'])) {
     case 'broker':
       include './controllers/brokerController/index.php';
       break;
-
     case 'rentalProperty':
       include './controllers/rentalPropertyController/index.php';
       break;
@@ -46,4 +41,3 @@ if (isset($_GET['act'])) {
 } else {
   include './controllers/dashBoardController/index.php';
 }
-// }

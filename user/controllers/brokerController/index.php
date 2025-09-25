@@ -109,14 +109,12 @@ if (empty($brokerExpertises)) {
     $brokerExpertises = array_slice($allExpertises, 0, 3);
 }
 
-    // Thêm thông tin trạng thái theo dõi broker và lưu properties
 if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
     $userId = $_SESSION['user']['id'];
 
     $checkFollow = mysqli_query($conn, "SELECT id FROM follow_broker WHERE idUser = $userId AND idBroker = $brokerId");
     $broker['isFollowed'] = mysqli_num_rows($checkFollow) > 0;
     
-    // Sử dụng vòng lặp thông thường thay vì reference
     for ($i = 0; $i < count($properties); $i++) {
         $checkSaved = mysqli_query($conn, "SELECT id FROM saved_properties WHERE userId = $userId AND propertyId = {$properties[$i]['id']}");
         $properties[$i]['isSaved'] = mysqli_num_rows($checkSaved) > 0;
