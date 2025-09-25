@@ -9,7 +9,7 @@
         </div>
     </section>
     <div class="news-detail-layout">
-        <div>
+    <?php if($newsDetail['pin'] === '1') echo '<div>' ?>
             <article class="news-article">
                 <header class="article-header">
                     <div class="article-category">
@@ -97,7 +97,8 @@
                 </div>
 
             </aside>
-        </div></div>
+        </div>
+        <?php if($newsDetail['pin'] === '1') echo '</div>' ?>
 </main>
 
 <script>

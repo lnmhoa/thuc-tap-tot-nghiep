@@ -20,7 +20,7 @@ if (!empty($_POST)) {
           $response = array(
                 'status' => 'success',
                 'message' => 'Thêm thông tin loại bất động sản thành công!',
-                'path' => 'http://localhost/luan_van_tot_nghiep/admin/index.php?act=typeRentalProperty',
+                'path' => 'http://localhost/van_van-1p/admin/index.php?act=typeRentalProperty',
             );
             echo json_encode($response);
     } else {

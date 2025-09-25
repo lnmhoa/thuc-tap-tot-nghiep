@@ -1,6 +1,6 @@
 <?php
 // Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == '') {
+if (!isset($_SESSION['user']['id']) || $_SESSION['user']['id'] == '') {
     header("Location: index.php?act=login");
     exit();
 }
@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_role']) || ($_SESSION['user_role'] != '1' && $_SESSIO
     exit();
 }
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user']['id'];
 
 try {
     // Xử lý các action POST

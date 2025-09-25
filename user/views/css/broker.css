@@ -75,8 +75,7 @@
   }
 
   .checkbox-group,
-  .radio-group,
-  .rating-filter {
+  .radio-group{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -161,26 +160,6 @@
 
   .more-options {
     margin-bottom: 1rem;
-  }
-
-  .rating-filter .checkbox-item span {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .rating-filter .stars {
-    color: #f39c12;
-    display: flex;
-    gap: 2px;
-  }
-
-  .rating-filter .fas.fa-star {
-    color: #f39c12;
-  }
-
-  .rating-filter .far.fa-star {
-    color: #ddd;
   }
 
   .filter-actions {
@@ -474,6 +453,35 @@
 
   .no-results p {
     font-size: 1.1rem;
+  }
+
+  /* Follow button states */
+  .follow-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .follow-btn:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+  }
+
+  .follow-btn.followed {
+    background: #27ae60;
+    color: white;
+  }
+
+  .follow-btn.followed:hover {
+    background: #219a52;
   }
 
 }

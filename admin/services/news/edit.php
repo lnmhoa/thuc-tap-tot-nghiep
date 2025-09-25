@@ -58,7 +58,7 @@ if (!empty($_POST)) {
         $response = array(
             'status' => 'success',
             'message' => 'Cập nhật thông tin tin tức thành công!',
-            'path' => 'http://localhost/luan_van_tot_nghiep/admin/index.php?act=news',
+            'path' => 'http://localhost/van_van-1p/admin/index.php?act=news',
         );
         echo json_encode($response);
     } else {

@@ -54,9 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['filter-bedrooms'] = 0;
         $_SESSION['filter-transactionType'] = '';
     }
-
-    header('Location: index.php?act=listProperty');
-    exit();
 }
 
 if (isset($_GET['transactionType']) && in_array($_GET['transactionType'], ['rent', 'sale'])) {
@@ -146,7 +143,7 @@ $start = ($currentPage - 1) * $limit;
 
 $sqlList = "SELECT rp.id, rp.title, rp.address, rp.price, rp.area, rp.bedrooms, rp.bathrooms, 
             rp.transactionType, rp.description, rp.createdAt, rp.updatedAt, rp.views,
-            t.name as propertyType, l.name as locationName,
+            t.name as propertyType, l.name as locationName, b.id as brokerId,
             a.fullName as brokerName, a.avatar as brokerAvatar, a.phoneNumber as brokerPhone,
             pi.imagePath as mainImage
             FROM rental_property rp
@@ -163,6 +160,18 @@ $listPropertiesResult = mysqli_query($conn, $sqlList);
 $properties = [];
 if ($listPropertiesResult) {
     $properties = mysqli_fetch_all($listPropertiesResult, MYSQLI_ASSOC);
+    
+    if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+        $userId = $_SESSION['user']['id'];
+        foreach ($properties as &$property) {
+            $checkSaved = mysqli_query($conn, "SELECT id FROM saved_properties WHERE userId = $userId AND propertyId = {$property['id']}");
+            $property['isSaved'] = mysqli_num_rows($checkSaved) > 0;
+        }
+    } else {
+        foreach ($properties as &$property) {
+            $property['isSaved'] = false;
+        }
+    }
 }
 
 $sqlLocations = "SELECT id, name FROM location WHERE status = 1 ORDER BY name ASC";

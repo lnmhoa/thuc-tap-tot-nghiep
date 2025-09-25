@@ -6,27 +6,44 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 $vndtousd = 24385;
 $itemOnePage = 10;
 
-// Hàm hiển thị thời gian tương đối
-function timeAgo($datetime) {
-    $time = time() - strtotime($datetime);
-    $time = ($time < 1) ? 1 : $time;
-    $tokens = array (
-        31536000 => 'năm',
-        2592000 => 'tháng',
-        604800 => 'tuần',
-        86400 => 'ngày',
-        3600 => 'giờ',
-        60 => 'phút',
-        1 => 'giây'
-    );
 
-    foreach ($tokens as $unit => $text) {
-        if ($time < $unit) continue;
-        $numberOfUnits = floor($time / $unit);
-        return $numberOfUnits.' '.$text.' trước';
+ if(isset($_POST['save-property'])) {
+  $propertie = $_POST['property_id'];
+        if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+              $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+              $checkSaveProperty = mysqli_query($conn, "SELECT * FROM saved_properties WHERE userId = ".$_SESSION['user']['id']." AND propertyId = $propertie");
+              if(mysqli_num_rows($checkSaveProperty) >0) {
+                $deleteSaveProperty = mysqli_query($conn, "DELETE FROM saved_properties WHERE userId = ".$_SESSION['user']['id']." AND propertyId = $propertie");
+                success('Đã bỏ lưu bất động sản!', $currentUrl);
+  
+              }else{
+                $insertSaveProperty = mysqli_query($conn, "INSERT INTO saved_properties (userId, propertyId, createdAt) VALUES (".$_SESSION['user']['id'].", $propertie, NOW())");
+                success('Đã lưu bất động sản!', $currentUrl);
+  
+              }
+        }else{
+            header("Location: index.php?act=login");
+        }
     }
-    return 'vừa xong';
-}
+
+    if(isset($_POST['follow-broker'])) {
+  $brokerId = $_POST['broker_id'];
+        if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+              $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+              $checkFollowBroker = mysqli_query($conn, "SELECT * FROM follow_broker WHERE idUser = ".$_SESSION['user']['id']." AND idBroker = $brokerId");
+              if(mysqli_num_rows($checkFollowBroker) >0) {
+                $deleteFollowBroker = mysqli_query($conn, "DELETE FROM follow_broker WHERE idUser = ".$_SESSION['user']['id']." AND idBroker = $brokerId");
+                success('Đã bỏ theo dõi môi giới!', $currentUrl);
+  
+              }else{
+                $insertFollowBroker = mysqli_query($conn, "INSERT INTO follow_broker (idUser, idBroker) VALUES (".$_SESSION['user']['id'].", $brokerId)");
+                success('Đã theo dõi môi giới!', $currentUrl);
+  
+              }
+        }else{
+            header("Location: index.php?act=login");
+        }
+    }
 
 // if (!isset($_SESSION['user']) || $_SESSION['user']['loai'] != '3') {
 //     header("Location: http://localhost/DA1/display/index.php");

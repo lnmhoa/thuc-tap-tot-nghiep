@@ -22,6 +22,22 @@ function confirm($title = "Thông báo", $text = "", $icon, $message1, $message2
     ';
 }
 
+function confirmNotLoad($text = "", $message1, $message2)
+{
+    echo '
+    <script>
+    Swal.fire({
+        title: "Thông báo",
+        icon: "warning",
+        text: "' . $text . '",
+        showDenyButton: true,
+        confirmButtonText: "' . $message1 . '",
+        denyButtonText: "' . $message2 . '"
+      });
+    </script>        
+    ';
+}
+
 function success($msg, $link)
 {
     echo '<script>

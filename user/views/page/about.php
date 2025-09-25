@@ -296,7 +296,7 @@
                         <i class="fas fa-search"></i>
                         Tìm BĐS ngay
                     </a>
-                    <a href="index.php?act=consultationRequest" class="btn btn-outline">
+                    <a href="index.php?act=contact" class="btn btn-outline">
                         <i class="fas fa-comments"></i>
                         Nhận tư vấn miễn phí
                     </a>

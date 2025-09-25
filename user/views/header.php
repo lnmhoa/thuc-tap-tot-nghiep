@@ -49,7 +49,7 @@
                         </ul>
                     </nav>
                 </div>
-                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
+                <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                     <div class="user-menu">
                         <div class="dropdown">
                             <button class="dropdown-btn">

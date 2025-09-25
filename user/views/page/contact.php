@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="price"><i class="fas fa-dollar-sign"></i> Giá mong muốn</label>
-                                    <select id="price" name="price" required>
+                                    <select id="price" name="price">
                                     <option value="">-- Chọn giá mong muốn --</option>
                                     <option value="Dưới 3 triệu">Dưới 3 triệu</option>
                                     <option value="3 - 5 triệu">3 - 5 triệu</option>

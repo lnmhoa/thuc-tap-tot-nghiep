@@ -129,7 +129,7 @@ if (!empty($_POST)) {
             $response = array(
                 'status' => 'success',
                 'message' => 'Cập nhật thông tin môi giới thành công!',
-                'path' => 'http://localhost/luan_van_tot_nghiep/admin/index.php?act=broker',
+                'path' => 'http://localhost/van_van-1p/admin/index.php?act=broker',
             );
             echo json_encode($response);
         } else {

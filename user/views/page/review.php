@@ -3,7 +3,7 @@
             <h1>Đánh giá chất lượng</h1>
             <p>Chia sẻ trải nghiệm của bạn về môi giới và bất động sản</p>
             <div class="breadcrumb">
-                <a href="http://localhost/luan_van_tot_nghiep/user">Trang chủ</a>
+                <a href="http://localhost/van_van-1p/user">Trang chủ</a>
                 <span>/</span>
                 <span>Đánh giá chất lượng</span>
             </div>

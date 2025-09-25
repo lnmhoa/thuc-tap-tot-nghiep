@@ -2,7 +2,7 @@
         <div class="container">
             <h1>Bất động sản của tôi</h1>
             <div class="breadcrumb">
-                <a href="http://localhost/luan_van_tot_nghiep/user">Trang chủ</a>
+                <a href="http://localhost/van_van-1p/user">Trang chủ</a>
                 <i class="fas fa-chevron-right"></i>
                 <span>Bất động sản của tôi</span>
             </div>

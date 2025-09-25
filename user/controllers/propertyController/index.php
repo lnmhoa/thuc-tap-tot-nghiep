@@ -25,16 +25,13 @@ if (!$propertyResult || mysqli_num_rows($propertyResult) == 0) {
 
 $property = mysqli_fetch_assoc($propertyResult);
 
-// Cập nhật lượt xem
 $updateViews = "UPDATE rental_property SET views = views + 1 WHERE id = $propertyId";
 mysqli_query($conn, $updateViews);
 
-// Lấy hình ảnh của bất động sản
 $sql_images = "SELECT * FROM property_images WHERE propertyId = $propertyId ORDER BY isMain DESC, sortOrder ASC";
 $imagesResult = mysqli_query($conn, $sql_images);
 $propertyImages = mysqli_fetch_all($imagesResult, MYSQLI_ASSOC);
 
-// Lấy bất động sản liên quan (cùng loại, cùng khu vực)
 $sql_related = "SELECT rp.*, t.name as propertyType, l.name as locationName,
                 pi.imagePath as mainImage
                 FROM rental_property rp
@@ -48,5 +45,20 @@ $sql_related = "SELECT rp.*, t.name as propertyType, l.name as locationName,
 $relatedResult = mysqli_query($conn, $sql_related);
 $relatedProperties = mysqli_fetch_all($relatedResult, MYSQLI_ASSOC);
 
+if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+    $userId = $_SESSION['user']['id'];
+    
+    $checkSaved = mysqli_query($conn, "SELECT id FROM saved_properties WHERE userId = $userId AND propertyId = $propertyId");
+    $property['isSaved'] = mysqli_num_rows($checkSaved) > 0;
+    foreach ($relatedProperties as &$relatedProperty) {
+        $checkSaved = mysqli_query($conn, "SELECT id FROM saved_properties WHERE userId = $userId AND propertyId = {$relatedProperty['id']}");
+        $relatedProperty['isSaved'] = mysqli_num_rows($checkSaved) > 0;
+    }
+} else {
+    $property['isSaved'] = false;
+    foreach ($relatedProperties as &$relatedProperty) {
+        $relatedProperty['isSaved'] = false;
+    }
+}
 include "./views/page/propertyDetail.php";
 return;

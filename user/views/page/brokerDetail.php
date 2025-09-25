@@ -5,48 +5,67 @@
             <span>/</span>
             <a href="index.php?act=listBroker">Môi giới</a>
             <span>/</span>
-            <span><?= htmlspecialchars($account['fullName']) ?></span>
+            <span><?= htmlspecialchars($broker['fullName']) ?></span>
         </div>
 </section>
 
         <div class="broker-profile">
             <div class="broker-profile-header">
                 <div class="broker-avatar-large">
-                    <img src="<?= !empty($account['avatar']) ? $account['avatar'] : '/placeholder.svg?height=150&width=150'; ?>"
-                        alt="<?= htmlspecialchars($account['fullName'] ?? 'Broker'); ?>">
+                    <img src="<?= !empty($broker['avatar']) ? '../admin/uploads/broker/' . $broker['avatar'] : '../logo.jpg'; ?>" 
+                        alt="<?= htmlspecialchars($broker['fullName'] ?? 'Broker'); ?>" onerror="this.src='../logo.jpg'">
 
                 </div>
                 <div class="broker-info">
-                    <h1><?= htmlspecialchars($account['fullName'] ?? 'Chưa có tên'); ?></h1>
+                    <h1><?= htmlspecialchars($broker['fullName'] ?? 'Chưa có tên'); ?></h1>
                     <p class="broker-title">
                         <?= htmlspecialchars($broker['shortIntro'] ?? 'Chuyên viên tư vấn BĐS cao cấp'); ?></p>
 
                         <div style="display: flex; gap: 3rem; color: #e74c3c;">
+                             <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                 <p style="font-size: 1.5rem; font-weight: 600;"><i class="fas fa-phone"></i>
-                                    <?= htmlspecialchars($account['phoneNumber'] ?? 'Chưa có số điện thoại'); ?></p>
+                                    <?= htmlspecialchars($broker['phoneNumber'] ?? 'Chưa có số điện thoại'); ?></p>
+                                <?php }else{ ?>
+                                <p style="font-size: 1.5rem; font-weight: 600;"><i class="fas fa-phone"></i>
+                                    <?= substr($broker['phoneNumber'], 0, 7)?>***</p>
+                                <?php } ?>
+                                <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                 <p style="font-size: 1.5rem; font-weight: 600;">   <i class="fas fa-envelope"></i>
-                                    <?= htmlspecialchars($account['email'] ?? 'Chưa có email'); ?></p>
+                                    <?= htmlspecialchars($broker['email'] ?? 'Chưa có email'); ?></p>
+                                <?php }else{ ?>
+                                <p style="font-size: 1.5rem; font-weight: 600;">   <i class="fas fa-envelope"></i>
+                                    ****@***.***</p>
+                                <?php } ?>
                         </div>
                     <div class="broker-rating-large">
                         <div class="stars">
                             <?php
-                            $rating = $broker['rate'] ?? 4.9;
+                            $rating = $ratingStats['avg_rating'] ? round($ratingStats['avg_rating'], 1) : 0;
                             for ($i = 1; $i <= 5; $i++) {
                                 if ($i <= $rating) {
                                     echo '<i class="fas fa-star"></i>';
+                                } elseif ($i - 0.5 <= $rating) {
+                                    echo '<i class="fas fa-star-half-alt"></i>';
                                 } else {
                                     echo '<i class="far fa-star"></i>';
                                 }
                             }
                             ?>
                         </div>
-                        <span><?= number_format($rating, 1); ?>/5 (127 đánh giá)</span>
+                        <span><?= number_format($rating, 1); ?>/5 (<?= number_format($ratingStats['total_reviews']); ?> đánh giá)</span>
                     </div>
                     <div class="broker-meta">
-                        <span><i class="fas fa-briefcase"></i> 5 năm kinh nghiệm</span>
-                        <span><i class="fas fa-calendar"></i> Tham gia từ
-                            <?= date('Y', strtotime($account['createdAt'] ?? '2019-01-01')); ?></span>
-                        <span><i class="fas fa-map-marker-alt"></i>
+                        <span><i class="fas fa-briefcase"></i> 
+                            <?php 
+                            $joinDate = new DateTime($broker['createdAt']);
+                            $now = new DateTime();
+                            $experience = $now->diff($joinDate)->y;
+                            echo $experience > 0 ? $experience . ' năm kinh nghiệm' : 'Mới tham gia';
+                            ?>
+                        </span>
+                        <span><i class="fas fa-calendar"></i> Tham gia từ 
+                            <?= date('m/Y', strtotime($broker['createdAt'] ?? '2019-01-01')); ?></span>
+                        <span><i class="fas fa-map-marker-alt"></i> 
                             <?= htmlspecialchars($broker['mainArea'] ?? 'TP. Hồ Chí Minh'); ?></span>
                     </div>
                     <div class="broker-languages">
@@ -59,29 +78,48 @@
                     </div>
                 </div>
                 <div class="broker-actions">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-phone"></i>
-                        Gọi ngay
-                    </button>
-                    <button class="btn btn-outline">
-                        <i class="fas fa-envelope"></i>
-                        Nhắn tin
-                    </button>
-                    <button class="btn btn-secondary btn-follow">
-                        <i class="fas fa-plus"></i>
-                        Theo dõi
-                    </button>
+                    <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                                        <a href="tel:<?= htmlspecialchars($broker['phoneNumber']) ?>" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-phone"></i>
+                                              Gọi ngay
+                                        </a>
+                                        <?php }else{ ?>
+                                        <button onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')" class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                                <i class="fas fa-phone"></i> Gọi ngay
+                                                                            </button>
+                                        <?php } ?>
+                      <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                                        <a href="mailto:<?= htmlspecialchars($broker['email']) ?>" class="btn btn-outline btn-sm">
+                                            <i class="fas fa-envelope"></i>
+                                              Nhắn tin
+                                        </a>
+                                        <?php }else{ ?>
+                                        <button onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')"  class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                                <i class="fas fa-envelope"></i> Nhắn tin
+                                                                            </button>
+                                        <?php } ?>
+                                        <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                                            <form action="" method="post">
+                                                <input type="hidden" name="broker_id" value="<?= $broker['id'] ?>">
+                                            <button type="submit" name="follow-broker" class="btn <?= $broker['isFollowed'] ? 'btn-success' : 'btn-secondary' ?> btn-sm" style="border: 1px solid #e74c3c; <?= $broker['isFollowed'] ? 'font-size: 12px;' : '' ?>" title="<?= $broker['isFollowed'] ? 'Đang theo dõi - Click để bỏ theo dõi' : 'Theo dõi môi giới' ?>">
+                                                    <i class="fas <?= $broker['isFollowed'] ? 'fa-user-check' : 'fa-plus' ?>"></i>  <?= $broker['isFollowed'] ? 'Đã theo dõi' : 'Theo dõi' ?>
+                                                </button>
+                                            </form>
+                                        <?php }else{ ?>
+                                        <button onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')"  class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                                                                <i class="fas fa-plus"></i>Theo dõi
+                                                                            </button>
+                                        <?php } ?>
                 </div>
             </div>
-
             <div class="broker-stats-detailed">
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-home"></i>
                     </div>
                     <div class="stat-content">
-                        <h3><?= $propertyCount; ?>+</h3>
-                        <p>Bất động sản đang bán</p>
+                        <h3><?= number_format($propertyStats['active_properties']); ?></h3>
+                        <p>BĐS đang bán/cho thuê</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -89,7 +127,7 @@
                         <i class="fas fa-handshake"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>89</h3>
+                        <h3><?= number_format($propertyStats['completed_deals']); ?></h3>
                         <p>Giao dịch thành công</p>
                     </div>
                 </div>
@@ -98,8 +136,8 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>234</h3>
-                        <p>Khách hàng hài lòng</p>
+                        <h3><?= number_format($ratingStats['total_reviews']); ?></h3>
+                        <p>Khách hàng đánh giá</p>
                     </div>
                 </div>
             </div>
@@ -160,81 +198,38 @@
             <div class="tab-content" id="properties">
                 <div class="properties-section">
                     <div class="section-header">
-                        <h3>Bất động sản (<?= $propertyCount; ?>)</h3>
+                                                <h3>Bất động sản (<?= number_format($propertyStats['active_properties']); ?>)</h3>
                     </div>
 
                     <div class="broker-properties-grid">
-                        <div class="property-card">
-                            <div class="property-image">
-                                <img src="/placeholder.svg?height=200&width=300" alt="Căn hộ">
-                                <div class="property-badge">Cho thuê</div>
-                                <button class="save-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                            <div class="property-info">
-                                <h3><a href="property-detail.html">Căn hộ cao cấp Vinhomes Central Park</a></h3>
-                                <p class="location"><i class="fas fa-map-marker-alt"></i> Quận 1, TP.HCM</p>
-                                <p class="price">25 triệu/tháng</p>
-                                <div class="property-features">
-                                    <span><i class="fas fa-bed"></i> 2 phòng ngủ</span>
-                                    <span><i class="fas fa-bath"></i> 2 phòng tắm</span>
-                                    <span><i class="fas fa-expand-arrows-alt"></i> 80m²</span>
+                        <?php if (!empty($properties)) { ?>
+                            <?php foreach ($properties as $property) { ?>
+                                <div class="property-card">
+                                    <div class="property-image">
+                                        <img src="/placeholder.svg?height=200&width=300" alt="Căn hộ">
+                                        <div class="property-badge"><?= htmlspecialchars($property['typeName'] ?? 'Chưa rõ'); ?></div>
+                                        <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                                            <form action="" method="post">
+                                                <input type="hidden" name="property_id" value="<?= $property['id'] ?>">
+                                                <button type="submit" name="save-property" class="save-btn <?= $property['isSaved'] ? 'saved' : '' ?>" title="<?= $property['isSaved'] ? 'Đã lưu - Click để bỏ lưu' : 'Lưu tin' ?>">
+                                                    <i class="<?= $property['isSaved'] ? 'fas fa-heart' : 'far fa-heart' ?>"></i>
+                                                </button>
+                                            </form>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="property-info">
+                                        <h3><a href="index.php?act=property&id=<?= htmlspecialchars($property['id'] ?? '0'); ?>"><?= htmlspecialchars($property['title'] ?? 'Chưa có tiêu đề'); ?></a></h3>
+                                        <p class="location"><i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($property['locationName'] ?? 'Chưa rõ'); ?></p>
+                                        <p class="price"><?= htmlspecialchars($property['description'] ?? ''); ?></p>
+                                        <div class="property-features">
+                                            <span><i class="fas fa-bed"></i> <?= htmlspecialchars($property['bedrooms'] ?? '0'); ?> phòng ngủ</span>
+                                            <span><i class="fas fa-bath"></i> <?= htmlspecialchars($property['bathrooms'] ?? '0'); ?> phòng tắm</span>
+                                            <span><i class="fas fa-expand-arrows-alt"></i> <?= htmlspecialchars($property['area'] ?? '0'); ?>m²</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="property-card">
-                            <div class="property-image">
-                                <img src="/placeholder.svg?height=200&width=300" alt="Penthouse">
-                                <div class="property-badge sale">Bán</div>
-                                <button class="save-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                            <div class="property-info">
-                                <h3><a href="property-detail.html">Penthouse view sông Sài Gòn</a></h3>
-                                <p class="location"><i class="fas fa-map-marker-alt"></i> Quận 2, TP.HCM</p>
-                                <p class="price">15.8 tỷ</p>
-                                <div class="property-features">
-                                    <span><i class="fas fa-bed"></i> 3 phòng ngủ</span>
-                                    <span><i class="fas fa-bath"></i> 3 phòng tắm</span>
-                                    <span><i class="fas fa-expand-arrows-alt"></i> 150m²</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="property-card">
-                            <div class="property-image">
-                                <img src="/placeholder.svg?height=200&width=300" alt="Căn hộ">
-                                <div class="property-badge">Cho thuê</div>
-                                <button class="save-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                            <div class="property-info">
-                                <h3><a href="property-detail.html">Căn hộ Landmark 81</a></h3>
-                                <p class="location"><i class="fas fa-map-marker-alt"></i> Quận 1, TP.HCM</p>
-                                <p class="price">45 triệu/tháng</p>
-                                <div class="property-features">
-                                    <span><i class="fas fa-bed"></i> 2 phòng ngủ</span>
-                                    <span><i class="fas fa-bath"></i> 2 phòng tắm</span>
-                                    <span><i class="fas fa-expand-arrows-alt"></i> 95m²</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="property-card">
-                            <div class="property-image">
-                                <img src="/placeholder.svg?height=200&width=300" alt="Căn hộ">
-                                <div class="property-badge sale">Bán</div>
-                                <button class="save-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                            <div class="property-info">
-                                <h3><a href="property-detail.html">Căn hộ The Nassim Thảo Điền</a></h3>
-                                <p class="location"><i class="fas fa-map-marker-alt"></i> Quận 2, TP.HCM</p>
-                                <p class="price">8.2 tỷ</p>
-                                <div class="property-features">
-                                    <span><i class="fas fa-bed"></i> 2 phòng ngủ</span>
-                                    <span><i class="fas fa-bath"></i> 2 phòng tắm</span>
-                                    <span><i class="fas fa-expand-arrows-alt"></i> 78m²</span>
-                                </div>
-                            </div>
-                        </div>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -244,328 +239,101 @@
                     <div class="reviews-summary">
                         <div class="rating-overview">
                             <div class="rating-score">
-                                <span class="score">4.9</span>
+                                <span class="score"><?= $ratingStats['avg_rating'] ? number_format($ratingStats['avg_rating'], 1) : '0.0' ?></span>
                                 <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
+                                    <?php
+                                    $rating = $ratingStats['avg_rating'] ? round($ratingStats['avg_rating'], 1) : 0;
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $rating) {
+                                            echo '<i class="fas fa-star"></i>';
+                                        } elseif ($i - 0.5 <= $rating) {
+                                            echo '<i class="fas fa-star-half-alt"></i>';
+                                        } else {
+                                            echo '<i class="far fa-star"></i>';
+                                        }
+                                    }
+                                    ?>
                                 </div>
-                                <p>127 đánh giá</p>
+                                <p><?= number_format($ratingStats['total_reviews']) ?> đánh giá</p>
                             </div>
                             <div class="rating-breakdown">
+                                <?php 
+                                $totalReviews = $ratingStats['total_reviews'];
+                                $ratings = [
+                                    5 => $ratingStats['five_star'],
+                                    4 => $ratingStats['four_star'],
+                                    3 => $ratingStats['three_star'],
+                                    2 => $ratingStats['two_star'],
+                                    1 => $ratingStats['one_star']
+                                ];
+                                
+                                for ($star = 5; $star >= 1; $star--) {
+                                    $count = $ratings[$star] ?? 0;
+                                    $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
+                                ?>
                                 <div class="rating-item">
-                                    <span>5 sao</span>
+                                    <span><?= $star ?> sao</span>
                                     <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 85%"></div>
+                                        <div class="rating-fill" style="width: <?= number_format($percentage, 1) ?>%"></div>
                                     </div>
-                                    <span>108</span>
+                                    <span><?= $count ?></span>
                                 </div>
-                                <div class="rating-item">
-                                    <span>4 sao</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 12%"></div>
-                                    </div>
-                                    <span>15</span>
-                                </div>
-                                <div class="rating-item">
-                                    <span>3 sao</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 2%"></div>
-                                    </div>
-                                    <span>3</span>
-                                </div>
-                                <div class="rating-item">
-                                    <span>2 sao</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 1%"></div>
-                                    </div>
-                                    <span>1</span>
-                                </div>
-                                <div class="rating-item">
-                                    <span>1 sao</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 0%"></div>
-                                    </div>
-                                    <span>0</span>
-                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
+                  <?php  if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                    <?php if(mysqli_num_rows($checkRating) > 0) { ?>
+                        <form action="" method="post">
+                             <button class="btn btn-primary" type="submit" name="delete-rating" style="background-color: red; border-color: red; margin-bottom: 0.5rem">
+                            Xóa đánh giá
+                        </button>
+                        </form>
+                        
+                    <?php } else { ?>
                         <button class="btn btn-primary" id="add-review-btn" style="margin-bottom: 0.5rem">
                             <i class="fas fa-plus"></i>
                             Thêm đánh giá
                         </button>
+                    <?php } ?>
+                    <?php  }else { ?>
+                        <button onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')" class="btn btn-primary" style="background-color: gray; border-color: gray; margin-bottom: 0.5rem">
+                            <i class="fas fa-plus"></i>
+                            Thêm đánh giá
+                        </button>
+                    <?php } ?>
                     <div class="reviews-list">
                         <h1>Danh sách đánh giá</h1>
-                        <div class="review-item" data-review-index="1">
+                        <?php foreach ($reviews as $review) { ?>
+                        <div class="review-item" data-review-index="<?= $review['id'] ?>">
                             <div class="review-header">
                                 <div class="reviewer-info">
                                     <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
                                     <div>
-                                        <h4>Nguyễn Thị Mai</h4>
-                                        <p>Khách hàng đã mua nhà</p>
+                                        <h4><?= htmlspecialchars($review['fullName'] ?? 'Người dùng'); ?></h4>
                                     </div>
                                 </div>
                                 <div class="review-meta">
                                     <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
+                                        <?php
+                                        $reviewRating = $review['rating'] ?? 0;
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            if ($i <= $reviewRating) {
+                                                echo '<i class="fas fa-star"></i>';
+                                            } else {
+                                                echo '<i class="far fa-star"></i>';
+                                            }
+                                        }
+                                        ?>
                                     </div>
-                                    <span>15/12/2024</span>
+                                    <span><?= date('d/m/Y', strtotime($review['createdAt'] ?? '2024-01-01')); ?></span>
                                 </div>
                             </div>
                             <div class="review-content">
-                                <p>Anh An rất chuyên nghiệp và nhiệt tình. Đã hỗ trợ tôi tìm được căn hộ ưng ý với giá
-                                    tốt. Thủ tục pháp lý được xử lý nhanh chóng và minh bạch. Rất hài lòng với dịch vụ!
-                                </p>
+                                <p><?= htmlspecialchars($review['content'] ?? ''); ?></p>
                             </div>
                         </div>
-
-                        <div class="review-item" data-review-index="2">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Trần Văn Hùng</h4>
-                                        <p>Khách hàng đầu tư</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span>10/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Tư vấn đầu tư rất chính xác và có tầm nhìn. Anh An đã giúp tôi chọn được những bất
-                                    động sản có tiềm năng tăng giá tốt. Phản hồi nhanh, luôn sẵn sàng hỗ trợ 24/7.</p>
-                            </div>
-                        </div>
-
-                        <div class="review-item" data-review-index="3">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Lê Thị Hoa</h4>
-                                        <p>Khách hàng cho thuê</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <span>05/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Dịch vụ tốt, tìm được khách thuê nhanh chóng. Anh An rất am hiểu thị trường và biết
-                                    cách định giá hợp lý. Sẽ tiếp tục hợp tác trong tương lai.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Hidden reviews - Review 4 -->
-                        <div class="review-item hidden-review" data-review-index="4" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Phạm Minh Tuấn</h4>
-                                        <p>Khách hàng mua căn hộ</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span>02/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Rất hài lòng với dịch vụ tư vấn. Anh An đã giúp tôi tìm được căn hộ phù hợp với ngân sách 
-                                và yêu cầu. Quá trình giao dịch diễn ra thuận lợi và minh bạch.</p>
-                            </div>
-                        </div>
-
-                        <!-- Review 5 -->
-                        <div class="review-item hidden-review" data-review-index="5" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Võ Thị Lan</h4>
-                                        <p>Khách hàng bán nhà</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <span>28/11/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Anh An hỗ trợ bán nhà rất tốt, tìm được khách mua nhanh chóng với giá hợp lý. 
-                                Thái độ phục vụ chuyên nghiệp, luôn cập nhật tình hình thị trường.</p>
-                            </div>
-                        </div>
-
-                        <!-- Review 6 -->
-                        <div class="review-item hidden-review" data-review-index="6" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Nguyễn Văn Đức</h4>
-                                        <p>Khách hàng đầu tư</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span>25/11/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Tư vấn đầu tư bất động sản rất chi tiết và chính xác. Anh An có kinh nghiệm và hiểu biết sâu 
-                                về thị trường, giúp tôi đưa ra quyết định đầu tư đúng đắn.</p>
-                            </div>
-                        </div>
-
-                        <!-- Review 7 -->
-                        <div class="review-item hidden-review" data-review-index="7" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Trần Thị Kim</h4>
-                                        <p>Khách hàng thuê văn phòng</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <span>20/11/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Dịch vụ tư vấn thuê văn phòng tốt, tìm được địa điểm phù hợp với nhu cầu kinh doanh. 
-                                Giá cả hợp lý và thủ tục nhanh gọn.</p>
-                            </div>
-                        </div>
-
-                        <!-- Review 8 -->
-                        <div class="review-item hidden-review" data-review-index="8" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Lê Minh Hoàng</h4>
-                                        <p>Khách hàng mua đất</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span>18/11/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Anh An tư vấn mua đất rất chi tiết, từ pháp lý đến tiềm năng phát triển. 
-                                Nhờ tư vấn của anh mà tôi mua được lô đất có vị trí tốt với giá hợp lý.</p>
-                            </div>
-                        </div>
-
-                        <!-- Review 9 -->
-                        <div class="review-item hidden-review" data-review-index="9" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Phạm Thị Nga</h4>
-                                        <p>Khách hàng cho thuê</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <span>15/11/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Hỗ trợ cho thuê căn hộ rất tốt, tìm được khách thuê uy tín nhanh chóng. 
-                                Anh An rất nhiệt tình và chu đáo trong quá trình hỗ trợ.</p>
-                            </div>
-                        </div>
-
-                        <!-- Review 10 -->
-                        <div class="review-item hidden-review" data-review-index="10" style="display: none;">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
-                                    <div>
-                                        <h4>Đặng Văn Long</h4>
-                                        <p>Khách hàng mua biệt thự</p>
-                                    </div>
-                                </div>
-                                <div class="review-meta">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span>12/11/2024</span>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Dịch vụ tư vấn mua biệt thự xuất sắc! Anh An hiểu rõ nhu cầu và tìm được căn biệt thự 
-                                hoàn hảo cho gia đình tôi. Quá trình giao dịch minh bạch và chuyên nghiệp.</p>
-                            </div>
-                        </div>
+                        <?php } ?>
                     </div>
 
                     <div class="add-review-section"> 
@@ -578,8 +346,8 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </div>
-                                    
-                                    <form id="review-form">
+
+                                    <form id="review-form" action="" method="post">
                                         <div class="form-group">
                                             <label>Đánh giá của bạn *</label>
                                             <div class="rating-input">
@@ -600,20 +368,21 @@
                                             <textarea id="review-content" name="content" rows="4" required 
                                                 placeholder="Chia sẻ trải nghiệm của bạn với môi giới này..."></textarea>
                                         </div>
-                                        
+                                        <input type="hidden" name="broker_id" value="<?= $broker['id'] ?>">
                                         <div class="form-actions">
                                             <button type="button" class="btn btn-outline" id="cancel-review">Hủy</button>
-                                            <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                            <button type="submit" class="btn btn-primary" name="submit-review">Gửi đánh giá</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+<?php if(count($reviews) > 3) { ?>
                     <div class="load-more-reviews" id="load-more-section">
                         <button class="btn btn-outline" id="load-more-btn">Xem thêm đánh giá</button>
                     </div>
+<?php } ?>
                 </div>
             </div>
         </div>

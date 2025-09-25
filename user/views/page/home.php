@@ -139,10 +139,13 @@
                     <div class="property-badge <?= $property['transactionType'] ?>">
                         <?= $property['transactionType'] == 'rent' ? 'Cho thuê' : 'Bán' ?>
                     </div>
-                    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
-                    <button class="save-btn" onclick="toggleSave(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
+                    <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                        <form action="" method="post">
+                            <input type="hidden" name="property_id" value="<?= $property['id'] ?>">
+                           <button type="submit" name="save-property" class="save-btn <?= $property['isSaved'] ? 'saved' : '' ?>" title="<?= $property['isSaved'] ? 'Đã lưu' : 'Lưu tin' ?>">
+                                <i class="<?= $property['isSaved'] ? 'fas fa-heart' : 'far fa-heart' ?>"></i>
+                            </button>
+                        </form>
                     <?php } ?>
                 </div>
                 <div class="property-content">
@@ -240,7 +243,7 @@
                     <div class="broker-actions">
                         <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                         <a href="tel:<?= htmlspecialchars($broker['phoneNumber']) ?>" class="btn btn-primary btn-sm">
-                            <i class="fas fa-phone"></i>
+                            <i class="fas fa-phone"></i> 
                             Liên hệ
                         </a>
                         <?php }else{ ?>

@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    
   const loadMoreBtn = document.getElementById('load-more-btn');
 const loadMoreSection = document.getElementById('load-more-section');
 const hiddenReviews = document.querySelectorAll('.hidden-review');

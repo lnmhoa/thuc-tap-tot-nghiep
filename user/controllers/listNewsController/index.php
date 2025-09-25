@@ -60,17 +60,14 @@ if (isset($_POST['clear-filter'])) {
   $_SESSION['search-news'] = '';
 }
 
-// Xây dựng điều kiện WHERE
 $whereConditions = array();
 $whereConditions[] = "n.title LIKE '%" . $_SESSION['search-news'] . "%'";
 
-// Lọc theo danh mục
 if (!empty($_SESSION['filter-category'])) {
   $categoryIds = implode(',', array_map('intval', $_SESSION['filter-category']));
   $whereConditions[] = "n.typeId IN ($categoryIds)";
 }
 
-// Lọc theo thời gian
 if (!empty($_SESSION['filter-time'])) {
   $timeCondition = '';
   switch ($_SESSION['filter-time']) {
@@ -105,7 +102,6 @@ if ($current_page < 1) {
 }
 $start = ($current_page - 1) * $limit;
 
-// Sửa lại ORDER BY để tin có pin = 1 luôn hiển thị đầu tiên
 $sql_list = "SELECT n.*, tn.name as typeName 
              FROM `news` n 
              INNER JOIN `typenews` tn ON n.typeId = tn.id 
@@ -113,7 +109,6 @@ $sql_list = "SELECT n.*, tn.name as typeName
              ORDER BY n.pin DESC, n.id " . $_SESSION['sort-news'] . " 
              LIMIT $start, $limit";
 
-// Lấy tên danh mục hiện tại để hiển thị
 $currentCategoryName = '';
 if (!empty($_SESSION['filter-category']) && count($_SESSION['filter-category']) == 1) {
   $categoryId = $_SESSION['filter-category'][0];

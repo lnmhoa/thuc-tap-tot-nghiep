@@ -56,7 +56,7 @@ if (!empty($_POST)) {
         $response = array(
             'status' => 'success',
             'message' => 'Thêm người dùng thành công!',
-            'path'  => 'http://localhost/luan_van_tot_nghiep/admin/index.php?act=account',
+            'path'  => 'http://localhost/van_van-1p/admin/index.php?act=account',
         );
         echo json_encode($response);
     } else {

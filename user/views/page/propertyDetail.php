@@ -7,7 +7,7 @@ if (!isset($property)) {
 <section class="property-detail">
     <div class="container">
          <section class="page-header">
-        <div class="breadcrumb">
+            <div class="breadcrumb">
               <a href="index.php">Trang chủ</a>
             <span>/</span>
            <a href="index.php?act=property">Bất động sản</a>
@@ -15,6 +15,8 @@ if (!isset($property)) {
             <span><?= htmlspecialchars($property['title']) ?></span>
         </div>
         </section>
+       <div style="padding: 0 15px 10px 15px; margin-bottom: 20px;">
+         
         <div class="property-header">
             <h1><?= htmlspecialchars($property['title']) ?></h1>
         </div>
@@ -118,29 +120,41 @@ if (!isset($property)) {
                                  alt="<?= htmlspecialchars($property['brokerName']) ?>" 
                                  class="broker-avatar">
                         <div class="broker-details">
-                            <h4><?= htmlspecialchars($property['brokerName']) ?></h4>
+                            <h4><a href="index.php?act=broker&id=<?= $property['brokerId'] ?>"><?= htmlspecialchars($property['brokerName']) ?></a></h4>
                             <?php if (!empty($property['brokerIntro'])): ?>
                                 <p><?= htmlspecialchars($property['brokerIntro']) ?></p>
                             <?php endif; ?>
                             <div class="broker-contact">
-                                    <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
+                                    <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                     <span><?= htmlspecialchars($property['brokerPhone']) ?></span>
                                     <?php } else { ?>
                                    <span><?= substr($property['brokerPhone'], 0 , 7) ?>***</span>
                                     <?php } ?>
-                                <?php if (!empty($property['brokerEmail'])): ?>
+                                <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                     <p><i class="fas fa-envelope"></i> <?= htmlspecialchars($property['brokerEmail']) ?></p>
-                                <?php endif; ?>
+                                <?php }else{ ?>
+                                    <p><i class="fas fa-envelope"></i>****@***.***</p>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary contact-btn">Liên hệ ngay</button>
+                    <button class="btn btn-primary contact-btn" onclick="window.location.href='index.php?act=broker&id=<?= $property['brokerId'] ?>'">Liên hệ ngay</button>
                 </div>
 
                 <div class="quick-actions">
-                    <button class="btn btn-outline save-property">
+                <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                     <form action="" method="post" style="display: inline;">
+                            <input type="hidden" name="property_id" value="<?= $property['id'] ?>">
+                            <button type="submit" name="save-property" class="btn <?= $property['isSaved'] ? 'btn-success' : 'btn-outline' ?> save-property" title="<?= $property['isSaved'] ? 'Đã lưu - Click để bỏ lưu' : 'Lưu tin' ?>">
+                                <i class="<?= $property['isSaved'] ? 'fas fa-heart' : 'far fa-heart' ?>"></i> <?= $property['isSaved'] ? 'Đã lưu' : 'Lưu tin' ?>
+                            </button>
+                        </form>
+                        
+                    <?php } else { ?>
+                    <button class="btn btn-outline save-property" onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')">
                         <i class="far fa-heart"></i> Lưu tin
                     </button>
+                    <?php } ?>
                     <button class="btn btn-outline share-property">
                         <i class="fas fa-share"></i> Chia sẻ
                     </button>
@@ -185,6 +199,7 @@ if (!isset($property)) {
                 </div>
             </div>
         <?php endif; ?>
+       </div>
     </div>
 </section>
  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

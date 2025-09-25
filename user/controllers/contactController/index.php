@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
         errorNotLoad('Vui lòng nhập nội dung tin nhắn');
     }
-            $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+            $userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;
             $brokerId = 1; // Có thể để mặc định hoặc chọn broker
             
             $sql = "INSERT INTO contact_requests (userId, brokerId, name, phone, location, subject, price, message, status, createdAt) 
@@ -38,11 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bind_param("iissssss", $userId, $brokerId, $name, $phone, $location, $subject, $price, $message);
             
             if ($stmt->execute()) {
-                $_SESSION['success'] = 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.';
-                header('Location: /luan_van-1/user/index.php?page=contact');
+                success('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.','index.php?act=contact');
                 exit();
             } else {
-                $errors[] = 'Có lỗi xảy ra, vui lòng thử lại';
+               errorNotLoad('Có lỗi xảy ra. Vui lòng thử lại sau.');
             }
        
  

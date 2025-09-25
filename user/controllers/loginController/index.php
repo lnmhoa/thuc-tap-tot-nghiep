@@ -1,5 +1,5 @@
 <?php
-if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') {
+if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
     header("Location: index.php?act=home");
     exit();
 }
@@ -23,25 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 return;
             }
             if (password_verify($password, $user_from_db['password'])) {
-                // Lưu thông tin user vào session theo cấu trúc mà các controller khác mong đợi
                 $_SESSION['user'] = $user_from_db;
-                $_SESSION['user_id'] = $user_from_db['id'];
-                $_SESSION['user_name'] = $user_from_db['fullName'];
-                $_SESSION['user_email'] = $user_from_db['email'];
-                $_SESSION['user_avatar'] = $user_from_db['avatar'];
-                $_SESSION['user_role'] = $user_from_db['role'];
-                
-                // Nếu là broker thì lấy thêm thông tin broker
-                if ($user_from_db['role'] == '2') {
+                if ($_SESSION['user']['role'] == '2') {
                     $broker_stmt = $conn->prepare("SELECT * FROM `broker` WHERE accountId = ?");
-                    $broker_stmt->bind_param("i", $user_from_db['id']);
+                    $broker_stmt->bind_param("i", $_SESSION['user']['id']);
                     $broker_stmt->execute();
                     $broker_result = $broker_stmt->get_result();
                     
                     if ($broker_result->num_rows > 0) {
                         $broker_data = $broker_result->fetch_assoc();
                         $_SESSION['user']['broker_info'] = $broker_data;
-                        $_SESSION['broker_id'] = $broker_data['id'];
                     }
                     $broker_stmt->close();
                 }

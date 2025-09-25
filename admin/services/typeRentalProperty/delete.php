@@ -12,7 +12,7 @@ if (!empty($_POST) && isset($_POST['typeId'])) {
         $response = array(
             'status' => 'success',
             'message' => 'Xóa loại bất động sản thành công!',
-            'path' => 'http://localhost/luan_van_tot_nghiep/admin/index.php?act=typeRentalProperty',
+            'path' => 'http://localhost/van_van-1p/admin/index.php?act=typeRentalProperty',
         );
         echo json_encode($response);
     } else {

@@ -1,5 +1,5 @@
 <?php
-// Lấy dữ liệu tin tức
+
 $sql_pinNews = "SELECT n.id, n.title, n.image, n.content, n.createdAt, n.views, t.name FROM `news` n, `typenews` t WHERE n.pin = 1 GROUP BY n.id";
 $sql_listNews = "SELECT n.id, n.title, n.image, n.content, n.createdAt, n.views, t.name FROM `news` n, `typenews` t WHERE n.typeId = t.id AND n.pin = 0 ORDER BY `createdAt` ASC LIMIT 0, 3";
 $pinNews = mysqli_query($conn, $sql_pinNews);
@@ -35,6 +35,29 @@ $sql_brokers = "
 ";
 $brokersResult = mysqli_query($conn, $sql_brokers);
 $topBrokers = mysqli_fetch_all($brokersResult, MYSQLI_ASSOC);
+if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+    $userId = $_SESSION['user']['id'];
+    
+    foreach ($featuredProperties as &$property) {
+        $checkSaved = mysqli_query($conn, "SELECT id FROM saved_properties WHERE userId = $userId AND propertyId = {$property['id']}");
+ 
+        $property['isSaved'] = mysqli_num_rows($checkSaved) > 0;
+    }
+    
+    foreach ($topBrokers as &$broker) {
+        $checkFollow = mysqli_query($conn, "SELECT id FROM follow_broker WHERE idUser = $userId AND idBroker = {$broker['id']}");
+        $broker['isFollowed'] = mysqli_num_rows($checkFollow) > 0;
+    }
+} else {
+    foreach ($featuredProperties as &$property) {
+        $property['isSaved'] = false;
+    }
+    foreach ($topBrokers as &$broker) {
+        $broker['isFollowed'] = false;
+    }
+}
+
+
 
 include "./views/page/home.php";
 return;

@@ -75,48 +75,6 @@
                         </div>
 
                         <div class="filter-group">
-                            <label>Đánh giá</label>
-                            <div class="rating-filter">
-                                <label class="checkbox-item">
-                                    <input type="radio" name="filter-rating" value="5"
-                                        <?= $_SESSION['filter-rating'] == '5' ? 'checked' : '' ?>>
-                                    <span>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        5 sao
-                                    </span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="radio" name="filter-rating" value="4+"
-                                        <?= $_SESSION['filter-rating'] == '4+' ? 'checked' : '' ?>>
-                                    <span>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        4 sao trở lên
-                                    </span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="radio" name="filter-rating" value="3+"
-                                        <?= $_SESSION['filter-rating'] == '3+' ? 'checked' : '' ?>>
-                                    <span>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        3 sao trở lên
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group">
                             <label>Ngôn ngữ</label>
                             <div class="checkbox-group">
                                 <label class="checkbox-item">
@@ -191,11 +149,14 @@
                                         <span><?= $experienceYears ?> năm kinh nghiệm</span>
                                     </div>
                                 </div>
-                                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') { ?>
+                                <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                 <div class="broker-actions">
-                                    <button class="follow-btn">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="broker_id" value="<?= $broker['id'] ?>">
+                                        <button type="submit" name="follow-broker" class="follow-btn <?= $broker['isFollowed'] ? 'followed' : '' ?>" title="<?= $broker['isFollowed'] ? 'Đang theo dõi - Click để bỏ theo dõi' : 'Theo dõi môi giới' ?>">
+                                            <i class="fas <?= $broker['isFollowed'] ? 'fa-user-check' : 'fa-plus' ?>"></i>
+                                        </button>
+                                    </form>
                                 </div>
                                 <?php } ?>
                             </div>
@@ -266,9 +227,13 @@
                                    <span><?= substr($broker['phoneNumber'], 0 , 7) ?>***</span>
                                     <?php } ?>
                                 </div>
-                                <div class="contact-item">
+                                <div class="contact-item">  
                                     <i class="fas fa-envelope"></i>
+                                    <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
                                     <span><?= htmlspecialchars($broker['email']) ?></span>
+                                    <?php } else { ?>
+                                    <span>****@***.***</span>
+                                    <?php } ?>
                                 </div>
                             </div>
 
@@ -279,7 +244,7 @@
                                             Liên hệ
                                         </a>
                                         <?php }else{ ?>
-                                        <button disabled  class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                        <button onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')" class="btn btn-sm btn-primary" title="Vui lòng đăng nhập để liên hệ" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
                                                                                 <i class="fas fa-phone"></i> Liên hệ
                                                                             </button>
                                         <?php } ?>
@@ -289,7 +254,7 @@
                                             Nhắn tin
                                         </a>
                                         <?php }else{ ?>
-                                        <button disabled  class="btn btn-sm btn btn-outline" title="Vui lòng đăng nhập để nhắn tin" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
+                                        <button onclick="alert('Vui lòng đăng nhập để sử dụng chức năng này!')" class="btn btn-sm btn btn-primary" title="Vui lòng đăng nhập để nhắn tin" style="padding: 0.475rem 1rem; background-color: #ccc;" title="Đăng nhập để gọi điện">
                                                                                 <i class="fas fa-envelope"></i> Nhắn tin
                                                                             </button>
                                         <?php } ?>

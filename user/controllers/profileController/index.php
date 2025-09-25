@@ -1,11 +1,11 @@
 <?php
 // Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == '') {
+if (!isset($_SESSION['user']['id']) || $_SESSION['user']['id'] == '') {
     header("Location: index.php?act=login");
     exit();
 }
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user']['id'];
 
 try {
     // Xử lý cập nhật thông tin cá nhân
@@ -195,7 +195,6 @@ try {
     error_log("Profile controller error: " . $e->getMessage());
     errorNotLoad('Có lỗi xảy ra khi tải trang. Vui lòng thử lại.');
     
-    // Giá trị mặc định khi có lỗi
     $userInfo = [
         'id' => $userId,
         'fullName' => '',
