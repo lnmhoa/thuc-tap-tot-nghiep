@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelButton = document.getElementById('cancelButton');
     const apartmentForm = document.getElementById('apartmentForm');
     const saveApartmentButton = document.getElementById('saveApartmentButton');
-    const modalTitle = document.getElementById('modalTitle');
 
     const dataTable = document.querySelector('.data-table table tbody');
     function openApartmentModal() {
@@ -96,13 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.keys(fieldsMapping).forEach(fieldId => {
             const element = document.getElementById(fieldId);
             const value = fieldsMapping[fieldId] || '';
-            
-            if (element) {
-                element.value = value;
-                console.log(`✅ ${fieldId}: "${value}"`);
-            } else {
-                console.error(`❌ Element not found: ${fieldId}`);
-            }
         });
 
         if (saveApartmentButton) {
