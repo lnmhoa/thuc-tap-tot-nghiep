@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         openApartmentModal();
-        console.log('=== MODAL OPENED ===');
     }
 
     if (closeButton) closeButton.addEventListener('click', closeApartmentModal);
