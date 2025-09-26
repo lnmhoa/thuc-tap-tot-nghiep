@@ -8,7 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="./views/css/index.css">
     <link rel="stylesheet" href="./views/css/home.css">
-    <link rel="stylesheet" href="./views/css/modern-profile.css">
     <link rel="stylesheet" href="./views/css/header.css">
     <link rel="stylesheet" href="./views/css/footer.css">
     <link rel="stylesheet" href="./views/css/brokerDetail.css">

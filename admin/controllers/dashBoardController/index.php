@@ -6,11 +6,11 @@ $sql_properties = "SELECT COUNT(*) as total FROM rental_property";
 $result_properties = mysqli_query($conn, $sql_properties);
 $totalProperties = mysqli_fetch_assoc($result_properties)['total'];
 
-$sql_brokers = "SELECT COUNT(*) as total FROM account WHERE role IN ('2', '5')";
+$sql_brokers = "SELECT COUNT(*) as total FROM account WHERE role ='2'";
 $result_brokers = mysqli_query($conn, $sql_brokers);
 $totalBrokers = mysqli_fetch_assoc($result_brokers)['total'];
 
-$sql_users = "SELECT COUNT(*) as total FROM account WHERE role IN ('1', '4')";
+$sql_users = "SELECT COUNT(*) as total FROM account WHERE role = '1'";
 $result_users = mysqli_query($conn, $sql_users);
 $totalUsers = mysqli_fetch_assoc($result_users)['total'];
 
@@ -31,11 +31,11 @@ for ($i = 11; $i >= 0; $i--) {
     $result = mysqli_query($conn, $sql);
     $propertiesCount = mysqli_fetch_assoc($result)['count'];
     
-    $sql = "SELECT COUNT(*) as count FROM account WHERE role IN ('2', '5') AND DATE_FORMAT(createdAt, '%Y-%m') = '$month'";
+    $sql = "SELECT COUNT(*) as count FROM account WHERE role = '2' AND DATE_FORMAT(createdAt, '%Y-%m') = '$month'";
     $result = mysqli_query($conn, $sql);
     $brokersCount = mysqli_fetch_assoc($result)['count'];
 
-    $sql = "SELECT COUNT(*) as count FROM account WHERE role IN ('1', '4') AND DATE_FORMAT(createdAt, '%Y-%m') = '$month'";
+    $sql = "SELECT COUNT(*) as count FROM account WHERE role = '1' AND DATE_FORMAT(createdAt, '%Y-%m') = '$month'";
     $result = mysqli_query($conn, $sql);
     $usersCount = mysqli_fetch_assoc($result)['count'];
     

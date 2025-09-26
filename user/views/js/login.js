@@ -48,8 +48,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         } 
         
-        if (passwordValue.length < 6) {
-            showError(passwordInput, passwordError, 'Mật khẩu phải có ít nhất 6 ký tự.');
+        if (passwordValue.length < 8) {
+            showError(passwordInput, passwordError, 'Mật khẩu phải có ít nhất 8 ký tự.');
+            return false;
+        }
+         if (passwordValue.length > 255) {
+            showError(passwordInput, passwordError, 'Mật khẩu không được vượt quá 255 ký tự.');
             return false;
         }
         

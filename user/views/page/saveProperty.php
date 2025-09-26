@@ -1,38 +1,19 @@
 <div class="user-profile-wrapper">
-    <section class="page-header">
-    <div class="container">
-        <div class="page-header-content">
-            <div class="page-title">
-                <h1><i class="fas fa-heart"></i> BĐS đã lưu</h1>
-                <p>Quản lý danh sách bất động sản yêu thích của bạn</p>
-            </div>
-            <div class="breadcrumb">
-                <a href="index.php"><i class="fas fa-home"></i> Trang chủ</a>
-                <span>/</span>
-                <a href="?act=profile">Hồ sơ</a>
-                <span>/</span>
-                <span>BĐS đã lưu</span>
-            </div>
-        </div>
-    </div>
-</section>
-
 <main class="profile-main">
     <div class="container">
         <div class="profile-layout">
             <aside class="profile-sidebar">
                 <div class="profile-user-card">
                     <div class="user-avatar">
-                        <?php if (isset($_SESSION['user_avatar']) && !empty($_SESSION['user_avatar'])): ?>
-                            <img src="./uploads/avatar/<?= $_SESSION['user_avatar'] ?>" alt="Avatar">
+                        <?php if (isset($_SESSION['user']['avatar']) && !empty($_SESSION['user']['avatar'])): ?>
+                            <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar">
                         <?php else: ?>
                             <img src="../logo.jpg" alt="Default Avatar">
                         <?php endif; ?>
                         <div class="avatar-status online"></div>
                     </div>
                     <div class="user-info">
-                        <h3><?= htmlspecialchars($_SESSION['user_name'] ?? 'Người dùng') ?></h3>
-                        <p><?= htmlspecialchars($_SESSION['user_email'] ?? '') ?></p>
+                        <h3><?= htmlspecialchars($_SESSION['user']['fullName'] ?? 'Người dùng') ?></h3>
                         <div class="user-badge">
                             <i class="fas fa-shield-alt"></i>
                             Thành viên
@@ -49,18 +30,20 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
+                    <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=brokerProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
                     </a>
+                    <?php endif; ?>
                     <a href="?act=saveProperty" class="menu-item active">
                         <i class="fas fa-heart"></i>
                         <span>BĐS đã lưu</span>
                     </a>
-                    <a href="?act=userRentals" class="menu-item">
+                    <!-- <a href="?act=userRentals" class="menu-item">
                         <i class="fas fa-history"></i>
                         <span>Lịch sử thuê</span>
-                    </a>
+                    </a> -->
                     <a href="?act=followBroker" class="menu-item">
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
@@ -72,54 +55,9 @@
                 </nav>
             </aside>
 
-            <!-- Profile Content -->
-            <div class="profile-content">
-                <div class="content-header">
-                    <h2>Bất động sản đã lưu</h2>
-                    <p>Danh sách các bất động sản bạn đã đánh dấu yêu thích</p>
-                </div>
-
-                <!-- Saved Properties Stats -->
-                <div class="saved-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon saved">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>24</h3>
-                            <p>Đã lưu</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon rent">
-                            <i class="fas fa-key"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>16</h3>
-                            <p>Cho thuê</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon sale">
-                            <i class="fas fa-tag"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>8</h3>
-                            <p>Bán</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon recent">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>5</h3>
-                            <p>Tuần này</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sort Options Only -->
+            <div class="profile-content" style="padding: 2rem">
+                        <div class="form-section" style="margin-bottom: 0.5rem;">
+                <h3 class="section-title" style="padding: 0; margin-bottom:0.5rem;">Bất động sản đã lưu</h3>
                 <div class="content-filters">
                     <div class="filter-actions">
                         <div class="sort-options">
@@ -131,10 +69,10 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Saved Properties Grid -->
+                </div>
+                
+                
                 <div class="saved-properties-grid">
-                    <!-- Property Card 1 -->
                     <div class="saved-property-card" data-type="rent">
                         <div class="property-image">
                             <img src="../1.jpg" alt="Căn hộ Vinhomes">
@@ -291,7 +229,6 @@
                     </div>
                 </div>
 
-                <!-- Empty State -->
                 <div class="empty-state" style="display: none;">
                     <div class="empty-icon">
                         <i class="fas fa-heart-broken"></i>
@@ -309,7 +246,6 @@
 </main>
 
 <script>
-// Filter functionality
 document.addEventListener('DOMContentLoaded', function() {
     const filterTabs = document.querySelectorAll('.filter-tab');
     const propertyCards = document.querySelectorAll('.saved-property-card');

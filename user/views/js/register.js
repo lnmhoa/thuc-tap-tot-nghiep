@@ -5,28 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('register-password');
     const passwordConfirmInput = document.getElementById('register-password-confirm');
     
-    // Get error message elements
     const fullnameError = document.getElementById('fullname-error');
     const phoneError = document.getElementById('phone-error');
     const passwordError = document.getElementById('password-error');
     const passwordConfirmError = document.getElementById('password-confirm-error');
 
-    // Function to show an error message
     function showError(element, message, input) {
         element.textContent = message;
         input.classList.add('is-invalid');
     }
-
-    // Function to hide an error message
     function hideError(element, input) {
         element.textContent = '';
         input.classList.remove('is-invalid');
     }
 
-    // Enhanced validation functions
     function validateFullname() {
         const value = fullnameInput.value.trim();
-        const nameRegex = /^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ\s]+$/u;
+        const nameRegex = /^[a-zA-Z\s\u00C0-\u1EF9]+$/u;
         
         if (value === '') {
             showError(fullnameError, 'Họ và tên không được để trống.', fullnameInput);
@@ -74,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
             showError(passwordError, 'Mật khẩu không được để trống.', passwordInput);
             return false;
         }
-        if (value.length < 6) {
-            showError(passwordError, 'Mật khẩu phải có ít nhất 6 ký tự.', passwordInput);
+        if (value.length < 8) {
+            showError(passwordError, 'Mật khẩu phải có ít nhất 8 ký tự.', passwordInput);
             return false;
         }
         if (value.length > 255) {
@@ -88,8 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         hideError(passwordError, passwordInput);
-        
-        // Revalidate password confirm if it has a value
         if (passwordConfirmInput.value.length > 0) {
             validatePasswordConfirm();
         }
@@ -113,8 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hideError(passwordConfirmError, passwordConfirmInput);
         return true;
     }
-
-    // Add event listeners for real-time validation
     fullnameInput.addEventListener('blur', validateFullname);
     fullnameInput.addEventListener('input', function() {
         if (this.classList.contains('is-invalid')) {
@@ -143,56 +134,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Phone number formatting
     phoneInput.addEventListener('input', function() {
-        let value = this.value.replace(/\D/g, ''); // Remove non-digits
+        let value = this.value.replace(/\D/g, '');
         if (value.startsWith('84')) {
             value = '+84' + value.substring(2);
         } else if (value.startsWith('0')) {
-            // Keep as is
         } else if (value.length > 0) {
             value = '0' + value;
         }
         this.value = value;
-    });
-
-    // Main form submission handler
-    form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Always prevent default first
-        
-        // Run all validation functions
-        const isFullnameValid = validateFullname();
-        const isPhoneValid = validatePhone();
-        const isPasswordValid = validatePassword();
-        const isPasswordConfirmValid = validatePasswordConfirm();
-        
-        // If all validations pass, submit the form
-        if (isFullnameValid && isPhoneValid && isPasswordValid && isPasswordConfirmValid) {
-            // Disable submit button to prevent double submission
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Đang xử lý...';
-            
-            // Create form data and submit
-            const formData = new FormData(form);
-            
-            fetch(window.location.href, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(html => {
-                // Replace current page content with response
-                document.open();
-                document.write(html);
-                document.close();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Đăng ký';
-                alert('Có lỗi xảy ra. Vui lòng thử lại.');
-            });
-        }
     });
 });
