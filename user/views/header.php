@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./views/css/broker.css">
     <link rel="stylesheet" href="./views/css/news.css">
     <link rel="stylesheet" href="./views/css/newsDetail.css">
-    <link rel="stylesheet" href="./views/css/profile.css">
+    <link rel="stylesheet" href="./views/css/user-profile.css">
     <link rel="stylesheet" href="./views/css/properties.css">
     <link rel="stylesheet" href="./views/css/propertyDetail.css">
     <link rel="stylesheet" href="./views/css/addProperty.css">
@@ -54,13 +54,13 @@
                         <div class="dropdown">
                             <button class="dropdown-btn">
                                 <i class="fas fa-user"></i>
-                                <?php echo htmlspecialchars($_SESSION['user_name'] ?? $_SESSION['user']['fullName'] ?? 'Người dùng'); ?>
+                                <?php echo htmlspecialchars($_SESSION['user']['fullName'] ?? $_SESSION['user']['fullName'] ?? 'Người dùng'); ?>
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
                                 <a href="?act=profile"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a>
-                                
-                                <?php if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == '2' || $_SESSION['user_role'] == '1')): ?>
+
+                                <?php if(isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] == '2' )): ?>
                                     <a href="?act=brokerProperty"><i class="fas fa-building"></i> BĐS của tôi</a>
                                     <a href="?act=addProperty"><i class="fas fa-plus-circle"></i> Đăng tin mới</a>
                                 <?php endif; ?>

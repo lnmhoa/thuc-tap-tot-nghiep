@@ -1,0 +1,706 @@
+/* Main Profile Content */
+.user-profile-wrapper .profile-main {
+    padding: 3rem 0;
+}
+
+.user-profile-wrapper .profile-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Profile Sidebar */
+.user-profile-wrapper .profile-sidebar {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.user-profile-wrapper .profile-user-card {
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+    border-bottom: 1px solid #e9ecef;
+}
+
+.user-profile-wrapper .user-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem;
+}
+
+.user-profile-wrapper .user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile-wrapper .user-info h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.user-profile-wrapper .user-info p {
+    color: #6c757d;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.user-profile-wrapper .user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #667eea;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Profile Menu */
+.user-profile-wrapper .profile-menu {
+    padding: 1rem 0;
+}
+
+.user-profile-wrapper .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    color: #495057;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.user-profile-wrapper .menu-item:hover {
+    background: #f8f9ff;
+    color: #667eea;
+    border-left-color: #667eea;
+}
+
+.user-profile-wrapper .menu-item.active {
+    background: #e8f0ff;
+    color: #667eea;
+    border-left-color: #667eea;
+    font-weight: 500;
+}
+
+.user-profile-wrapper .menu-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Profile Content */
+.user-profile-wrapper .profile-content {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.user-profile-wrapper .content-header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.user-profile-wrapper .content-header h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.user-profile-wrapper .content-header p {
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Profile Form */
+.user-profile-wrapper .profile-form-container {
+    padding: 2rem;
+}
+
+.user-profile-wrapper .alert {
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.user-profile-wrapper .alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.user-profile-wrapper .alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.user-profile-wrapper .alert ul {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.user-profile-wrapper .alert li {
+    margin-bottom: 0.25rem;
+}
+
+.user-profile-wrapper .alert li:last-child {
+    margin-bottom: 0;
+}
+
+/* Form Sections */
+.user-profile-wrapper .form-section {
+    margin-bottom: 3rem;
+}
+
+.user-profile-wrapper .form-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Avatar Upload */
+.user-profile-wrapper .avatar-upload {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.user-profile-wrapper .avatar-preview {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.user-profile-wrapper .avatar-preview:hover {
+    transform: scale(1.02);
+}
+
+.user-profile-wrapper .avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-profile-wrapper .upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.user-profile-wrapper .avatar-preview:hover .upload-overlay {
+    opacity: 1;
+}
+
+.user-profile-wrapper .upload-overlay i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.user-profile-wrapper .upload-info p {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.user-profile-wrapper .upload-info small {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+/* Form Grid */
+.user-profile-wrapper .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.user-profile-wrapper .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.user-profile-wrapper .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.user-profile-wrapper .form-group label {
+    display: block;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.user-profile-wrapper .required {
+    color: #dc3545;
+    font-weight: normal;
+}
+
+.user-profile-wrapper .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-profile-wrapper .input-group i {
+    position: absolute;
+    left: 1rem;
+    color: #6c757d;
+    z-index: 2;
+    font-size: 1rem;
+}
+
+.user-profile-wrapper .input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.user-profile-wrapper .input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Form Actions */
+.user-profile-wrapper .form-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.user-profile-wrapper .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.user-profile-wrapper .btn-primary {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.user-profile-wrapper .btn-primary:hover {
+    background: #5a6fd8;
+    border-color: #5a6fd8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.user-profile-wrapper .btn-outline {
+    background: transparent;
+    color: #6c757d;
+    border-color: #e9ecef;
+}
+
+.user-profile-wrapper .btn-outline:hover {
+    background: #f8f9fa;
+    border-color: #d0d7de;
+    color: #495057;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-profile-wrapper .page-title h1 {
+        font-size: 2rem;
+    }
+    
+    .user-profile-wrapper .page-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .user-profile-wrapper .profile-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .user-profile-wrapper .profile-sidebar {
+        position: static;
+    }
+    
+    .user-profile-wrapper .avatar-upload {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .user-profile-wrapper .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .user-profile-wrapper .form-actions {
+        flex-direction: column;
+    }
+    
+    .user-profile-wrapper .btn {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-profile-wrapper .page-header {
+        padding: 2rem 0 1.5rem;
+    }
+    
+    .user-profile-wrapper .page-title h1 {
+        font-size: 1.8rem;
+    }
+    
+    .user-profile-wrapper .profile-main {
+        padding: 2rem 0;
+    }
+    
+    .user-profile-wrapper .profile-form-container,
+    .user-profile-wrapper .content-header {
+        padding: 1.5rem;
+    }
+    
+    .user-profile-wrapper .profile-user-card {
+        padding: 1.5rem;
+    }
+    
+    .user-profile-wrapper .menu-item {
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* Container */
+.user-profile-wrapper .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Change Password Specific Styles */
+/* Security Notice */
+.user-profile-wrapper .security-notice {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+    border: 1px solid #d4edda;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.user-profile-wrapper .security-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.user-profile-wrapper .security-content h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #155724;
+    margin-bottom: 1rem;
+}
+
+.user-profile-wrapper .security-content ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #155724;
+}
+
+.user-profile-wrapper .security-content li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.user-profile-wrapper .security-content li:last-child {
+    margin-bottom: 0;
+}
+
+/* Toggle Password Button */
+.user-profile-wrapper .toggle-password {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.2s;
+    z-index: 3;
+}
+
+.user-profile-wrapper .toggle-password:hover {
+    color: #667eea;
+}
+
+.user-profile-wrapper .input-group input {
+    padding-right: 3.5rem;
+}
+
+/* Password Strength Meter */
+.user-profile-wrapper .password-strength {
+    margin-top: 0.5rem;
+}
+
+.user-profile-wrapper .strength-meter {
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.user-profile-wrapper .strength-fill {
+    height: 100%;
+    width: 0%;
+    background: #dc3545;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.user-profile-wrapper .strength-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Password strength colors */
+.user-profile-wrapper .strength-weak .strength-fill {
+    background: #dc3545;
+    width: 25%;
+}
+
+.user-profile-wrapper .strength-fair .strength-fill {
+    background: #fd7e14;
+    width: 50%;
+}
+
+.user-profile-wrapper .strength-good .strength-fill {
+    background: #ffc107;
+    width: 75%;
+}
+
+.user-profile-wrapper .strength-strong .strength-fill {
+    background: #28a745;
+    width: 100%;
+}
+
+/* Password Match Indicator */
+.user-profile-wrapper .password-match {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    padding: 0.25rem 0;
+}
+
+.user-profile-wrapper .password-match.match {
+    color: #28a745;
+}
+
+.user-profile-wrapper .password-match.no-match {
+    color: #dc3545;
+}
+
+/* Security Activity */
+.user-profile-wrapper .security-activity {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.user-profile-wrapper .security-activity h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.user-profile-wrapper .activity-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.user-profile-wrapper .activity-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-profile-wrapper .activity-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-profile-wrapper .activity-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.user-profile-wrapper .activity-details h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.user-profile-wrapper .activity-details p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+.user-profile-wrapper .activity-time {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Login History */
+.user-profile-wrapper .login-history {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.user-profile-wrapper .history-item {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.2s;
+}
+
+.user-profile-wrapper .history-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile-wrapper .history-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-profile-wrapper .device-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-profile-wrapper .device-info i {
+    width: 40px;
+    height: 40px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+.user-profile-wrapper .device-info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile-wrapper .device {
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+.user-profile-wrapper .location {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.user-profile-wrapper .login-time {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Mobile responsiveness for change password */
+@media (max-width: 768px) {
+    .user-profile-wrapper .security-notice {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .user-profile-wrapper .activity-info,
+    .user-profile-wrapper .history-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .user-profile-wrapper .device-info {
+        width: 100%;
+    }
+}

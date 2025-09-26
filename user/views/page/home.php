@@ -228,7 +228,7 @@
                     <div class="broker-stats">
                         <div class="stat-item">
                             <i class="fas fa-home"></i>
-                            <span><?= number_format($broker['propertyCount']) ?>+ BĐS</span>
+                            <span><?= number_format($broker['propertyCount'])?>+ BĐS</span>
                         </div>
                         <div class="stat-item">
                             <i class="fas fa-star"></i>
