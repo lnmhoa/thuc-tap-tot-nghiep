@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="./views/css/account.css">
     <link rel="stylesheet" href="./views/css/modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.28/sweetalert2.all.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.28/sweetalert2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.28/sweetalert2.all.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.28/sweetalert2.css">
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    </head>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
 <body>
     <div class="layout">
     <div class="admin-container">
@@ -30,7 +31,7 @@
                     <li><a href="?act=account"><i class="fa-solid fa-user"></i> Quản lý người dùng</a></li>
                     <li><a href="?act=broker"><i class="fa-solid fa-user-tie"></i> Quản lý nhân viên</a></li>
                     <li><a href="?act=rentalProperty"><i class="fa-solid fa-city"></i> Quản lý bất động sản</a></li>
-                    <li><a href="?act=rentalHistory"><i class="fa-solid fa-pen-to-square"></i> Quản lý cho thuê</a></li>
+                    <!-- <li><a href="?act=rentalHistory"><i class="fa-solid fa-pen-to-square"></i> Quản lý cho thuê</a></li> -->
                     <li><a href="?act=contact"><i class="fa-solid fa-phone-volume"></i>Quản lý hỗ trợ</a></li>
                     <li><a href="?act=typeNews"><i class="fa-solid fa-list"></i> Quản lý loại tin tức</a></li>
                     <li><a href="?act=news"><i class="fa-solid fa-newspaper"></i> Quản lý tin tức</a></li>
