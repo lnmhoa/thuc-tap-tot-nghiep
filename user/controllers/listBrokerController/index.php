@@ -1,5 +1,5 @@
 <?php
-$districtsResult = mysqli_query($conn, "SELECT id, name, type FROM `location` WHERE status = 1 ORDER BY id ASC");
+$districtsResult = mysqli_query($conn, "SELECT id, name, type FROM `location` ORDER BY id ASC");
 $districts = mysqli_fetch_all($districtsResult, MYSQLI_ASSOC);
 
 $expertisesResult = mysqli_query($conn, "SELECT id, name, icon FROM `expertises` WHERE status = 1 ORDER BY name");

@@ -58,13 +58,13 @@
                     </form>
                 </fieldset>
             </div>
-            <button class="add-apartment-button">Thêm Bất Động Sản</button>
-        </div>
+       </div>
         <div class="data-table">
             <table>
                 <thead>
                     <tr>
                         <th style="width: 0%; text-align: center;">STT</th>
+                        <th style="display: none;">ID</th>
                         <th style="width: 25%">Tiêu đề</th>
                         <th style="width: 10% ;text-align: center;">Ảnh bìa</th>
                         <th style="width: 10%;text-align: center;">Khu vực</th>
@@ -102,8 +102,9 @@
                             }
                         }
                     ?>
-                        <tr>
+                        <tr data-property-id="<?= $value['id'] ?>">
                             <td data-label="STT" style="text-align: center;"><?= $stt ?></td>
+                            <td data-label="ID" style="display: none;"><?= $value['id'] ?></td>
                             <td data-label="Tiêu đề"><?= htmlspecialchars($value['title']) ?></td>
                             <td data-label="Ảnh bìa" style="text-align: center;">
                                 <?php if (!empty($mainImage)) { ?>
@@ -118,8 +119,7 @@
                             <td data-label="Lượt xem" style="text-align: center;"><?= htmlspecialchars($value['views']) ?></td>
                             <td data-label="Trạng thái" style="text-align: center;"><?= $status ?></td>
                             <td data-label="Hành động" style="text-align: center;">
-                                <button class="action-button edit">Sửa</button>
-                                <button class="action-button del">Xóa</button>
+                                <button class="action-button edit">Xem</button>
                             </td>
                         </tr>
                     <?php
@@ -128,7 +128,6 @@
                 </tbody>
             </table>
         </div>
-
         <div class="pagination">
             <div>
                 <?php
@@ -156,50 +155,86 @@
 </div>
 
 <div id="apartmentModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 800px; !important;">
         <span class="close-button">&times;</span>
-        <h3 id="modalTitle">Chi tiết căn hộ</h3>
+        <h3 id="modalTitle">Chi tiết bất động sản</h3>
         <form id="apartmentForm">
-            <label for="modal-id">STT:</label>
-            <input type="text" id="modal-id" readonly><br>
-
-            <label for="modal-name">Tên căn hộ:</label>
-            <input type="text" id="modal-name" required><br>
-
-            <label for="modal-address">Địa chỉ:</label>
-            <input type="text" id="modal-address" required><br>
-
-            <label for="modal-area">Diện tích (m²):</label>
-            <input type="number" id="modal-area" min="1" required><br>
-
-            <label for="modal-price">Giá thuê (VNĐ):</label>
-            <input type="number" id="modal-price" min="0" required><br>
-
-            <label for="modal-status">Trạng thái:</label>
-            <select id="modal-status">
-                <option value="available">Còn trống</option>
-                <option value="rented">Đã thuê</option>
-                <option value="maintenance">Đang bảo trì</option>
-            </select><br>
-
-            <label for="modal-date">Ngày tạo:</label>
-            <input type="date" id="modal-date" readonly><br>
-
-            <button type="submit" id="saveApartmentButton">Lưu</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div>  
+                    <label for="modal-title">Tiêu đề:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-title"><br></div>
+                <div>
+                    <label for="modal-description">Mô tả:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-description"><br></div>
+                <div>
+                    <label for="modal-address">Địa chỉ:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-address"><br></div>
+            </div>
+             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div>
+                    <label for="modal-location_name">Khu vực:</label>
+                    <input style="width:92%; margin-bottom: 5px;" name="modal-location_name" id="modal-location_name" disabled>
+                </div>
+                <div>
+                    <label for="modal-type_name">Loại:</label>
+                    <input style="width:92%; margin-bottom: 5px;" name="modal-type_name" id="modal-type_name" disabled></div>
+                <div>  
+                    <label for="modal-broker">Môi giới:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-broker" disabled><br></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div>
+                    <label for="modal-status">Trạng thái:</label>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-status" disabled>
+                </div>
+                <div>
+                    <label for="modal-transactionType">Loại giao dịch:</label>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-transactionType" disabled>
+                </div>
+                <div>
+                    <label for="modal-price">Giá(VNĐ):</label>
+                    <input style="width:92%; margin-bottom: 5px;" disabled type="number" id="modal-price" min="0" ><br></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div>
+                    <label for="modal-area">Diện tích:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-area" disabled><br>
+                </div>
+                <div>  
+                    <label for="modal-bedrooms">Số phòng ngủ:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-bedrooms" disabled><br>
+                </div>  
+                <div>  
+                    <label for="modal-bathrooms">Số phòng tắm:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-bathrooms" disabled><br>
+                </div>  
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div>
+                    <label for="modal-floors">Số tầng:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-floors" disabled><br>
+                </div>
+                <div>  
+                    <label for="modal-frontage">Mặt tiền:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-frontage" disabled><br>
+                </div>  
+                 <div>
+                    <label for="modal-furniture">Nội thất:</label>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-furniture" disabled>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                 <div>
+                    <label for="modal-parking">Bãi đậu xe:</label>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-parking" disabled>
+                </div>
+                 <div>
+                    <label for="modal-createdAt">Ngày tạo:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-createdAt" disabled><br>
+                </div>  
+            </div>
             <button type="button" id="cancelButton">Hủy</button>
         </form>
-    </div>
-</div>
-
-<div id="deactivateConfirmModal" class="modal">
-    <div class="modal-content small-modal">
-        <span class="close-button" id="closeDeactivateConfirm">&times;</span>
-        <h3>Xác nhận ngừng hoạt động</h3>
-        <p>Bạn có chắc chắn muốn ngừng hoạt động căn hộ <strong id="apartmentNameToDeactivate"></strong> (STT: <strong id="apartmentIdToDeactivate"></strong>) không?</p>
-        <div class="modal-actions">
-            <button id="confirmDeactivateButton" class="action-button deactive">Ngừng hoạt động</button>
-            <button id="cancelDeactivateButton" class="action-button view">Hủy</button>
-        </div>
     </div>
 </div>
 

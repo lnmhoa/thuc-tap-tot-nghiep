@@ -125,7 +125,6 @@
                     $images = json_decode($property['images'], true);
                     $firstImage = !empty($images) ? '../admin/uploads/rentalProperty/' . $images[0] : '../logo.jpg';
                     
-                    // Format giá tiền
                     $price = number_format($property['price'], 0, ',', '.') . ' ';
                     if ($property['transactionType'] == 'rent') {
                         $price .= ($property['priceUnit'] == 'month') ? 'đ/tháng' : 'đ';

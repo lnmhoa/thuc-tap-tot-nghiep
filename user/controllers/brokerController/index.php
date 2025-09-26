@@ -125,8 +125,10 @@ if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
         $properties[$i]['isSaved'] = false;
     }
 }
+if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+   $checkRating = mysqli_query($conn, 'SELECT id FROM broker_ratings WHERE brokerId = "'.$brokerId.'" AND userId = "'.$_SESSION['user']['id'].'"');
+} 
 
-$checkRating = mysqli_query($conn, 'SELECT id FROM broker_ratings WHERE brokerId = "'.$brokerId.'" AND userId = "'.$_SESSION['user']['id'].'"');
 if(isset($_POST['submit-review']) && isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
     $userId = $_SESSION['user']['id'];
     $rating = isset($_POST['rating']) ? (int)$_POST['rating'] : 0;
