@@ -40,10 +40,6 @@
                         <i class="fas fa-heart"></i>
                         <span>BĐS đã lưu</span>
                     </a>
-                    <!-- <a href="?act=userRentals" class="menu-item">
-                        <i class="fas fa-history"></i>
-                        <span>Lịch sử thuê</span>
-                    </a> -->
                     <a href="?act=followBroker" class="menu-item active">
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
@@ -63,8 +59,8 @@
                         <form method="POST" action="" class="sort-options">
                             <label>Sắp xếp theo:</label>
                             <select class="form-select" onchange="this.form.submit()" name="sort">
-                                <option <?php if ($_SESSION['sort-property-profile'] === 'desc') echo 'selected'; ?> value="desc">Mới nhất</option>
-                                <option <?php if ($_SESSION['sort-property-profile'] === 'asc') echo 'selected'; ?> value="asc">Cũ nhất</option>
+                                <option <?php if ($_SESSION['sort-follow-broker-profile'] === 'desc') echo 'selected'; ?> value="desc">Mới nhất</option>
+                                <option <?php if ($_SESSION['sort-follow-broker-profile'] === 'asc') echo 'selected'; ?> value="asc">Cũ nhất</option>
                             </select>
                         </form>
                     </div>

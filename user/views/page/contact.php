@@ -13,13 +13,13 @@
                                 <div class="form-group">
                                     <label for="name"><i class="fas fa-user"></i> Họ và tên *</label>
                                     <input type="text" id="name" name="name" 
-                                           value="<?php echo isset($_SESSION['form_data']['name']) ? htmlspecialchars($_SESSION['form_data']['name']) : ''; ?>" 
+                                           value="<?php echo isset($_SESSION['user']['fullName']) ? htmlspecialchars($_SESSION['user']['fullName']) : ''; ?>" 
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone"><i class="fas fa-phone"></i> Số điện thoại *</label>
                                     <input type="tel" id="phone" name="phone" 
-                                           value="<?php echo isset($_SESSION['form_data']['phone']) ? htmlspecialchars($_SESSION['form_data']['phone']) : ''; ?>" 
+                                           value="<?php echo isset($_SESSION['user']['phoneNumber']) ? htmlspecialchars($_SESSION['user']['phoneNumber']) : ''; ?>" 
                                            required>
                                 </div>
                             </div>
@@ -30,9 +30,8 @@
                                         <select id="location" name="location" required>
                                             <option value="">-- Chọn khu vực --</option>
                                             <?php foreach ($locations as $loc) { ?>
-                                                <option value="<?= $loc['name'] ?>" 
-                                                    <?= (isset($_SESSION['mainArea']['location']) && $_SESSION['mainArea']['location'] == $loc['name']) ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($loc['name']) ?>
+                                                <option value="<?= $loc['id'] ?>">
+                                                    <?php echo htmlspecialchars($loc['name']) ?>
                                                 </option>
                                             <?php } ?>
                                         </select>
