@@ -25,7 +25,6 @@ $itemOnePage = 10;
             header("Location: index.php?act=login");
         }
     }
-
     if(isset($_POST['follow-broker'])) {
   $brokerId = $_POST['broker_id'];
         if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
@@ -34,7 +33,6 @@ $itemOnePage = 10;
               if(mysqli_num_rows($checkFollowBroker) >0) {
                 $deleteFollowBroker = mysqli_query($conn, "DELETE FROM follow_broker WHERE idUser = ".$_SESSION['user']['id']." AND idBroker = $brokerId");
                 success('Đã bỏ theo dõi môi giới!', $currentUrl);
-  
               }else{
                 $insertFollowBroker = mysqli_query($conn, "INSERT INTO follow_broker (idUser, idBroker) VALUES (".$_SESSION['user']['id'].", $brokerId)");
                 success('Đã theo dõi môi giới!', $currentUrl);

@@ -119,7 +119,9 @@
                         </form>
                     </div>
                 </div>
-
+                <?php foreach ($listBrokers as $key => $value) {
+                    echo $value['fullName'];
+                } ?>
                 <div class="brokers-grid">
                     <?php foreach ($listBrokers as $broker) {
                         $experienceYears = date('Y') - date('Y', strtotime($broker['createdAt']));

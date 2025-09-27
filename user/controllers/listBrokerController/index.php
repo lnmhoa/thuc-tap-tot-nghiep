@@ -60,7 +60,7 @@ if (!empty($_SESSION['filter-area'])) {
   $areaConditions = array();
   foreach ($_SESSION['filter-area'] as $area) {
     $area = mysqli_real_escape_string($conn, $area);
-    $areaConditions[] = "b.mainArea LIKE '%$area%'";
+    $areaConditions[] = "b1.mainArea LIKE '%$area%'";
   }
   $whereConditions[] = "(" . implode(' OR ', $areaConditions) . ")";
 }
@@ -69,7 +69,7 @@ if (!empty($_SESSION['filter-expertise'])) {
   $expertiseConditions = array();
   foreach ($_SESSION['filter-expertise'] as $expertise) {
     $expertise = mysqli_real_escape_string($conn, $expertise);
-    $expertiseConditions[] = "b.expertise LIKE '%$expertise%'";
+    $expertiseConditions[] = "b1.expertise LIKE '%$expertise%'";
   }
   $whereConditions[] = "(" . implode(' OR ', $expertiseConditions) . ")";
 }
@@ -78,16 +78,21 @@ if (!empty($_SESSION['filter-language'])) {
   $languageConditions = array();
   foreach ($_SESSION['filter-language'] as $language) {
     $language = mysqli_real_escape_string($conn, $language);
-    $languageConditions[] = "b.language LIKE '%$language%'";
+    $languageConditions[] = "b1.language LIKE '%$language%'";
   }
   $whereConditions[] = "(" . implode(' OR ', $languageConditions) . ")";
 }
 
 $whereClause = implode(' AND ', $whereConditions);
 
-$countQuery = "SELECT COUNT(DISTINCT b.id) as total 
-               FROM `broker` b 
-               INNER JOIN `account` a ON b.accountId = a.id 
+$countQuery = "SELECT COUNT(DISTINCT a.id) as total 
+               FROM `broker` b1 
+               INNER JOIN `account` a ON b1.accountId = a.id 
+               INNER JOIN (
+                   SELECT accountId, MAX(id) as max_id
+                   FROM `broker` 
+                   GROUP BY accountId
+               ) b2 ON b1.accountId = b2.accountId AND b1.id = b2.max_id
                WHERE $whereClause";
 
 $totalResult = mysqli_query($conn, $countQuery);
@@ -104,7 +109,7 @@ if ($current_page < 1) {
 }
 $start = ($current_page - 1) * $limit;
 
-$orderBy = "b.id DESC";
+$orderBy = "b1.id DESC";
 switch ($_SESSION['sort-broker']) {
   case 'rating':
     $orderBy = "avg_rating DESC";
@@ -116,16 +121,36 @@ switch ($_SESSION['sort-broker']) {
     $orderBy = "a.createdAt ASC";
 }
 
-$sql_list = "SELECT b.*, a.fullName, a.email, a.phoneNumber, a.avatar, a.createdAt, AVG(br.rating) AS avg_rating
-             FROM `broker` b 
-             INNER JOIN `account` a ON b.accountId = a.id 
-             LEFT JOIN `broker_ratings` br ON b.id = br.brokerId
+$sql_list = "SELECT b1.*, a.fullName, a.email, a.phoneNumber, a.avatar, a.createdAt, 
+                    AVG(br.rating) AS avg_rating,
+                    COUNT(br.rating) AS rating_count
+             FROM `broker` b1 
+             INNER JOIN `account` a ON b1.accountId = a.id 
+             INNER JOIN (
+                 SELECT accountId, MAX(id) as max_id
+                 FROM `broker` 
+                 GROUP BY accountId
+             ) b2 ON b1.accountId = b2.accountId AND b1.id = b2.max_id
+             LEFT JOIN `broker_ratings` br ON b1.id = br.brokerId
              WHERE $whereClause
-             GROUP BY b.id, a.fullName, a.email, a.phoneNumber, a.avatar, a.createdAt
+             GROUP BY b1.id
              ORDER BY $orderBy 
              LIMIT $start, $limit";
 
 $listBrokerResult = mysqli_query($conn, $sql_list);
+
+// Debug information
+if (isset($_GET['debug'])) {
+    echo "<h3>Debug Information:</h3>";
+    echo "<p><strong>Total Brokers Found:</strong> $totalBrokers</p>";
+    echo "<p><strong>Count Query:</strong> $countQuery</p>";
+    echo "<p><strong>List Query:</strong> $sql_list</p>";
+    echo "<p><strong>Where Clause:</strong> $whereClause</p>";
+    if ($listBrokerResult) {
+        echo "<p><strong>Actual Results:</strong> " . mysqli_num_rows($listBrokerResult) . "</p>";
+    }
+    echo "<hr>";
+}
 if ($listBrokerResult) {
   $listBrokers = mysqli_fetch_all($listBrokerResult, MYSQLI_ASSOC);
   if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {

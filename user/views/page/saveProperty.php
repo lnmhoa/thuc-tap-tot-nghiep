@@ -10,7 +10,6 @@
                         <?php else: ?>
                             <img src="../logo.jpg" alt="Default Avatar">
                         <?php endif; ?>
-                        <div class="avatar-status online"></div>
                     </div>
                     <div class="user-info">
                         <h3><?= htmlspecialchars($_SESSION['user']['fullName'] ?? 'Người dùng') ?></h3>
@@ -57,14 +56,14 @@
 
             <div class="profile-content" style="padding: 2rem">
                         <div class="form-section" style="margin-bottom: 0.5rem;">
-                <h3 class="section-title" style="padding: 0; margin-bottom:0.5rem;">Bất động sản đã lưu</h3>
+                <h3 class="section-title" style="margin-bottom:0.5rem;">Bất động sản đã lưu</h3>
                 <div class="content-filters">
                     <div class="filter-actions">
                         <form method="POST" action="" class="sort-options">
                             <label>Sắp xếp theo:</label>
                             <select class="form-select" onchange="this.form.submit()" name="sort">
-                                <option value="desc">Mới nhất</option>
-                                <option value="asc">Cũ nhất</option>
+                                <option <?php if ($_SESSION['sort-property-profile'] === 'desc') echo 'selected'; ?> value="desc">Mới nhất</option>
+                                <option <?php if ($_SESSION['sort-property-profile'] === 'asc') echo 'selected'; ?> value="asc">Cũ nhất</option>
                             </select>
                         </form>
                     </div>
@@ -92,7 +91,7 @@
                                 </div>
                             </div>
                             <div class="property-content">
-                                <h3 class="property-title"><?= htmlspecialchars($property['title'] ?? 'Bất động sản') ?></h3>
+                                <h3 class="property-title" onclick="location.href='?act=property&id=<?= $property['id'] ?>'" style="cursor: pointer;"><?= htmlspecialchars($property['title'] ?? 'Bất động sản') ?></h3>
                                 <p class="property-location">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <?= htmlspecialchars($property['address'] ?? 'Địa chỉ không xác định') ?>
@@ -114,28 +113,29 @@
                                         <i class="fas fa-eye"></i>
                                         Xem chi tiết
                                     </a>
-                                    <button class="btn btn-primary btn-sm">
+                                    <a href="?act=broker&id=<?= $property['brokerId'] ?>" class="btn btn-primary btn-sm">
                                         <i class="fas fa-phone"></i>
                                         Liên hệ
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
-
-                <div class="empty-state" style="display: none;">
-                    <div class="empty-icon">
-                        <i class="fas fa-heart-broken"></i>
+                <?php if (empty($listSavedProperties)): ?>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-heart-broken"></i>
+                        </div>
+                        <h3>Chưa có BĐS đã lưu</h3>
+                        <p>Bạn chưa lưu bất động sản nào. Hãy khám phá và lưu những BĐS yêu thích!</p>
+                        <a href="?act=listProperty" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                            Khám phá BĐS
+                        </a>
                     </div>
-                    <h3>Chưa có BĐS đã lưu</h3>
-                    <p>Bạn chưa lưu bất động sản nào. Hãy khám phá và lưu những BĐS yêu thích!</p>
-                    <a href="?act=listProperty" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                        Khám phá BĐS
-                    </a>
+                <?php endif; ?>
                 </div>
-            </div>
         </div>
     </div>
 </main>

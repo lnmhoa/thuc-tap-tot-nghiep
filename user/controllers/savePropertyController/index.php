@@ -9,10 +9,11 @@ $_SESSION['sort-property-profile'] = isset($_SESSION['sort-property-profile']) ?
 if(isset($_POST['sort'])) {
     $_SESSION['sort-property-profile'] = $_POST['sort'];
 }
-$sql = "SELECT rp.*, pi.imagePath as image
+$sql = "SELECT rp.*, pi.imagePath as image, b.id as brokerId
         FROM saved_properties sp
         JOIN rental_property rp ON sp.propertyId = rp.id
         JOIN property_images pi ON rp.id = pi.propertyId
+        JOIN broker b ON sp.propertyId = b.id
         WHERE sp.userId = '$userId' AND pi.isMain = 1
         ORDER BY sp.createdAt " . $_SESSION['sort-property-profile'] . "";
 $result = mysqli_query($conn, $sql);
