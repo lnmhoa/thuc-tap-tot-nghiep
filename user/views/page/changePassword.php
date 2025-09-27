@@ -39,10 +39,6 @@
                             <i class="fas fa-heart"></i>
                             <span>BĐS đã lưu</span>
                         </a>
-                        <!-- <a href="?act=userRentals" class="menu-item">
-                            <i class="fas fa-history"></i>
-                            <span>Lịch sử thuê</span>
-                        </a> -->
                         <a href="?act=followBroker" class="menu-item">
                             <i class="fas fa-user-friends"></i>
                             <span>Môi giới theo dõi</span>

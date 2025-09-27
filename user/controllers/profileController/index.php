@@ -6,6 +6,12 @@ if (!isset($_SESSION['user']['id']) || $_SESSION['user']['id'] == '') {
 
 $userId = $_SESSION['user']['id'];
 
+if(isset($_SESSION['user']['id']) && $_SESSION['user']['role'] == 2) {
+   $sql_location = 'SELECT * FROM location';
+   $listLocationResult = mysqli_query($conn, $sql_location);
+   $listLocation = mysqli_fetch_all($listLocationResult, MYSQLI_ASSOC);
+}
+
 if(isset($_POST['update_profile'])) {
     $fullName = $_POST['fullName'];
     $email = $_POST['email'];

@@ -3,7 +3,7 @@
         <section class="hero-section">
         <div class="hero-slider">
             <div class="hero-slide active">
-                <img src="../1.jpg" alt="Tìm ngôi nhà mơ ước">
+                <img src="../uploads/system/banner_1.jpg" alt="Tìm ngôi nhà mơ ước">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <div class="container">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="hero-slide">
-                <img src="../2.png" alt="Đầu tư thông minh">
+                <img src="../uploads/system/banner_2.png" alt="Đầu tư thông minh">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <div class="container">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="hero-slide">
-                <img src="../3.jpg" alt="Đội ngũ chuyên nghiệp">
+                <img src="../uploads/system/banner_3.jpg" alt="Đội ngũ chuyên nghiệp">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <div class="container">
@@ -123,7 +123,7 @@
             <?php if (!empty($featuredProperties)) { 
                 foreach ($featuredProperties as $property) { 
                     $images = json_decode($property['images'], true);
-                    $firstImage = !empty($images) ? '../admin/uploads/rentalProperty/' . $images[0] : '../logo.jpg';
+                    $firstImage = !empty($images) ? '../uploads/property/' . $images[0] : '../uploads/system/default.png';
                     
                     $price = number_format($property['price'], 0, ',', '.') . ' ';
                     if ($property['transactionType'] == 'rent') {

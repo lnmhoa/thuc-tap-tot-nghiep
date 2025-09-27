@@ -35,7 +35,7 @@
             <div class="header-content">
                 <div style="display: flex; gap: 20px; align-items: center;">
                     <div class="logo" style="line-height: 1;">
-                        <img src="../logo.jpg" alt="logo" onclick="window.location.href='index.php'" style="cursor: pointer;">
+                        <img src="../uploads/system/logo.jpg" alt="logo" onclick="window.location.href='index.php'" style="cursor: pointer;">
                     </div>
                     <nav class="nav">
                         <ul>

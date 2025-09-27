@@ -40,10 +40,6 @@
                         <i class="fas fa-heart"></i>
                         <span>BĐS đã lưu</span>
                     </a>
-                    <!-- <a href="?act=userRentals" class="menu-item">
-                        <i class="fas fa-history"></i>
-                        <span>Lịch sử thuê</span>
-                    </a> -->
                     <a href="?act=followBroker" class="menu-item">
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
@@ -54,7 +50,6 @@
                     </a>
                 </nav>
             </aside>
-
             <div class="profile-content">
                 <div class="profile-form-container">
                     <form method="POST" enctype="multipart/form-data" class="profile-form">
@@ -81,6 +76,82 @@
                         </div>
                         <div class="form-section">
                             <h3>Thông tin cá nhân</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Họ và tên <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="fullName" name="fullName" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['fullName'] ?? '') ?>" 
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="email" name="email" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phoneNumber">Số điện thoại <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="phoneNumber" required name="phoneNumber" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['phoneNumber'] ?? '') ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="address">Địa chỉ</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <input type="text" id="address" name="address" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['address'] ?? '') ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Họ và tên <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="fullName" name="fullName" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['fullName'] ?? '') ?>" 
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="email" name="email" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phoneNumber">Số điện thoại <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="phoneNumber" required name="phoneNumber" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['phoneNumber'] ?? '') ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="address">Địa chỉ</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <input type="text" id="address" name="address" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['address'] ?? '') ?>">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="fullName">Họ và tên <span class="required">*</span></label>
