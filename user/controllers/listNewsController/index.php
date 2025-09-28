@@ -108,7 +108,6 @@ $sql_list = "SELECT n.*, tn.name as typeName
              WHERE $whereClause
              ORDER BY n.pin DESC, n.id " . $_SESSION['sort-news'] . " 
              LIMIT $start, $limit";
-
 $currentCategoryName = '';
 if (!empty($_SESSION['filter-category']) && count($_SESSION['filter-category']) == 1) {
   $categoryId = $_SESSION['filter-category'][0];

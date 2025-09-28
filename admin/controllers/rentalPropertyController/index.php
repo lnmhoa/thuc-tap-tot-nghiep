@@ -5,28 +5,28 @@ $limit = 4;
 $_SESSION['sort-rental-property-admin'] = $_SESSION['sort-rental-property-admin'] ?? 'desc';
 $_SESSION['sort-status-rental-property-admin'] = $_SESSION['sort-status-rental-property-admin'] ?? '2';
 $_SESSION['sort-rental-property-location-admin'] = $_SESSION['sort-rental-property-location-admin'] ?? 'all';
-$_SESSION['sort-rental-property-expertises-admin'] = $_SESSION['sort-rental-property-expertises-admin'] ?? 'all';
+$_SESSION['sort-rental-type-admin'] = $_SESSION['sort-rental-type-admin'] ?? 'all';
 if (isset($_POST['sort-rental-property-admin'])) {
   $_SESSION['sort-rental-property-admin'] = $_POST['sort-rental-property-admin'];
 }
 if (isset($_POST['sort-rental-property-location-admin'])) {
   $_SESSION['sort-rental-property-location-admin'] = $_POST['sort-rental-property-location-admin'];
 }
-if (isset($_POST['sort-rental-property-expertises-admin'])) {
-  $_SESSION['sort-rental-property-expertises-admin'] = $_POST['sort-rental-property-expertises-admin'];
+if (isset($_POST['sort-rental-type-admin'])) {
+  $_SESSION['sort-rental-type-admin'] = $_POST['sort-rental-type-admin'];
 }
 if (isset($_POST['sort-status-rental-property-admin'])) {
   $_SESSION['sort-status-rental-property-admin'] = $_POST['sort-status-rental-property-admin'];
 }
 
-$where_clauses = ["p.status = 'active'"];
+$where_clauses = [];
 
 if ($_SESSION['sort-rental-property-location-admin'] != 'all') {
   $where_clauses[] = "p.locationId = " . (int)$_SESSION['sort-rental-property-location-admin'];
 }
 
-if ($_SESSION['sort-rental-property-expertises-admin'] != 'all') {
-  $where_clauses[] = "p.typeId = " . (int)$_SESSION['sort-rental-property-expertises-admin'];
+if ($_SESSION['sort-rental-type-admin'] != 'all') {
+  $where_clauses[] = "p.typeId = " . (int)$_SESSION['sort-rental-type-admin'];
 }
 
 $where_sql = count($where_clauses) > 0 ? "WHERE " . implode(" AND ", $where_clauses) : "";
@@ -47,10 +47,8 @@ $start = ($current_page - 1) * $limit;
 
 $sql_location = "SELECT id, name FROM `location`";
 $listLocationResult = mysqli_query($conn, $sql_location);
-$sql_expertises = "SELECT id, name FROM `expertises`";
-$listExpertisesResult = mysqli_query($conn, $sql_expertises);
-$sql_property_amenities = "SELECT * FROM `property_amenities`";
-$listPropertyAmenitiesResult = mysqli_query($conn, $sql_property_amenities);
+$sql_expertises = "SELECT id, name FROM `type_rental_property`";
+$listTypeRentalPropertyResult = mysqli_query($conn, $sql_expertises);
 
 $sql_list = "
 SELECT
@@ -59,14 +57,12 @@ SELECT
     p.address,
     p.transactionType,
     p.price,
-    p.priceUnit,
     p.area,
     p.bedrooms,
     p.bathrooms,
     p.floors,
     p.frontage,
     p.direction,
-    p.legalStatus,
     p.furniture,
     p.views,
     p.status,
@@ -79,10 +75,8 @@ SELECT
     GROUP_CONCAT(
         JSON_OBJECT(
             'imagePath', pi.imagePath,
-            'isMain', pi.isMain,
-            'sortOrder', pi.sortOrder
+            'isMain', pi.isMain
         )
-        ORDER BY pi.sortOrder ASC
     ) AS images
 FROM
     rental_property AS p
@@ -103,13 +97,11 @@ ORDER BY
     p.createdAt " . $_SESSION['sort-rental-property-admin'] . " 
 LIMIT $start, $limit;
 ";
-
 $listRentalPropertyResult = mysqli_query($conn, $sql_list);
 
 if ($listRentalPropertyResult) {
   $listLocation = mysqli_fetch_all($listLocationResult, MYSQLI_ASSOC);
-  $listExpertises = mysqli_fetch_all($listExpertisesResult, MYSQLI_ASSOC);
-  $listPropertyAmenities = mysqli_fetch_all($listPropertyAmenitiesResult, MYSQLI_ASSOC);
+  $listTypeRentalProperty = mysqli_fetch_all($listTypeRentalPropertyResult, MYSQLI_ASSOC);
   $listRentalProperty = mysqli_fetch_all($listRentalPropertyResult, MYSQLI_ASSOC);
 } else {
   error('Lấy thông tin tin tức thất bại!', 'index.php?act=rentalProperty');

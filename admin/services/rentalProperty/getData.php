@@ -13,13 +13,13 @@ if(!empty($_POST)){
         echo json_encode($response);
         exit();
     }
-    
     try {
-        $sql = "SELECT rp.*, l.name AS location_name, tp.name AS type_name, a.fullName AS broker_name , a.phoneNumber as broker_phone
+        $sql = "SELECT rp.*, l.name AS locationName, a.fullName as brokerName, a.phoneNumber as brokerPhone, tp.name AS typeName
                 FROM `rental_property` rp 
                 LEFT JOIN `location` l ON rp.locationId = l.id 
+                LEFT JOIN `broker` b ON rp.brokerId = b.id 
                 LEFT JOIN `type_rental_property` tp ON rp.typeId = tp.id 
-                LEFT JOIN `account` a ON rp.brokerId = a.id 
+                LEFT JOIN `account` a ON b.accountId = a.id 
                 WHERE rp.id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         $bind_result = mysqli_stmt_bind_param($stmt, 'i', $propertyId);
@@ -34,26 +34,22 @@ if(!empty($_POST)){
                     'description' => $propertyData['description'] ?? '',
                     'address' => $propertyData['address'] ?? '',
                     'locationId' => $propertyData['locationId'] ?? '',
-                    'location_name' => $propertyData['location_name'] ?? '',
+                    'locationName' => $propertyData['locationName'] ?? '',
                     'typeId' => $propertyData['typeId'] ?? '',
-                    'type_name' => $propertyData['type_name'] ?? '',
+                    'typeName' => $propertyData['typeName'] ?? '',
                     'brokerId' => $propertyData['brokerId'] ?? '',
-                    'broker_name' => $propertyData['broker_name'] ?? '',
-                    'broker_phone' => $propertyData['broker_phone'] ?? '',
-                    'userId' => $propertyData['userId'] ?? '',
+                    'brokerName' => $propertyData['brokerName'] ?? '',
+                    'brokerPhone' => $propertyData['brokerPhone'] ?? '',
                     'transactionType' => $propertyData['transactionType'] ?? '',
                     'price' => $propertyData['price'] ?? '',
-                    'priceUnit' => $propertyData['priceUnit'] ?? '',
                     'area' => $propertyData['area'] ?? '',
                     'bedrooms' => $propertyData['bedrooms'] ?? '',
                     'bathrooms' => $propertyData['bathrooms'] ?? '',
                     'floors' => $propertyData['floors'] ?? '',
                     'frontage' => $propertyData['frontage'] ?? '',
                     'direction' => $propertyData['direction'] ?? '',
-                    'legalStatus' => $propertyData['legalStatus'] ?? '',
                     'furniture' => $propertyData['furniture'] ?? '',
                     'parking' => $propertyData['parking'] ?? '',
-                    'featured' => $propertyData['featured'] ?? '',
                     'status' => $propertyData['status'] ?? '',
                     'views' => $propertyData['views'] ?? '',
                     'createdAt' => $propertyData['createdAt'] ?? '',

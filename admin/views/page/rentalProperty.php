@@ -1,9 +1,11 @@
 <div class="main-content">
     <header class="top-header">
-        <h2>Quản lý căn hộ</h2>
+        <h2>Quản lý bất động sản</h2>
         <div class="user-info">
-            <span>Xin chào, Admin!</span>
-            <button>Đăng xuất</button>
+            <span>Xin chào, <?= $_SESSION['user']['fullName'] ?? 'Admin' ?>!</span>
+            <form method="post" style="display:inline;">
+                <button name="logout" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</button>
+            </form>
         </div>
     </header>
     <div class="content-area">
@@ -12,7 +14,7 @@
                 <fieldset>
                     <legend>Sắp xếp</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-rental-property-admin">
+                        <select name="sort-rental-property-admin" onchange="this.form.submit()">
                             <option value="desc" <?php if ($_SESSION['sort-rental-property-admin'] === 'desc') echo 'selected'; ?>>
                                 Mới nhất
                             </option>
@@ -20,13 +22,12 @@
                                 Cũ nhất
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
                 <fieldset>
                     <legend>Khu vực</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-rental-property-location-admin">
+                        <select name="sort-rental-property-location-admin" onchange="this.form.submit()">
                             <option value="all" <?php if ($_SESSION['sort-rental-property-location-admin'] === 'all') echo 'selected'; ?>>
                                 Tất cả
                             </option>
@@ -37,24 +38,22 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
                 <fieldset>
                     <legend>Loại</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-rental-property-expertises-admin">
-                            <option value="all" <?php if ($_SESSION['sort-rental-property-expertises-admin'] === 'all') echo 'selected'; ?>>
+                        <select name="sort-rental-type-admin" onchange="this.form.submit()">
+                            <option value="all" <?php if ($_SESSION['sort-rental-type-admin'] === 'all') echo 'selected'; ?>>
                                 Tất cả
                             </option>
-                            <?php foreach ($listExpertises as $expertises) { ?>
+                            <?php foreach ($listTypeRentalProperty as $expertises) { ?>
                                 <option value="<?php echo htmlspecialchars($expertises['id']); ?>"
-                                    <?php if ($_SESSION['sort-rental-property-expertises-admin'] == $expertises['id']) echo 'selected'; ?>>
+                                    <?php if ($_SESSION['sort-rental-type-admin'] == $expertises['id']) echo 'selected'; ?>>
                                     <?php echo htmlspecialchars($expertises['name']); ?>
                                 </option>
                             <?php } ?>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
             </div>
@@ -83,7 +82,10 @@
                             $status = 'Còn trống';
                         } elseif ($value['status'] == 'rented') {
                             $status = 'Đã thuê';
-                        } else {
+                        }elseif ($value['status'] == 'sold') {
+                            $status = 'Đã bán';
+                        }
+                         else {
                             $status = 'Không xác định';
                         }           
                         $images = json_decode('[' . $value['images'] . ']', true);
@@ -107,10 +109,10 @@
                             <td data-label="ID" style="display: none;"><?= $value['id'] ?></td>
                             <td data-label="Tiêu đề"><?= htmlspecialchars($value['title']) ?></td>
                             <td data-label="Ảnh bìa" style="text-align: center;">
-                                <?php if (!empty($mainImage)) { ?>
-                                    <img style="width: 80px; text-align: center;" src="../admin/uploads/rentalProperty/<?= htmlspecialchars($mainImage) ?>" alt="<?= htmlspecialchars($value['title']) ?>">
-                                <?php } else { ?>
-                                    Không có ảnh
+                                <?php if (!empty($mainImage) || $mainImage !== null) { ?>
+                                    <img style="width: 80px; text-align: center;" src="../uploads/property/<?= htmlspecialchars($mainImage) ?>"  alt="<?= htmlspecialchars($value['title']) ?>">
+                                <?php } else{ ?>
+                                     <img style="width: 80px; text-align: center;" src="../uploads/system/default_property.jpg"  alt="<?= htmlspecialchars($value['title']) ?>">
                                 <?php } ?>
                             </td>
                             <td data-label="Khu vực" style="text-align: center;"><?= htmlspecialchars($value['location_name']) ?></td>
@@ -173,67 +175,70 @@
              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
                 <div>
                     <label for="modal-location_name">Khu vực:</label>
-                    <input style="width:92%; margin-bottom: 5px;" name="modal-location_name" id="modal-location_name" disabled>
+                    <input style="width:92%; margin-bottom: 5px;" name="modal-location_name" id="modal-location_name">
                 </div>
                 <div>
                     <label for="modal-type_name">Loại:</label>
-                    <input style="width:92%; margin-bottom: 5px;" name="modal-type_name" id="modal-type_name" disabled></div>
+                    <input style="width:92%; margin-bottom: 5px;" name="modal-type_name" id="modal-type_name"></div>
                 <div>  
                     <label for="modal-broker">Môi giới:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-broker" disabled><br></div>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-broker"><br></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
                 <div>
                     <label for="modal-status">Trạng thái:</label>
-                    <input style="width:92%; margin-bottom: 5px;" id="modal-status" disabled>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-status">
                 </div>
                 <div>
                     <label for="modal-transactionType">Loại giao dịch:</label>
-                    <input style="width:92%; margin-bottom: 5px;" id="modal-transactionType" disabled>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-transactionType">
                 </div>
                 <div>
                     <label for="modal-price">Giá(VNĐ):</label>
-                    <input style="width:92%; margin-bottom: 5px;" disabled type="number" id="modal-price" min="0" ><br></div>
+                    <input style="width:92%; margin-bottom: 5px;" type="number" id="modal-price" min="0" ><br></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
                 <div>
                     <label for="modal-area">Diện tích:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-area" disabled><br>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-area"><br>
                 </div>
                 <div>  
                     <label for="modal-bedrooms">Số phòng ngủ:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-bedrooms" disabled><br>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-bedrooms"><br>
                 </div>  
                 <div>  
                     <label for="modal-bathrooms">Số phòng tắm:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-bathrooms" disabled><br>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-bathrooms"><br>
                 </div>  
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
                 <div>
                     <label for="modal-floors">Số tầng:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-floors" disabled><br>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-floors"><br>
                 </div>
                 <div>  
                     <label for="modal-frontage">Mặt tiền:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-frontage" disabled><br>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-frontage"><br>
                 </div>  
                  <div>
                     <label for="modal-furniture">Nội thất:</label>
-                    <input style="width:92%; margin-bottom: 5px;" id="modal-furniture" disabled>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-furniture">
                 </div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
                  <div>
                     <label for="modal-parking">Bãi đậu xe:</label>
-                    <input style="width:92%; margin-bottom: 5px;" id="modal-parking" disabled>
+                    <input style="width:92%; margin-bottom: 5px;" id="modal-parking">
                 </div>
                  <div>
                     <label for="modal-createdAt">Ngày tạo:</label>
-                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-createdAt" disabled><br>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-createdAt"><br>
+                </div>  
+                 <div>
+                    <label for="modal-updatedAt">Ngày cập nhật:</label>
+                    <input style="width:92%; margin-bottom: 5px;" type="text" id="modal-updatedAt"><br>
                 </div>  
             </div>
-            <button type="button" id="cancelButton">Hủy</button>
         </form>
     </div>
 </div>

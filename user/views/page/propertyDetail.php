@@ -5,17 +5,17 @@ if (!isset($property)) {
 }
 ?>
 <section class="property-detail">
-    <div class="container">
+    <div class="container" style="background: none;">
          <section class="page-header">
             <div class="breadcrumb">
               <a href="index.php">Trang chủ</a>
             <span>/</span>
-           <a href="index.php?act=property">Bất động sản</a>
+           <a href="index.php?act=listProperty">Bất động sản</a>
             <span>/</span>
-            <span><?= htmlspecialchars($property['title']) ?></span>
+            <span><?= htmlspecialchars(string: $property['title']) ?></span>
         </div>
         </section>
-       <div style="padding: 0 15px 10px 15px; margin-bottom: 20px;">
+       <div style="padding: 10px 15px; margin-bottom: 20px; background-color: white;">
          
         <div class="property-header">
             <h1><?= htmlspecialchars($property['title']) ?></h1>
@@ -29,7 +29,7 @@ if (!isset($property)) {
             <div class="swiper-wrapper">
                 <?php foreach ($propertyImages as $image): ?>
                     <div class="swiper-slide">
-                        <img src="<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
+                        <img src="../uploads/property/<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -41,7 +41,7 @@ if (!isset($property)) {
             <div class="swiper-wrapper">
                 <?php foreach ($propertyImages as $image): ?>
                     <div class="swiper-slide">
-                        <img src="<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
+                        <img src="../uploads/property/<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -115,10 +115,9 @@ if (!isset($property)) {
             <div class="property-sidebar">
                 <div class="broker-card">
                     <div class="broker-info">
-                        
-                            <img src="<?= htmlspecialchars($property['brokerAvatar']) ?>" 
-                                 alt="<?= htmlspecialchars($property['brokerName']) ?>" 
-                                 class="broker-avatar">
+                        <img src="<?php if($property['brokerAvatar'] != '') { echo '../uploads/user/' . htmlspecialchars($property['brokerAvatar']); } else { echo "../uploads/system/default_user.jpg"; }?>" 
+                             alt="<?= htmlspecialchars($property['brokerName']) ?>" 
+                             class="broker-avatar">
                         <div class="broker-details">
                             <h4><a href="index.php?act=broker&id=<?= $property['brokerId'] ?>"><?= htmlspecialchars($property['brokerName']) ?></a></h4>
                             <?php if (!empty($property['brokerIntro'])): ?>

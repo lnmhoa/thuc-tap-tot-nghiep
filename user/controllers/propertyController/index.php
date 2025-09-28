@@ -28,7 +28,7 @@ $property = mysqli_fetch_assoc($propertyResult);
 $updateViews = "UPDATE rental_property SET views = views + 1 WHERE id = $propertyId";
 mysqli_query($conn, $updateViews);
 
-$sql_images = "SELECT * FROM property_images WHERE propertyId = $propertyId ORDER BY isMain DESC, sortOrder ASC";
+$sql_images = "SELECT * FROM property_images WHERE propertyId = $propertyId ORDER BY isMain DESC";
 $imagesResult = mysqli_query($conn, $sql_images);
 $propertyImages = mysqli_fetch_all($imagesResult, MYSQLI_ASSOC);
 

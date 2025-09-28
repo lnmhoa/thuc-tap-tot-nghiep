@@ -1,22 +1,24 @@
 <?php
-$districtsResult = mysqli_query($conn, "SELECT id, name FROM `location` ORDER BY id ASC");
-$districts = mysqli_fetch_all($districtsResult, MYSQLI_ASSOC);
+$locationResult = mysqli_query($conn, "SELECT id, name FROM `location` ORDER BY id ASC");
+$location = mysqli_fetch_all($locationResult, MYSQLI_ASSOC);
 
-$expertisesResult = mysqli_query($conn, "SELECT id, name, icon FROM `expertises` WHERE status = 1 ORDER BY name");
+$expertisesResult = mysqli_query($conn, "SELECT id, name, icon FROM `expertises` ORDER BY name");
 $expertises = mysqli_fetch_all($expertisesResult, MYSQLI_ASSOC);
 
 $limit = 8;
 $_SESSION['sort-broker'] = isset($_SESSION['sort-broker']) ? $_SESSION['sort-broker'] : 'rating';
+
+
+$_SESSION['filter-expertise'] = isset($_SESSION['filter-expertise']) ? $_SESSION['filter-expertise'] : array();
+if (is_string($_SESSION['filter-expertise'])) {
+    $_SESSION['filter-expertise'] = !empty($_SESSION['filter-expertise']) ? array($_SESSION['filter-expertise']) : array();
+}
 
 $_SESSION['filter-area'] = isset($_SESSION['filter-area']) ? $_SESSION['filter-area'] : array();
 if (is_string($_SESSION['filter-area'])) {
     $_SESSION['filter-area'] = !empty($_SESSION['filter-area']) ? array($_SESSION['filter-area']) : array();
 }
 
-$_SESSION['filter-expertise'] = isset($_SESSION['filter-expertise']) ? $_SESSION['filter-expertise'] : array();
-if (is_string($_SESSION['filter-expertise'])) {
-    $_SESSION['filter-expertise'] = !empty($_SESSION['filter-expertise']) ? array($_SESSION['filter-expertise']) : array();
-}
 
 $_SESSION['filter-language'] = isset($_SESSION['filter-language']) ? $_SESSION['filter-language'] : array();
 if (is_string($_SESSION['filter-language'])) {
@@ -26,11 +28,6 @@ if (is_string($_SESSION['filter-language'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['sort-broker'])) {
     $_SESSION['sort-broker'] = $_POST['sort-broker'];
-  }
-  if (isset($_POST['filter-area'])) {
-    $_SESSION['filter-area'] = $_POST['filter-area']; 
-  } else {
-    $_SESSION['filter-area'] = array();
   }
   if (isset($_POST['filter-expertise'])) {
     $_SESSION['filter-expertise'] = $_POST['filter-expertise'];
@@ -42,10 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     $_SESSION['filter-language'] = array();
   }
-  if (isset($_POST['clear-filter'])) {
+  if (isset($_POST['filter-area'])) {
+    $_SESSION['filter-area'] = $_POST['filter-area'];
+  } else {
     $_SESSION['filter-area'] = array();
+  }
+  if (isset($_POST['clear-filter'])) {
     $_SESSION['filter-expertise'] = array();
     $_SESSION['filter-language'] = array();
+    $_SESSION['filter-area'] = array();
   }
   
   header('Location: index.php?act=listBroker');
@@ -55,15 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $whereConditions = array();
 $whereConditions[] = "a.status = 'active'"; 
 $whereConditions[] = "a.role = 2";
-
-if (!empty($_SESSION['filter-area'])) {
-  $areaConditions = array();
-  foreach ($_SESSION['filter-area'] as $area) {
-    $area = (int)mysqli_real_escape_string($conn, $area);
-    $areaConditions[] = "b1.location = $area";
-  }
-  $whereConditions[] = "(" . implode(' OR ', $areaConditions) . ")";
-}
 
 if (!empty($_SESSION['filter-expertise'])) {
   $expertiseConditions = array();
@@ -82,12 +75,21 @@ if (!empty($_SESSION['filter-language'])) {
   }
   $whereConditions[] = "(" . implode(' OR ', $languageConditions) . ")";
 }
+if (!empty($_SESSION['filter-area'])) {
+  $areaConditions = array();
+  foreach ($_SESSION['filter-area'] as $area) {
+    $area = (int)$area; // Convert to integer since location is now ID
+    $areaConditions[] = "b1.location = $area";
+  }
+  $whereConditions[] = "(" . implode(' OR ', $areaConditions) . ")";
+}
 
 $whereClause = implode(' AND ', $whereConditions);
 
 $countQuery = "SELECT COUNT(DISTINCT a.id) as total 
                FROM `broker` b1 
                INNER JOIN `account` a ON b1.accountId = a.id 
+               LEFT JOIN `location` l ON b1.location = l.id
                INNER JOIN (
                    SELECT accountId, MAX(id) as max_id
                    FROM `broker` 
@@ -95,7 +97,7 @@ $countQuery = "SELECT COUNT(DISTINCT a.id) as total
                ) b2 ON b1.accountId = b2.accountId AND b1.id = b2.max_id
                WHERE $whereClause";
 
-$totalResult = mysqli_query($conn, $countQuery);
+$totalResult = mysqli_query($conn, query: $countQuery);
 $totalData = mysqli_fetch_assoc($totalResult);
 $totalBrokers = $totalData['total'];
 
@@ -122,10 +124,12 @@ switch ($_SESSION['sort-broker']) {
 }
 
 $sql_list = "SELECT b1.*, a.fullName, a.email, a.phoneNumber, a.avatar, a.createdAt, 
+                    l.name as locationName, l.name as mainArea,
                     AVG(br.rating) AS avg_rating,
                     COUNT(br.rating) AS rating_count
              FROM `broker` b1 
              INNER JOIN `account` a ON b1.accountId = a.id 
+             LEFT JOIN `location` l ON b1.location = l.id
              INNER JOIN (
                  SELECT accountId, MAX(id) as max_id
                  FROM `broker` 
@@ -136,21 +140,7 @@ $sql_list = "SELECT b1.*, a.fullName, a.email, a.phoneNumber, a.avatar, a.create
              GROUP BY b1.id
              ORDER BY $orderBy 
              LIMIT $start, $limit";
-
 $listBrokerResult = mysqli_query($conn, $sql_list);
-
-// Debug information
-if (isset($_GET['debug'])) {
-    echo "<h3>Debug Information:</h3>";
-    echo "<p><strong>Total Brokers Found:</strong> $totalBrokers</p>";
-    echo "<p><strong>Count Query:</strong> $countQuery</p>";
-    echo "<p><strong>List Query:</strong> $sql_list</p>";
-    echo "<p><strong>Where Clause:</strong> $whereClause</p>";
-    if ($listBrokerResult) {
-        echo "<p><strong>Actual Results:</strong> " . mysqli_num_rows($listBrokerResult) . "</p>";
-    }
-    echo "<hr>";
-}
 if ($listBrokerResult) {
   $listBrokers = mysqli_fetch_all($listBrokerResult, MYSQLI_ASSOC);
   if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {

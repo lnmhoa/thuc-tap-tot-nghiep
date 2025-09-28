@@ -5,6 +5,15 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 $vndtousd = 24385;
 $itemOnePage = 10;
+if(!isset($_SESSION['user']) || $_SESSION['user']['role'] != 3){
+  header('Location: http://localhost/thuc-tap-tot-nghiep/user/');
+  exit();
+}
+if(isset($_POST['logout'])){
+  session_destroy();
+  success('Đăng xuất thành công!', 'http://localhost/thuc-tap-tot-nghiep/user/');
+  exit();
+}
 if (isset($_GET['act'])) {
   $act = $_GET['act'];
   switch ($act) {
@@ -20,9 +29,6 @@ if (isset($_GET['act'])) {
     case 'rentalProperty':
       include './controllers/rentalPropertyController/index.php';
       break;
-    case 'rentalHistory':
-      include './controllers/rentalHistoryController/index.php';
-      break;
        case 'typeNews':
       include './controllers/typeNewsController/index.php';
       break;
@@ -31,9 +37,6 @@ if (isset($_GET['act'])) {
       break;
     case 'contact':
       include './controllers/contactController/index.php';
-      break;
-    case 'payment':
-      include './controllers/paymentController/index.php';
       break;
     default:
       include './controllers/dashBoardController/index.php';

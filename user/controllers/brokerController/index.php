@@ -130,17 +130,20 @@ if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
    $checkRating = mysqli_query($conn, 'SELECT id FROM broker_ratings WHERE brokerId = "'.$brokerId.'" AND userId = "'.$_SESSION['user']['id'].'"');
 } 
 
-if(isset($_POST['submit-review']) && isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
+if(isset($_POST['submit-review'])) {
     $userId = $_SESSION['user']['id'];
     $rating = isset($_POST['rating']) ? (int)$_POST['rating'] : 0;
-    $content = isset($_POST['content']) ? trim($_POST['content']) : '';
+    $note = isset($_POST['note']) ? trim($_POST['note']) : '';
+    
     if ($rating >= 1 && $rating <= 5) {
-        $insertReviewSql = "INSERT INTO broker_ratings (brokerId, userId, rating, content, createdAt) VALUES ('$brokerId','$userId', '$rating', '$content', NOW())";
+        $insertReviewSql = "INSERT INTO broker_ratings (brokerId, userId, rating, note, createdAt) VALUES ('$brokerId','$userId', '$rating', '$note', NOW())";
 
         if(mysqli_query($conn, $insertReviewSql)) {
+            include "./views/page/brokerDetail.php";
          success("Cảm ơn bạn đã đánh giá môi giới!", "index.php?act=broker&id=$brokerId");
         }
     } else {
+        include "./views/page/brokerDetail.php";
         errorNotLoad("Vui lòng chọn đánh giá từ 1 đến 5 sao.");
     }
 }
@@ -148,6 +151,7 @@ if(isset($_POST['submit-review']) && isset($_SESSION['user']['id']) && $_SESSION
 if(isset($_POST['delete-rating']) && isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {
  $deleteRating = "DELETE FROM broker_ratings WHERE brokerId = '$brokerId' AND userId = '".$_SESSION['user']['id']."'";
     if(mysqli_query($conn, $deleteRating)) {
+        include "./views/page/brokerDetail.php";
         success("Đã xóa đánh giá môi giới!", "index.php?act=broker&id=$brokerId");
     }
 }

@@ -8,13 +8,11 @@
             <span><?= htmlspecialchars($broker['fullName']) ?></span>
         </div>
 </section>
-
         <div class="broker-profile">
             <div class="broker-profile-header">
                 <div class="broker-avatar-large">
-                    <img src="<?= !empty($broker['avatar']) ? '../admin/uploads/broker/' . $broker['avatar'] : '../logo.jpg'; ?>" 
-                        alt="<?= htmlspecialchars($broker['fullName'] ?? 'Broker'); ?>" onerror="this.src='../logo.jpg'">
-
+                    <img src="<?= !empty($broker['avatar']) ? '../uploads/user/' . $broker['avatar'] : '../uploads/system/default_user.jpg'; ?>" 
+                        alt="<?= htmlspecialchars($broker['fullName'] ?? 'Broker'); ?>">
                 </div>
                 <div class="broker-info">
                     <h1><?= htmlspecialchars($broker['fullName'] ?? 'Chưa có tên'); ?></h1>
@@ -308,7 +306,7 @@
                         <div class="review-item" data-review-index="<?= $review['id'] ?>">
                             <div class="review-header">
                                 <div class="reviewer-info">
-                                    <img src="/placeholder.svg?height=50&width=50" alt="Reviewer">
+                                    <img <?php if(!empty($review['avatar'])){ echo 'src="../uploads/user/'.htmlspecialchars($review['avatar']).'?height=80&width=80"'; } else { echo 'src="../uploads/system/default_user.jpg?height=80&width=80"'; } ?> alt="Reviewer">
                                     <div>
                                         <h4><?= htmlspecialchars($review['fullName'] ?? 'Người dùng'); ?></h4>
                                     </div>
@@ -330,7 +328,7 @@
                                 </div>
                             </div>
                             <div class="review-content">
-                                <p><?= htmlspecialchars($review['content'] ?? ''); ?></p>
+                                <p><?= htmlspecialchars($review['note'] ?? ''); ?></p>
                             </div>
                         </div>
                         <?php } ?>
@@ -346,7 +344,6 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </div>
-
                                     <form id="review-form" action="" method="post">
                                         <div class="form-group">
                                             <label>Đánh giá của bạn *</label>
@@ -364,11 +361,10 @@
                                             </div>
                                         </div>                                  
                                         <div class="form-group">
-                                            <label for="review-content">Nội dung đánh giá *</label>
-                                            <textarea id="review-content" name="content" rows="4" required 
+                                            <label for="review-note">Nội dung đánh giá *</label>
+                                            <textarea id="review-note" name="note" rows="4" required 
                                                 placeholder="Chia sẻ trải nghiệm của bạn với môi giới này..."></textarea>
                                         </div>
-                                        <input type="hidden" name="broker_id" value="<?= $broker['id'] ?>">
                                         <div class="form-actions">
                                             <button type="button" class="btn btn-outline" id="cancel-review">Hủy</button>
                                             <button type="submit" class="btn btn-primary" name="submit-review">Gửi đánh giá</button>

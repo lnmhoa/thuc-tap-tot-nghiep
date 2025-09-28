@@ -2,8 +2,10 @@
     <header class="top-header">
         <h2>Quản lý Yêu cầu & Hỗ trợ</h2>
         <div class="user-info">
-            <span>Xin chào, Admin!</span>
-            <button>Đăng xuất</button>
+             <span>Xin chào, <?= $_SESSION['user']['fullName'] ?? 'Admin' ?>!</span>
+             <form method="post" style="display:inline;">
+                <button name="logout" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</button>
+            </form>
         </div>
     </header>
     <div class="content-area">

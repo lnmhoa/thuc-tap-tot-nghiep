@@ -15,40 +15,38 @@
                 <form method="POST" id="filterForm">
                     <div class="filter-section">
                         <h3>Bộ lọc tìm kiếm</h3>
-
                         <div class="filter-group">
                             <label>Khu vực hoạt động</label>
                             <div class="collapsible-filter">
                                 <div class="checkbox-group-grid">
                                     <?php
                                     $displayCount = 8;
-                                    $districts_display = array_slice($districts, 0, $displayCount);
-                                    $districts_hidden = array_slice($districts, $displayCount);
+                                    $location_display = array_slice($location, 0, $displayCount);
+                                    $listLocation = array_slice($location, $displayCount);
 
-                                    foreach ($districts_display as $district) { ?>
+                                    foreach ($location_display as $location) { ?>
                                         <label class="checkbox-item">
-                                            <input type="checkbox" name="filter-area[]" value="<?= $district['name'] ?>"
-                                                <?= (is_array($_SESSION['filter-area']) && in_array($district['name'], $_SESSION['filter-area'])) ? 'checked' : '' ?>>
-                                            <span><?= htmlspecialchars($district['name']) ?></span>
+                                            <input type="checkbox" name="filter-area[]" value="<?= $location['id'] ?>"
+                                                <?= (is_array($_SESSION['filter-area']) && in_array($location['id'], $_SESSION['filter-area'])) ? 'checked' : '' ?>>
+                                            <span><?= htmlspecialchars($location['name']) ?></span>
                                         </label>
                                     <?php } ?>
                                 </div>
 
-                                <?php if (count($districts_hidden) > 0) { ?>
+                                <?php if (count($listLocation) > 0) { ?>
                                     <div class="more-options" style="display: none;">
                                         <div class="checkbox-group-grid">
-                                            <?php foreach ($districts_hidden as $district) { ?>
+                                            <?php foreach ($listLocation as $location) { ?>
                                                 <label class="checkbox-item">
-                                                    <input type="checkbox" name="filter-area[]" value="<?= $district['name'] ?>"
-                                                        <?= (is_array($_SESSION['filter-area']) && in_array($district['name'], $_SESSION['filter-area'])) ? 'checked' : '' ?>>
-                                                    <span><?= htmlspecialchars($district['name']) ?></span>
+                                                    <input type="checkbox" name="filter-area[]" value="<?= $location['id'] ?>"
+                                                        <?= (is_array($_SESSION['filter-area']) && in_array($location['id'], $_SESSION['filter-area'])) ? 'checked' : '' ?>>
+                                                    <span><?= htmlspecialchars($location['name']) ?></span>
                                                 </label>
                                             <?php } ?>
                                         </div>
                                     </div>
-
                                     <button type="button" class="show-more-btn" onclick="toggleMoreOptions(this)">
-                                        <span class="show-text">Xem thêm (+<?= count($districts_hidden) ?>)</span>
+                                        <span class="show-text">Xem thêm (+<?= count($listLocation) ?>)</span>
                                         <span class="hide-text" style="display: none;">Thu gọn</span>
                                         <i class="fas fa-chevron-down"></i>
                                     </button>
@@ -83,13 +81,13 @@
                                     <span>Tiếng Việt</span>
                                 </label>
                                 <label class="checkbox-item">
-                                    <input type="checkbox" name="filter-language[]" value="English"
-                                        <?= (is_array($_SESSION['filter-language']) && in_array('English', $_SESSION['filter-language'])) ? 'checked' : '' ?>>
+                                    <input type="checkbox" name="filter-language[]" value="Tiếng Anh"
+                                        <?= (is_array($_SESSION['filter-language']) && in_array('Tiếng Anh', $_SESSION['filter-language'])) ? 'checked' : '' ?>>
                                     <span>English</span>
                                 </label>
                                 <label class="checkbox-item">
-                                    <input type="checkbox" name="filter-language[]" value="Chinese"
-                                        <?= (is_array($_SESSION['filter-language']) && in_array('Chinese', $_SESSION['filter-language'])) ? 'checked' : '' ?>>
+                                    <input type="checkbox" name="filter-language[]" value="Tiếng Trung"
+                                        <?= (is_array($_SESSION['filter-language']) && in_array('Tiếng Trung', $_SESSION['filter-language'])) ? 'checked' : '' ?>>
                                     <span>中文</span>
                                 </label>
                             </div>
@@ -119,19 +117,16 @@
                         </form>
                     </div>
                 </div>
-                <?php foreach ($listBrokers as $key => $value) {
-                    echo $value['fullName'];
-                } ?>
+                <?php unset($broker); ?>
                 <div class="brokers-grid">
                     <?php foreach ($listBrokers as $broker) {
                         $experienceYears = date('Y') - date('Y', strtotime($broker['createdAt']));
                         if ($experienceYears == 0) $experienceYears = "Dưới 1";
-                        $avatarPath = !empty($broker['avatar']) ? $broker['avatar'] : '/placeholder.svg?height=80&width=80';
                     ?>
                         <div class="broker-card-detailed">
                             <div class="broker-header">
                                 <div class="broker-avatar">
-                                    <img src="./uploads/broker/<?= htmlspecialchars($avatarPath) ?>" alt="<?= htmlspecialchars($broker['fullName']) ?>">
+                                    <img <?php if(!empty($broker['avatar'])) { echo 'src="../uploads/user/'.htmlspecialchars($broker['avatar']).'" alt="'.htmlspecialchars($broker['fullName']).'"'; } else { echo 'src="../uploads/system/default_user.jpg" alt="default_user"'; } ?>>
                                 </div>
                                 <div class="broker-basic-info">
                                     <h3><a href="index.php?act=broker&id=<?= $broker['id'] ?>"><?= htmlspecialchars($broker['fullName']) ?></a></h3>

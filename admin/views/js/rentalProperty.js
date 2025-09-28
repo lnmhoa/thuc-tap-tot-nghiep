@@ -68,17 +68,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openEditModal(propertyData) {
         if (!propertyData) return;
-
-        console.log('=== OPENING EDIT MODAL ===');
-        console.log('Property Data:', propertyData);
-
+        if(propertyData.status=='active'){
+            propertyData.status='Đang hoạt động';
+        }else if(propertyData.status=='rented'){
+            propertyData.status='Đã cho thuê';
+        }else{
+            propertyData.status='Đã bán';
+        }
+        if(propertyData.transactionType=='rent'){
+            propertyData.transactionType='Cho thuê';
+        }else{
+            propertyData.transactionType='Bán';
+        }
+        if(propertyData.furniture=='none'){
+            propertyData.furniture='Không có nội thất';
+        }else if(propertyData.furniture=='basic'){
+            propertyData.furniture='Nội thất cơ bản';
+        }else{
+            propertyData.furniture='Nội thất đầy đủ';
+        }
         const fieldsMapping = {
             'modal-title': propertyData.title,
             'modal-description': propertyData.description,
             'modal-address': propertyData.address,
-            'modal-location_name': propertyData.location_name,
-            'modal-type_name': propertyData.type_name,
-            'modal-broker': propertyData.broker_name+' ('+propertyData.broker_phone+')',
+            'modal-location_name': propertyData.locationName,
+            'modal-type_name': propertyData.typeName,
+            'modal-broker': propertyData.brokerName+' ('+propertyData.brokerPhone+')',
             'modal-status': propertyData.status,
             'modal-transactionType': propertyData.transactionType,
             'modal-price': propertyData.price,
@@ -89,12 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
             'modal-frontage': propertyData.frontage,
             'modal-furniture': propertyData.furniture,
             'modal-parking': propertyData.parking,
-            'modal-createdAt': propertyData.createdAt
+            'modal-createdAt': propertyData.createdAt,
+            'modal-updatedAt': propertyData.updatedAt
         };
 
         Object.keys(fieldsMapping).forEach(fieldId => {
             const element = document.getElementById(fieldId);
             const value = fieldsMapping[fieldId] || '';
+                    if (element) {
+            element.value = value;
+        }
+
         });
 
         if (saveApartmentButton) {

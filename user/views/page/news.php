@@ -17,13 +17,7 @@
                     </div>
                     <h1><?= htmlspecialchars($newsDetail['title']) ?></h1>
                     <div class="article-meta">
-                        <div class="author-info">
-                            <img src="/placeholder.svg?height=40&width=40" alt="Tác giả">
-                            <div class="author-details">
-                                <span class="author-name">Admin</span>
-                                <span class="author-title">Chuyên gia BĐS</span>
-                            </div>
-                        </div>
+                        
                         <div class="article-stats">
                             <span><i class="fas fa-calendar"></i>
                                 <?= date('d/m/Y', strtotime($newsDetail['createdAt'])) ?></span>
