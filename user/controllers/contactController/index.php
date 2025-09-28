@@ -38,9 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bind_param("iissssss", $userId, $brokerId, $name, $phone, $location, $subject, $price, $message);
             
             if ($stmt->execute()) {
+                include "./views/page/contact.php";
                 success('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.','index.php?act=contact');
                 exit();
             } else {
+                include "./views/page/contact.php";
                errorNotLoad('Có lỗi xảy ra. Vui lòng thử lại sau.');
             }
        

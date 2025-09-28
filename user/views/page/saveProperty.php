@@ -5,10 +5,10 @@
             <aside class="profile-sidebar">
                 <div class="profile-user-card">
                     <div class="user-avatar">
-                        <?php if (isset($_SESSION['user']['avatar']) && !empty($_SESSION['user']['avatar'])): ?>
-                            <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar">
+                      <?php if (!empty($_SESSION['user']['avatar'])): ?>
+                            <img src="../uploads/user/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarPreview">
                         <?php else: ?>
-                            <img src="../logo.jpg" alt="Default Avatar">
+                            <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
                         <?php endif; ?>
                     </div>
                     <div class="user-info">
@@ -39,10 +39,6 @@
                         <i class="fas fa-heart"></i>
                         <span>BĐS đã lưu</span>
                     </a>
-                    <!-- <a href="?act=userRentals" class="menu-item">
-                        <i class="fas fa-history"></i>
-                        <span>Lịch sử thuê</span>
-                    </a> -->
                     <a href="?act=followBroker" class="menu-item">
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
@@ -79,7 +75,7 @@
                             <div class="saved-property-card" data-type="sale">
                         <?php endif; ?>
                             <div class="property-image">
-                                <img src="<?= $property['image']; ?>" alt="<?= htmlspecialchars($property['title'] ?? 'Bất động sản') ?>">
+                                <img src="<?php if(!empty($property['image'])) { echo '../uploads/system/' . $property['image']; } else { echo '../uploads/system/default_property.jpg'; } ?>" alt="<?= htmlspecialchars($property['title'] ?? 'Bất động sản') ?>">
                                 <?php if($property['transactionType'] === 'rent'): ?>
                                 <div class="property-badge rent">Cho thuê</div>
                                 <?php else: ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 27, 2025 lúc 03:44 PM
+-- Thời gian đã tạo: Th9 28, 2025 lúc 04:52 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -104,6 +104,17 @@ CREATE TABLE `account` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `account`
+--
+
+INSERT INTO `account` (`id`, `fullName`, `email`, `phoneNumber`, `password`, `avatar`, `address`, `role`, `status`, `createdAt`, `updatedAt`) VALUES
+(61, 'hòa', 'lnmhoa@gmail.com', '0836752979', '$2y$10$Bjz2Eltxsz49DBpfewGTJ.phGwkodgNLl3lzFiWdrR9xUzJQT/4qu', '525bdaddae4d46eddbfc036f642a41db.png', '', '1', 'active', '2025-09-27 14:02:36', '2025-09-28 14:41:31'),
+(62, 'đạt', 'ppdat@gmail.com', '0923467834', '$2y$10$yC1Kvym8H1Zl9lVE5qrhBe3LKDkPWGfPA3uWf0tqP4fnqL/fTiWG.', NULL, NULL, '1', 'inactive', '2025-09-27 14:04:41', '2025-09-27 14:53:27'),
+(63, 'phú', 'phu@gmail.com', '0923786734', '$2y$10$L6ldysIgp../sPLm6RJTXOK/anlTlQ/5t65QKkOciuQyiABQunXwW', NULL, NULL, '1', 'active', '2025-09-27 15:07:36', '2025-09-27 15:07:36'),
+(66, '1', 'lnmhoa1@gmail.com', '1111111111', '$2y$10$vcczbcqvxV/k0JnIYXVZyeOjnr2u5N9Eu9062lsAhHpA/XMSUwhq6', '', NULL, '2', 'active', '2025-09-27 15:36:31', '2025-09-27 15:36:31'),
+(67, '2311', 'gsss1@gmail.com', '2222222221', '$2y$10$s7iBxKvl32ltBG9fN7.QAOUEvbxdWOtzkZRUkOAg8Nf9bTeaPEPDW', '68d8aab11e40d.jpg', NULL, '2', 'active', '2025-09-27 15:37:03', '2025-09-28 13:01:37');
+
 -- --------------------------------------------------------
 
 --
@@ -122,6 +133,14 @@ CREATE TABLE `broker` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `broker`
+--
+
+INSERT INTO `broker` (`id`, `accountId`, `shortIntro`, `location`, `expertise`, `language`, `workingHours`, `createdAt`, `updatedAt`) VALUES
+(35, 66, '2', 1, 'Chung cư, Đất nền', 'Tiếng Việt, Tiếng Trung', '2', '2025-09-27 15:36:31', '2025-09-28 03:06:53'),
+(36, 67, '211', 2, 'Nhà ở', 'Tiếng Việt', '21', '2025-09-27 15:37:03', '2025-09-28 03:26:25');
+
 -- --------------------------------------------------------
 
 --
@@ -132,10 +151,17 @@ CREATE TABLE `broker_ratings` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `brokerId` int(11) NOT NULL,
-  `rating` float(1,1) NOT NULL,
+  `rating` int(1) NOT NULL,
   `note` varchar(255) DEFAULT NULL,
   `createdAt` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `broker_ratings`
+--
+
+INSERT INTO `broker_ratings` (`id`, `userId`, `brokerId`, `rating`, `note`, `createdAt`) VALUES
+(17, 61, 35, 5, '4', '2025-09-28');
 
 -- --------------------------------------------------------
 
@@ -159,6 +185,16 @@ CREATE TABLE `contact_requests` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `contact_requests`
+--
+
+INSERT INTO `contact_requests` (`id`, `userId`, `brokerId`, `name`, `phone`, `message`, `location`, `subject`, `price`, `note`, `status`, `createdAt`, `updatedAt`) VALUES
+(7, NULL, 67, 'hehe', '111111111', NULL, 12, 'Tư vấn mua bán', '0', '11111', 'canceled', '2025-09-28 04:59:56', '2025-09-28 05:00:03'),
+(8, NULL, 66, 'hehethfh1', 'ừêttewhfdhd1', NULL, 1, 'Tư vấn mua bán', '0', 'tưetwet1', 'inProgress', '2025-09-28 05:00:12', '2025-09-28 05:48:59'),
+(9, NULL, 66, '3', '3', NULL, 5, 'Khiếu nại', '0', '3', 'inProgress', '2025-09-28 05:20:22', '2025-09-28 05:45:01'),
+(10, NULL, 1, 'hòa', '1111111111', 'hehe', 11, 'Tư vấn mua bán', 'Dưới 3 triệu', '', 'pending', '2025-09-28 09:16:34', '2025-09-28 09:16:34');
+
 -- --------------------------------------------------------
 
 --
@@ -169,19 +205,18 @@ CREATE TABLE `expertises` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
-  `icon` varchar(50) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1
+  `icon` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `expertises`
 --
 
-INSERT INTO `expertises` (`id`, `name`, `description`, `icon`, `status`) VALUES
-(1, 'Nhà ở', 'Chuyên về mua bán, cho thuê nhà ở các loại', 'fas fa-home', 1),
-(2, 'Chung cư', 'Chuyên về căn hộ chung cư, condotel', 'fas fa-building', 1),
-(3, 'Đất nền', 'Chuyên về đất nền, đất thổ cư, đất dự án', 'fas fa-map', 1),
-(4, 'Văn phòng', 'Chuyên về cho thuê văn phòng, mặt bằng kinh doanh', 'fas fa-briefcase', 1);
+INSERT INTO `expertises` (`id`, `name`, `description`, `icon`) VALUES
+(1, 'Nhà ở', 'Chuyên về mua bán, cho thuê nhà ở các loại', 'fas fa-home'),
+(2, 'Chung cư', 'Chuyên về căn hộ chung cư, condotel', 'fas fa-building'),
+(3, 'Đất nền', 'Chuyên về đất nền, đất thổ cư, đất dự án', 'fas fa-map'),
+(4, 'Văn phòng', 'Chuyên về cho thuê văn phòng, mặt bằng kinh doanh', 'fas fa-briefcase');
 
 -- --------------------------------------------------------
 
@@ -248,7 +283,7 @@ CREATE TABLE `news` (
   `title` varchar(256) NOT NULL,
   `image` varchar(256) NOT NULL,
   `content` text NOT NULL,
-  `createdAt` date NOT NULL,
+  `createdAt` date NOT NULL DEFAULT current_timestamp(),
   `views` int(11) NOT NULL DEFAULT 0,
   `pin` tinyint(1) NOT NULL DEFAULT 1,
   `typeId` int(11) NOT NULL
@@ -292,7 +327,7 @@ CREATE TABLE `rental_property` (
   `typeId` int(11) NOT NULL,
   `brokerId` int(11) NOT NULL,
   `transactionType` enum('rent','sale') NOT NULL,
-  `price` decimal(15,2) NOT NULL,
+  `price` int(15) NOT NULL,
   `area` decimal(10,2) DEFAULT NULL,
   `bedrooms` int(11) DEFAULT 0,
   `bathrooms` int(11) DEFAULT 0,
@@ -307,6 +342,13 @@ CREATE TABLE `rental_property` (
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `rental_property`
+--
+
+INSERT INTO `rental_property` (`id`, `title`, `description`, `address`, `locationId`, `typeId`, `brokerId`, `transactionType`, `price`, `area`, `bedrooms`, `bathrooms`, `floors`, `frontage`, `direction`, `furniture`, `parking`, `status`, `views`, `createdAt`, `updatedAt`) VALUES
+(107, '1', '2', '3', 4, 5, 35, 'rent', 6, 7.00, 8, 9, 10, 11, '12', 'none', 13, 'active', 28, '2025-09-28 08:05:33', '2025-09-28 14:34:44');
+
 -- --------------------------------------------------------
 
 --
@@ -319,6 +361,13 @@ CREATE TABLE `saved_properties` (
   `propertyId` int(11) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `saved_properties`
+--
+
+INSERT INTO `saved_properties` (`id`, `userId`, `propertyId`, `createdAt`) VALUES
+(212, 61, 107, '2025-09-28 14:42:47');
 
 -- --------------------------------------------------------
 
@@ -340,8 +389,7 @@ INSERT INTO `typenews` (`id`, `name`, `description`) VALUES
 (1, 'Thị trường', NULL),
 (2, 'Dự án mới', NULL),
 (3, 'Tư vấn', NULL),
-(4, 'Pháp lý', NULL),
-(5, 'Đầu tư', NULL);
+(4, 'Pháp lý', NULL);
 
 -- --------------------------------------------------------
 
@@ -487,25 +535,25 @@ ALTER TABLE `type_rental_property`
 -- AUTO_INCREMENT cho bảng `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT cho bảng `broker`
 --
 ALTER TABLE `broker`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT cho bảng `broker_ratings`
 --
 ALTER TABLE `broker_ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT cho bảng `contact_requests`
 --
 ALTER TABLE `contact_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `expertises`
@@ -529,7 +577,7 @@ ALTER TABLE `location`
 -- AUTO_INCREMENT cho bảng `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `property_images`
@@ -541,19 +589,19 @@ ALTER TABLE `property_images`
 -- AUTO_INCREMENT cho bảng `rental_property`
 --
 ALTER TABLE `rental_property`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT cho bảng `saved_properties`
 --
 ALTER TABLE `saved_properties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT cho bảng `typenews`
 --
 ALTER TABLE `typenews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `type_rental_property`

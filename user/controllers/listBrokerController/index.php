@@ -25,7 +25,7 @@ if (is_string($_SESSION['filter-language'])) {
     $_SESSION['filter-language'] = !empty($_SESSION['filter-language']) ? array($_SESSION['filter-language']) : array();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['follow-broker'])) {
   if (isset($_POST['sort-broker'])) {
     $_SESSION['sort-broker'] = $_POST['sort-broker'];
   }
@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['filter-language'] = array();
     $_SESSION['filter-area'] = array();
   }
-  
   header('Location: index.php?act=listBroker');
   exit();
 }

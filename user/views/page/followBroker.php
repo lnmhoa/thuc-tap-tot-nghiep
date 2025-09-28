@@ -6,17 +6,21 @@
                <aside class="profile-sidebar">
                 <div class="profile-user-card">
                     <div class="user-avatar">
-                        <?php if (isset($_SESSION['user']['avatar']) && !empty($_SESSION['user']['avatar'])): ?>
-                            <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar">
+                       <?php if (!empty($_SESSION['user']['avatar'])): ?>
+                            <img src="../uploads/user/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarPreview">
                         <?php else: ?>
-                            <img src="../logo.jpg" alt="Default Avatar">
+                            <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
                         <?php endif; ?>
                     </div>
                     <div class="user-info">
                         <h3><?= htmlspecialchars($_SESSION['user']['fullName'] ?? 'Người dùng') ?></h3>
                         <div class="user-badge">
                             <i class="fas fa-shield-alt"></i>
-                            Thành viên
+                            <?php if ($_SESSION['user']['role'] === '2'): ?>
+                                Môi giới
+                            <?php else: ?>
+                                Thành viên
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -72,7 +76,7 @@
                         <?php foreach ($listFollowedBrokers as $broker): ?>
                             <div class="saved-broker-card" data-type="broker" >
                                 <div class="broker-image">
-                                    <img src="<?= htmlspecialchars($broker['avatar']) ?>" alt="<?= htmlspecialchars($broker['brokerName']) ?>" onerror="this.src='../logo.jpg'">
+                                    <img src="<?php if(!empty($broker['avatar'])) { echo '../uploads/user/' . $broker['avatar']; } else { echo '../uploads/system/default_user.jpg'; } ?>" alt="<?= htmlspecialchars($broker['brokerName']) ?>">
                                     <div class="broker-badge broker">Môi giới</div>
                                     <div class="broker-actions">
                                            <form action="" method="post">
@@ -89,7 +93,7 @@
                                     </div>
                                     <p class="broker-location">
                                         <i class="fas fa-briefcase"></i>
-                                        <?= htmlspecialchars($broker['mainArea']) ?>
+                                        <?= htmlspecialchars($broker['locationName']) ?>
                                     </p>
                                      <p class="broker-location">
                                         <i class="fas fa-calendar"></i>
@@ -103,7 +107,7 @@
                                     <div class="broker-price">
                                         <span class="follow-date">
                                             <i class="fas fa-calendar"></i>
-                                            Theo dõi từ <?= $broker['createdAt'] ?>
+                                            Theo dõi từ <?= date('d/m/Y', strtotime($broker['createdAt'])) ?>
                                         </span>
                                     </div>
                                 </div>

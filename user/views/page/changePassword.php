@@ -5,11 +5,11 @@
                 <aside class="profile-sidebar">
                     <div class="profile-user-card">
                         <div class="user-avatar">
-                            <?php if (isset($_SESSION['user']['avatar']) && !empty($_SESSION['user']['avatar'])): ?>
-                                <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar">
-                            <?php else: ?>
-                                <img src="../logo.jpg" alt="Default Avatar">
-                            <?php endif; ?>
+                           <?php if (!empty($_SESSION['user']['avatar'])): ?>
+                            <img src="../uploads/user/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarPreview">
+                        <?php else: ?>
+                            <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
+                        <?php endif; ?>
                         </div>
                         <div class="user-info">
                             <h3><?= htmlspecialchars($_SESSION['user']['name'] ?? 'Người dùng') ?></h3>

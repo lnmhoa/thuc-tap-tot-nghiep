@@ -9,12 +9,15 @@ $_SESSION['sort-property-profile'] = isset($_SESSION['sort-property-profile']) ?
 if(isset($_POST['sort'])) {
     $_SESSION['sort-property-profile'] = $_POST['sort'];
 }
-$sql = "SELECT rp.*, pi.imagePath as image, b.id as brokerId
+$sql = "SELECT rp.*, pi.imagePath as image, 
+               b.id as brokerId, a.fullName as brokerName, 
+               a.avatar as brokerAvatar, a.phoneNumber as brokerPhone
         FROM saved_properties sp
         JOIN rental_property rp ON sp.propertyId = rp.id
-        JOIN property_images pi ON rp.id = pi.propertyId
-        JOIN broker b ON sp.propertyId = b.id
-        WHERE sp.userId = '$userId' AND pi.isMain = 1
+        LEFT JOIN property_images pi ON rp.id = pi.propertyId AND pi.isMain = 1
+        JOIN broker b ON rp.brokerId = b.id
+        JOIN account a ON b.accountId = a.id
+        WHERE sp.userId = '$userId' 
         ORDER BY sp.createdAt " . $_SESSION['sort-property-profile'] . "";
 $result = mysqli_query($conn, $sql);
 $listSavedProperties = mysqli_fetch_all($result, MYSQLI_ASSOC);

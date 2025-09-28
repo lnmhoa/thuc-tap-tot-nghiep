@@ -35,7 +35,7 @@ if(isset($_POST['update_profile'])) {
         $allowedfileExtensions = array('jpg', 'png');
         if (in_array($fileExtension, $allowedfileExtensions)) {
             $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-            $uploadFileDir = './uploads/avatar/';
+            $uploadFileDir = '../uploads/user/';
             $dest_path = $uploadFileDir . $newFileName;
 
             if(move_uploaded_file($fileTmpPath, $dest_path)) {

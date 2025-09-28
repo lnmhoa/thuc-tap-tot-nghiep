@@ -13,7 +13,7 @@ $sql = "SELECT fb.*, b.id as brokerId, l.name as locationName, b.language as bro
         JOIN broker b ON fb.idBroker = b.id
         JOIN account a ON a.id = b.accountId
         LEFT JOIN location l ON b.location = l.id
-        WHERE fb.idUser = '$userId'
+        WHERE fb.idUser = '$userId' AND a.status = 'active'
         ORDER BY fb.createdAt " . $_SESSION['sort-follow-broker-profile'] . "";
 $result = mysqli_query($conn, $sql);
 $listFollowedBrokers = mysqli_fetch_all($result, MYSQLI_ASSOC);

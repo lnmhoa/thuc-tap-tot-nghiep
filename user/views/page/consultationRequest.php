@@ -2,14 +2,13 @@
     <main class="profile-main">
         <div class="container">
             <div class="profile-layout">
-                
                <aside class="profile-sidebar">
                 <div class="profile-user-card">
                     <div class="user-avatar">
-                        <?php if (isset($_SESSION['user']['avatar']) && !empty($_SESSION['user']['avatar'])): ?>
-                            <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar">
+                       <?php if (!empty($_SESSION['user']['avatar'])): ?>
+                            <img src="../uploads/user/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarPreview">
                         <?php else: ?>
-                            <img src="../logo.jpg" alt="Default Avatar">
+                            <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
                         <?php endif; ?>
                     </div>
                     <div class="user-info">
@@ -122,7 +121,7 @@
                                     <div class="broker-price">
                                         <span class="follow-date">
                                             <i class="fas fa-calendar"></i>
-                                            Theo dõi từ <?= $consultationRequest['createdAt'] ?>
+                                            Thời gian gửi <?= date('H:i:s d/m/Y', strtotime($consultationRequest['createdAt'])) ?>
                                         </span>
                                     </div>
                                 </div>

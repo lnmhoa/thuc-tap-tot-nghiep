@@ -7,9 +7,9 @@
                 <div class="profile-user-card">
                     <div class="user-avatar">
                         <?php if (!empty($_SESSION['user']['avatar'])): ?>
-                            <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarPreview">
+                            <img src="../uploads/user/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarPreview">
                         <?php else: ?>
-                            <img src="../logo.jpg" alt="Default Avatar" id="avatarPreview">
+                            <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
                         <?php endif; ?>
                     </div>
                     <div class="user-info">
@@ -58,9 +58,9 @@
                             <div class="avatar-upload">
                                 <div class="avatar-preview">
                                     <?php if (!empty($_SESSION['user']['avatar'])): ?>
-                                        <img src="./uploads/avatar/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarDisplay">
+                                        <img src="../uploads/user/<?= $_SESSION['user']['avatar'] ?>" alt="Avatar" id="avatarDisplay">
                                     <?php else: ?>
-                                        <img src="../logo.jpg" alt="Default Avatar" id="avatarDisplay">
+                                        <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarDisplay">
                                     <?php endif; ?>
                                     <div class="upload-overlay">
                                         <i class="fas fa-camera"></i>
@@ -104,45 +104,33 @@
                                                value="<?= htmlspecialchars($_SESSION['user']['phoneNumber'] ?? '') ?>">
                                     </div>
                                 </div>
+ 
 
-                                <div class="form-group full-width">
-                                    <label for="address">Địa chỉ</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <input type="text" id="address" name="address" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['address'] ?? '') ?>">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="fullName">Họ và tên <span class="required">*</span></label>
+                                   <div class="form-group">
+                                    <label for="experience">Kinh nghiệm lĩnh vực <span class="required">*</span></label>
                                     <div class="input-group">
                                         <i class="fas fa-user"></i>
-                                        <input type="text" id="fullName" name="fullName" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['fullName'] ?? '') ?>" 
+                                        <input type="text" id="experience" name="experience" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['experience'] ?? '') ?>" 
                                                required>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="email">Email</label>
+                                    <label for="language">Ngôn ngữ</label>
                                     <div class="input-group">
                                         <i class="fas fa-envelope"></i>
-                                        <input type="email" id="email" name="email" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>">
+                                        <input type="language" id="language" name="language" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['language'] ?? '') ?>">
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="phoneNumber">Số điện thoại <span class="required">*</span></label>
+                                 <div class="form-group">
+                                    <label for="location">Khu vực</label>
                                     <div class="input-group">
-                                        <i class="fas fa-phone"></i>
-                                        <input type="tel" id="phoneNumber" required name="phoneNumber" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['phoneNumber'] ?? '') ?>">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <input type="text" id="location" name="location" 
+                                               value="<?= htmlspecialchars($_SESSION['user']['location'] ?? '') ?>">
                                     </div>
                                 </div>
-
                                 <div class="form-group full-width">
                                     <label for="address">Địa chỉ</label>
                                     <div class="input-group">
@@ -152,44 +140,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="fullName">Họ và tên <span class="required">*</span></label>
-                                    <div class="input-group">
-                                        <i class="fas fa-user"></i>
-                                        <input type="text" id="fullName" name="fullName" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['fullName'] ?? '') ?>" 
-                                               required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-envelope"></i>
-                                        <input type="email" id="email" name="email" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="phoneNumber">Số điện thoại <span class="required">*</span></label>
-                                    <div class="input-group">
-                                        <i class="fas fa-phone"></i>
-                                        <input type="tel" id="phoneNumber" required name="phoneNumber" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['phoneNumber'] ?? '') ?>">
-                                    </div>
-                                </div>
-
-                                <div class="form-group full-width">
-                                    <label for="address">Địa chỉ</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <input type="text" id="address" name="address" 
-                                               value="<?= htmlspecialchars($_SESSION['user']['address'] ?? '') ?>">
-                                    </div>
-                                </div>
-                            </div>
+                      
                         </div>
                         <div class="form-actions">
                             <button type="submit" name="update_profile" class="btn btn-primary">

@@ -58,15 +58,18 @@
                             </button>
                             <div class="dropdown-content">
                                 <a href="?act=profile"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a>
-
+                                <a href="?act=changePassword"><i class="fas fa-key"></i> Đổi mật khẩu</a>
+                                <a href="?act=saveProperty"><i class="fas fa-heart"></i> BĐS đã lưu</a>
+                                <a href="?act=followBroker"><i class="fas fa-user-friends"></i> Môi giới theo dõi</a>
+                                <a href="?act=consultationRequest"><i class="fas fa-headset"></i> Yêu cầu tư vấn</a>
                                 <?php if(isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] == '2' )): ?>
                                     <a href="?act=brokerProperty"><i class="fas fa-building"></i> BĐS của tôi</a>
                                     <a href="?act=addProperty"><i class="fas fa-plus-circle"></i> Đăng tin mới</a>
                                 <?php endif; ?>
                                 
-                                <a href="?act=saveProperty"><i class="fas fa-heart"></i> BĐS đã lưu</a>
-                                <a href="?act=consultationRequest"><i class="fas fa-headset"></i> Yêu cầu tư vấn</a>
-                                <a href="?act=changePassword"><i class="fas fa-key"></i> Đổi mật khẩu</a>
+                                
+                                
+                                
                                 <a href="?act=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                             </div>
                         </div>
