@@ -8,10 +8,11 @@ $_SESSION['sort-follow-broker-profile'] = isset($_SESSION['sort-follow-broker-pr
 if(isset($_POST['sort'])) {
     $_SESSION['sort-follow-broker-profile'] = $_POST['sort'];
 }
-$sql = "SELECT fb.*, b.id as brokerId, b.mainArea as mainArea, b.language as brokerLanguage, b.expertise as brokerExpertise, a.fullName as brokerName, a.email as brokerEmail, a.phoneNumber as brokerPhone, a.avatar as avatar
+$sql = "SELECT fb.*, b.id as brokerId, l.name as locationName, b.language as brokerLanguage, b.expertise as brokerExpertise, a.fullName as brokerName, a.email as brokerEmail, a.phoneNumber as brokerPhone, a.avatar as avatar
         FROM follow_broker fb
         JOIN broker b ON fb.idBroker = b.id
-	    JOIN account a ON a.id = b.id
+        JOIN account a ON a.id = b.accountId
+        LEFT JOIN location l ON b.location = l.id
         WHERE fb.idUser = '$userId'
         ORDER BY fb.createdAt " . $_SESSION['sort-follow-broker-profile'] . "";
 $result = mysqli_query($conn, $sql);

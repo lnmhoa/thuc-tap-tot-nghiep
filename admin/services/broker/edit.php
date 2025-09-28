@@ -8,12 +8,9 @@ if (!empty($_POST)) {
     $name = $_POST['name'] ?? '';
     $phone = $_POST['phone'] ?? '';
     $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $facebook = $_POST['facebook'] ?? '';
-    $youtube = $_POST['youtube'] ?? '';
     $website = $_POST['website'] ?? '';
     $intro = $_POST['intro'] ?? '';
-    $area = $_POST['area'] ?? '';
+    $location = $_POST['location'] ?? '';
     $hour = $_POST['hour'] ?? '';
     $language = $_POST['language'] ?? '';
     $expertise = $_POST['expertise'] ?? '';
@@ -59,7 +56,7 @@ if (!empty($_POST)) {
     if (mysqli_num_rows($checkEmail) > 0) {
         $response = array(
             'status' => 'error',
-            'message' => mysqli_num_rows($checkEmail) > 0,
+            'message' => $accountId,
         );
         echo json_encode($response);
         exit();
@@ -77,7 +74,7 @@ if (!empty($_POST)) {
 
     $avatar_file_name = null;
     if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] == 0) {
-        $target_dir = "../../uploads/broker/";
+        $target_dir = "../../../uploads/user/";
         $file_extension = strtolower(pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION));
         $new_file_name = uniqid() . '.' . $file_extension;
         $target_file = $target_dir . $new_file_name;
@@ -108,19 +105,15 @@ if (!empty($_POST)) {
     if ($avatar_file_name !== null) {
         $accountUpdateSql .= ", avatar = '$avatar_file_name'";
     }
-
+      
     $accountUpdateSql .= " WHERE id = '$accountId'";
 
     $updateAccount = mysqli_query($conn, $accountUpdateSql);
-
     if ($updateAccount) {
   
         $updateBroker = mysqli_query($conn, "UPDATE `broker` SET
-            linkFacebook = '$facebook',
-            linkYoutube = '$youtube',
-            linkWebsite = '$website',
             shortIntro = '$intro',
-            mainArea = '$area',
+            location = '$location',
             workingHours = '$hour',
             language = '$language',
             expertise = '$expertise'
@@ -129,11 +122,10 @@ if (!empty($_POST)) {
             $response = array(
                 'status' => 'success',
                 'message' => 'Cập nhật thông tin môi giới thành công!',
-                'path' => 'http://localhost/van_van-1p/admin/index.php?act=broker',
+                'path' => 'http://localhost/thuc-tap-tot-nghiep/admin/index.php?act=broker',
             );
             echo json_encode($response);
         } else {
- 
             $response = array(
                 'status' => 'error',
                 'message' => 'Cập nhật thông tin môi giới thất bại. Vui lòng thử lại.',

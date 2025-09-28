@@ -19,7 +19,7 @@
                 <fieldset>
                     <legend>Sắp xếp</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-news" id="">
+                        <select name="sort-news" id="" onchange="this.form.submit()">
                             <option value="desc" <?php if ($_SESSION['sort-news'] === 'desc') echo 'selected' ?>>
                                 Mới nhất
                             </option>
@@ -27,7 +27,6 @@
                                 nhất
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
             </div>
@@ -56,7 +55,7 @@
                         <tr>
                             <td data-label="STT" style="text-align: center;"><?= $stt ?></td>
                             <td data-label="Tiêu đề"><?= $value["title"] ?></td>
-                            <td data-label="Ảnh bìa"><img style="width: 80px; text-align: center;" src='../admin/uploads/news/<?= $value["image"] ?>' alt="" srcset=""></td>
+                            <td data-label="Ảnh bìa"><img style="width: 80px; text-align: center;" <?php if ($value["image"] === '') { echo 'src="../uploads/system/default_news.jpg"'; } else { echo 'src="../uploads/news/' . $value["image"] . '"'; } ?> alt="" srcset=""></td>
                             <td data-label="Nội dung" style="display: none"><?= $value["content"] ?></td>
                             <td data-label="Thể loại" class="type-news-class"><?= $value["typeName"] ?></td>
                             <td data-label="Ngày đăng" style="text-align: center;"><?= date("d-m-Y", strtotime($value["createdAt"])) ?></td>
@@ -73,7 +72,6 @@
                 </tbody>
             </table>
         </div>
-
         <div class="pagination">
             <div>
                 <?php
@@ -136,7 +134,7 @@
                             <input type="file" id="modal-image" style="padding: 7px; width: 100%; margin-bottom: 5px" name="image" accept="image/*">
                         </div>
                         <div> <label for="modal-type">Loại tin:</label>
-                            <select id="modal-type" style="width: 393%; font-size: 12.5px;">
+                            <select id="modal-type" style="width: 290%; font-size: 12.5px;">
                                 <?php foreach ($listTypeNews as $type) : ?>
                                     <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
                                 <?php endforeach; ?>

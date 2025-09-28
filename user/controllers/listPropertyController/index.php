@@ -61,7 +61,7 @@ if (isset($_GET['transactionType']) && in_array($_GET['transactionType'], ['rent
 }
 
 $whereConditions = ["rp.status = 'active'"];
-$whereConditions[] = "(l.status IS NULL OR l.status = 1)";
+
 $whereConditions[] = "(a.status IS NULL OR a.status = 'active')";
 
 if (!empty($_SESSION['search-property'])) {
@@ -174,7 +174,7 @@ if ($listPropertiesResult) {
     }
 }
 
-$sqlLocations = "SELECT id, name FROM location WHERE status = 1 ORDER BY name ASC";
+$sqlLocations = "SELECT id, name FROM location ORDER BY name ASC";
 $resultLocations = mysqli_query($conn, $sqlLocations);
 $locations = [];
 if ($resultLocations) {

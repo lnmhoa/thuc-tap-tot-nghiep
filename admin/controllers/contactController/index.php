@@ -60,13 +60,15 @@ if(isset($_POST['addContact'])){
     }
 }
 if(isset($_POST['editContact'])){
+  
     $id = $_POST['edit-id'];
     $name = $_POST['edit-name'];
     $phone = $_POST['edit-phone'];
     $status = $_POST['edit-status'];
+    $location = $_POST['edit-location'];
     $brokerId = $_POST['edit-broker'];
     $note = $_POST['edit-note'];
-    $sql_update = "UPDATE `contact_requests` SET `brokerId`= '$brokerId', `name`= '$name', `phone`= '$phone',  `note`= '$note', `status`= '$status' WHERE `id`= '$id'";
+    $sql_update = "UPDATE `contact_requests` SET `brokerId`= '$brokerId', `name`= '$name', `location`= '$location', `phone`= '$phone',  `note`= '$note', `status`= '$status' WHERE `id`= '$id'";
     $editContact=mysqli_query($conn, $sql_update);
     if ($editContact) {
         success('Cập nhật yêu cầu thành công!', 'index.php?act=contact&page=' . $current_page);

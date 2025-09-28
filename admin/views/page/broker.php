@@ -19,7 +19,7 @@
                 <fieldset>
                     <legend>Sắp xếp</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-broker-admin" id="">
+                        <select name="sort-broker-admin" id="" onchange="this.form.submit()">
                             <option value="desc" <?php if ($_SESSION['sort-broker-admin'] === 'desc') echo 'selected' ?>>
                                 Mới nhất
                             </option>
@@ -27,13 +27,12 @@
                                 nhất
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
                 <fieldset>
                     <legend>Trạng thái</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-status-broker" id="">
+                        <select name="sort-status-broker" id="" onchange="this.form.submit()">
                             <option value="all" <?php if ($_SESSION['sort-status-broker'] === 'all') echo 'selected' ?>>
                                 Tất cả
                             </option>
@@ -44,7 +43,6 @@
                                 Đã khóa
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
             </div>
@@ -59,9 +57,6 @@
                         <th style="width: 13%; text-align: center;">Avatar</th>
                         <th style="width: 12%">Số điện thoại</th>
                         <th style="display: none">Email</th>
-                        <th style="display: none">Link facebook</th>
-                        <th style="display: none">Link youtube</th>
-                        <th style="display: none">Link website</th>
                         <th style="display: none">Giới thiệu</th>
                         <th style="width: 10%">Trạng thái</th>
                         <th style="display: none">Khu vực</th>
@@ -91,15 +86,12 @@
                         <tr>
                             <td data-label="STT" style="text-align: center;"><?= $stt ?></td>
                             <td data-label="Tên"><?= $value["fullName"] ?></td>
-                            <td data-label="Avatar" style="text-align: center;"><img style="width: 80px" src='../admin/uploads/broker/<?= $value["avatar"] ?>' alt="" srcset=""></td>
+                            <td data-label="Avatar" style="text-align: center;"><img style="width: 80px"<?php if (!empty($value["avatar"])) { echo ' src="../uploads/user/' . $value["avatar"] . '"'; }else { echo ' src="../uploads/system/default_user.jpg"'; } ?> alt="" srcset=""></td>
                             <td data-label="Số điện thoại" style="text-align: center;"><?= $value["phoneNumber"] ?></td>
                             <td data-label="Email" style="display: none"><span><?= $value["email"] ?></span></td>
-                            <td data-label="Link facebook" style="display: none"><span><?= $value["linkFacebook"] ?></span></td>
-                            <td data-label="Link youtube" style="display: none"><span><?= $value["linkYoutube"] ?></span></td>
-                            <td data-label="Link website" style="display: none"><span><?= $value["linkWebsite"] ?></span></td>
                             <td data-label="Giới thiệu" style="display: none"><span><?= $value["shortIntro"] ?></span></td>
-                            <td data-label="Trạng thái"><span class="status <?= $statusClass ?>"><?= $status ?></span></td>
-                            <td data-label="Khu vực" style="display: none"><span><?= $value["mainArea"] ?></span></td>
+                            <td data-label="Trạng thái"><span class="status <?= $statusClass ?>" <?php if($statusClass == "pending") { echo 'style="padding: 5px 24px"'; } ?>><?= $status ?></span></td>
+                            <td data-label="Khu vực" style="display: none"><span><?= $value["location"] ?></span></td>
                             <td data-label="Giờ làm việc" style="display: none"><span><?= $value["workingHours"] ?></span></td>
                             <td data-label="Giao tiếp" style="display: none"><span><?= $value["language"] ?></span></td>
                             <td data-label="Chuyên môn" style="display: none"><span><?= $value["expertise"] ?></span></td>
@@ -159,32 +151,27 @@
                     <input style="width: 90%" type="number" id="add-phone" required>
                     <label for="add-email"><i class="fa-solid fa-envelope"></i> Email:</label>
                     <input style="width: 90%" type="email" id="add-email" required>
-                    <label for="add-password"><i class="fa-solid fa-lock"></i> Mật khẩu:</label>
-                    <input type="password" style="width: 90%" id="add-password" minlength="6" required>
                     <button type="submit" class="action-button add">Thêm</button>
                 </div>
                 <div>
-                    <label for="add-facebook"><i class="fa-brands fa-facebook"></i> Link facebook:</label>
-                    <input type="text" style="width: 90%" id="add-facebook">
-                    <label for="add-youtube"><i class="fa-brands fa-youtube"></i> Link youtube:</label>
-                    <input type="text" style="width: 90%" id="add-youtube">
-                    <label for="add-website"><i class="fa-brands fa-internet-explorer"></i> Link website:</label>
-                    <input type="text" style="width: 90%" id="add-website">
                     <label for="add-intro"><i class="fa-solid fa-clipboard"></i> Giới thiệu:</label>
                     <input type="text" style="width: 90%" id="add-intro">
                     <label for="add-hour"><i class="fa-solid fa-clock"></i> Giờ làm việc:</label>
                     <input type="text" style="width: 90%" id="add-hour">
+
+                         <label for="add-location"><i class="fa-solid fa-earth-americas"></i> Khu vực:</label>
+                        <select id="add-location">
+                            <?php foreach ($listLocation as $location) { ?>
+                                <option value="<?php echo htmlspecialchars($location['id']); ?>">
+                                    <?php echo htmlspecialchars($location['name']); ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                        <label for="add-password"><i class="fa-solid fa-lock"></i> Mật khẩu:</label>
+                    <input type="password" style="width: 90%" id="add-password" minlength="6" required>
                 </div>
                 <div>
                     <div>
-                        <label for="add-language"><i class="fa-solid fa-language"></i> Giao tiếp:</label>
-                        <select id="add-language" multiple size="3">
-                            <option value="Tiếng Việt">Tiếng Việt</option>
-                            <option value="Tiếng Anh">Tiếng Anh</option>
-                            <option value="Tiếng Trung">Tiếng Trung</option>
-                            <option value="Tiếng Hàn">Tiếng Hàn</option>
-                            <option value="Tiếng Nhật">Tiếng Nhật</option>
-                        </select>
                         <label for="add-expertise"><i class="fa-solid fa-street-view"></i> Chuyên môn:</label>
                         <select id="add-expertise" multiple size="3">
                             <?php foreach ($listExpertises as $expertises) { ?>
@@ -193,13 +180,11 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <label for="add-area"><i class="fa-solid fa-earth-americas"></i> Khu vực:</label>
-                        <select id="add-area">
-                            <?php foreach ($listLocation as $location) { ?>
-                                <option value="<?php echo htmlspecialchars($location['name']); ?>">
-                                    <?php echo htmlspecialchars($location['name']); ?>
-                                </option>
-                            <?php } ?>
+                        <label for="add-language"><i class="fa-solid fa-language"></i> Giao tiếp:</label>
+                        <select id="add-language" multiple size="3">
+                            <option value="Tiếng Việt">Tiếng Việt</option>
+                            <option value="Tiếng Anh">Tiếng Anh</option>
+                            <option value="Tiếng Trung">Tiếng Trung</option>
                         </select>
                     </div>
                 </div>
@@ -210,12 +195,12 @@
     <div id="brokerModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h3 id="modalTitle" style="color:dodgerblue">CHI TIẾT NGƯỜI DÙNG</h3>
+            <h3 id="modalTitle" style="color:dodgerblue">Chi tiết môi giới</h3>
             <form id="brokerForm" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
                 <div>
                     <div id="modal-avatar-container">
                         <label for="modal-avatar"><i class="fa-solid fa-image-portrait"></i> Ảnh đại diện:</label>
-                        <img id="modal-avatar-img" src="" alt="Avatar" style="width: 100px; height: 100px; display: none; object-fit: cover; border-radius: 5px; margin-bottom: 10px;">
+                        <img id="modal-avatar-img" src="" alt="Avatar" style="width: 100px; height: 100px; display: none; object-fit: cover; border-radius: 5px; margin-bottom: 10px;" onerror="this.src='../uploads/system/default_user.jpg'">
                         <input type="file" id="modal-avatar" style="padding: 7px; width: 90%" name="avatar" accept="image/*">
                     </div>
                     <label for="modal-name"><i class="fa-solid fa-signature"></i> Tên:</label>
@@ -224,34 +209,29 @@
                     <input style="width: 90%" type="number" id="modal-phone" required>
                     <label for="modal-email"><i class="fa-solid fa-envelope"></i> Email:</label>
                     <input style="width: 90%" type="email" id="modal-email" required>
-                     <label for="modal-created">Ngày tạo:</label>
+                       <label for="modal-created">Ngày tạo:</label>
                     <input type="text" style="width: 90%" id="modal-created" readonly>
-                      <label for="modal-password"><i class="fa-solid fa-lock"></i> Mật khẩu:</label>
-                    <input style="width: 90%" type="password" id="modal-password">
                     <button type="submit" id="saveBrokerButton" style="background-color: #218838; color: white">Lưu</button>
                     <button type="button" id="cancelButton" class="action-button view">Hủy</button>
                 </div>
                 <div>
-                    <label for="modal-facebook"><i class="fa-brands fa-facebook"></i> Link facebook:</label>
-                    <input style="width: 90%" type="text" id="modal-facebook">
-                    <label for="modal-youtube"><i class="fa-brands fa-youtube"></i> Link youtube:</label>
-                    <input style="width: 90%" type="text" id="modal-youtube">
-                    <label for="modal-website"><i class="fa-brands fa-internet-explorer"></i> Link website:</label>
-                    <input style="width: 90%" type="text" id="modal-website">
                     <label for="modal-intro"><i class="fa-solid fa-clipboard"></i> Giới thiệu:</label>
                     <input style="width: 90%" type="text" id="modal-intro">
+                      <label for="modal-password"><i class="fa-solid fa-lock"></i> Mật khẩu:</label>
+                    <input style="width: 90%" type="password" id="modal-password">
                     <label for="modal-status">Trạng thái:</label>
                     <select id="modal-status">
                         <option value="active">Hoạt động</option>
                         <option value="inactive">Khóa</option>
                     </select>
-                     
+                     <label for="modal-hour"><i class="fa-solid fa-clock"></i> Giờ làm việc:</label>
+                    <input type="text" style="width: 90%" id="modal-hour">
                 </div>
                 <div>
-                    <label for="modal-area"><i class="fa-solid fa-earth-americas"></i> Khu vực:</label>
-                    <select id="modal-area">
+                    <label for="modal-location"><i class="fa-solid fa-earth-americas"></i> Khu vực:</label>
+                    <select id="modal-location">
                         <?php foreach ($listLocation as $location) { ?>
-                            <option value="<?php echo htmlspecialchars($location['name']); ?>">
+                            <option value="<?php echo htmlspecialchars($location['id']); ?>">
                                 <?php echo htmlspecialchars($location['name']); ?>
                             </option>
                         <?php } ?>
@@ -273,8 +253,6 @@
                                 </option>
                             <?php } ?>
                         </select>
-                          <label for="modal-hour"><i class="fa-solid fa-clock"></i> Giờ làm việc:</label>
-                    <input type="text" id="modal-hour">
                     </div>
                     <input style="display:none" type="text" id="modal-brokerId">
                     <input style="display:none" type="text" id="modal-accountId">

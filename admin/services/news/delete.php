@@ -11,7 +11,7 @@ if (!empty($_POST) && isset($_POST['newsId'])) {
         $response = array(
             'status' => 'success',
             'message' => 'Xóa tin tức thành công!',
-            'path' => 'http://localhost/van_van-1p/admin/index.php?act=news',
+            'path' => 'http://localhost/thuc-tap-tot-nghiep/admin/index.php?act=news',
         );
         echo json_encode($response);
     } else {

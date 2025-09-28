@@ -31,7 +31,7 @@ if (!empty($_POST)) {
         $response = array(
             'status' => 'success',
             'message' => 'Cập nhật thông tin loại tin tức thành công!',
-            'path' => 'http://localhost/van_van-1p/admin/index.php?act=typeNews',
+            'path' => 'http://localhost/thuc-tap-tot-nghiep/admin/index.php?act=typeNews',
         );
         echo json_encode($response);
     } else {

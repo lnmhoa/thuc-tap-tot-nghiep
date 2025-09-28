@@ -35,10 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit-price').value = contactData.price;
             document.getElementById('edit-createdAt').value = contactData.createdAt;
             document.getElementById('edit-status').value = contactData.status;
+            document.getElementById('edit-broker').value = contactData.broker;
             document.getElementById('edit-note').value = contactData.note;
             document.getElementById('edit-id').value = contactData.id;
-console.log(contactData);
-
             editContactModal.style.display = 'flex';
         }
     }
@@ -74,12 +73,11 @@ console.log(contactData);
             if (!row) return;
 
             if (target.classList.contains('edit')) {
-
                 const cells = row.querySelectorAll('td');
                 const contactData = {
                     name: cells[1]?.textContent.trim(),
                     phone: cells[2]?.textContent.trim(),
-                    location: cells[3]?.textContent.trim(),
+                    location: cells[12]?.textContent.trim(),
                     subject: cells[4]?.textContent.trim(),
                     price: cells[5]?.textContent.trim(),
                     createdAt: cells[6]?.textContent.trim(),

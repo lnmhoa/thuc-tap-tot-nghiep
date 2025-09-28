@@ -12,14 +12,14 @@
                 <fieldset>
                     <legend>Tìm kiếm</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <input type="text" value="<?php echo isset($_SESSION['search-contact']) && $_SESSION['search-contact'] !== '' ? htmlspecialchars($_SESSION['search-contact']) : ''; ?>" name="search-contact" placeholder="Tiêu đề, người gửi, căn hộ" autocomplete="off">
+                        <input type="text" value="<?php echo isset($_SESSION['search-contact']) && $_SESSION['search-contact'] !== '' ? htmlspecialchars($_SESSION['search-contact']) : ''; ?>" name="search-contact" placeholder="Số điện thoại" autocomplete="off">
                         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
                 <fieldset>
                     <legend>Trạng thái</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="status-contact" id="">
+                        <select name="status-contact" id="" onchange="this.form.submit()">
                            <option value="all" <?php if (isset($_SESSION['status-contact']) && $_SESSION['status-contact'] === 'all') echo 'selected' ?>>
                                 Tất cả
                             </option>
@@ -36,13 +36,12 @@
                                 Đã hủy
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
                 <fieldset>
                     <legend>Sắp xếp</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-contact" id="">
+                        <select name="sort-contact" id="" onchange="this.form.submit()">
                             <option value="desc" <?php if (isset($_SESSION['sort-contact']) && $_SESSION['sort-contact'] === 'desc') echo 'selected' ?>>
                                 Mới nhất
                             </option>
@@ -50,7 +49,6 @@
                                 Cũ nhất
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
             </div>
@@ -107,7 +105,8 @@
                             data-description="<?= htmlspecialchars($value["description"] ?? '') ?>"
                             data-price="<?= htmlspecialchars($value["price"]) ?>"
                             data-status="<?= $value["status"] ?>"
-                            data-broker-id="<?= $value["brokerId"] ?? '' ?>">
+                            data-broker-id="<?= $value["brokerId"] ?? '' ?>"
+                            data-location-id="<?= $value["location"] ?? '' ?>">
                             <td data-label="STT" style="text-align: center;"><?= $stt ?></td>
                             <td data-label="Tên"><?= $value["name"] ?></td>
                             <td data-label="Số ĐT"><?= $value["phone"] ?></td>
@@ -122,6 +121,7 @@
                              <td data-label="Môi giới" style="display: none"><?= $value["brokerId"] ?? '' ?></td>
                              <td data-label="Nội dung" style="display: none"><?= $value["note"] ?? '' ?></td>
                              <td data-label="ID" style="display: none"><?= $value["id"] ?? '' ?></td>
+                             <td data-label="Location" style="display: none"><?= $value["location"] ?? '' ?></td>
                         </tr>
                     <?php
                         $stt++;
@@ -176,7 +176,7 @@
                     <label for="add-location">Khu vực:</label>
                     <select style="margin-bottom: 5px; width: 100%;" name="add-location" id="add-location">
                          <?php foreach ($listLocation as $location) {?>
-                         <option value="<?=$location['id'] ?>"><?=$location['name'] ?></option>
+                         <option value="<?=$location['id'] ?>" <?php if ($location['id'] == $value['location']) echo 'selected'; ?>><?=$location['name'] ?></option>
                          <?php } ?>
                     </select>
                 </div>
@@ -190,7 +190,6 @@
                     </select>
                 </div>
             </div>
-
             <div>
                 <label for="add-broker">Môi giới:</label>
                 <select style="margin-bottom: 5px; width: 100%;" name="add-broker" id="add-broker" required>
@@ -231,7 +230,12 @@
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
                 <div>
                     <label for="edit-location">Khu vực:</label>
-                   <input type="text" id="edit-location" name="edit-location" readonly>
+                    <select style="margin-bottom: 5px" name="edit-location" id="edit-location">
+                    <option value="" disabled selected hidden></option> 
+                    <?php foreach ($listLocation as $location) {?>
+                         <option value="<?=$location['id'] ?>" <?php if (htmlspecialchars($location['name']) === htmlspecialchars($value['location'])) echo 'selected'; ?>><?=$location['name'] ?></option>
+                     <?php } ?>
+                    </select>
                 </div>
                 <div>
                     <label for="edit-subject">Loại:</label>
@@ -241,7 +245,7 @@
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
                 <div>
                     <label for="edit-price">Khoảng giá:</label>
-                    <input type="text" id="edit-price" name="edit-price" readonly>
+                    <input type="text" style="margin-bottom: 5px" id="edit-price" name="edit-price" readonly>
                 </div>
                 <div>
                     <label for="edit-createdAt">Ngày gửi:</label>
@@ -251,21 +255,26 @@
             <div>
                 <label for="edit-status">Trạng thái:</label>
                 <select style="margin-bottom: 5px; width: 100%;" id="edit-status" name="edit-status">
-                    <option value="pending">Chờ xử lý</option>
+                    <option value="pending" disabled>Chờ xử lý</option>
                     <option value="inProgress">Đang xử lý</option>
                     <option value="completed">Hoàn thành</option>
                     <option value="canceled">Đã huỷ</option>
                 </select>
               <label for="edit-broker">Môi giới: </label>
-                 <select style="margin-bottom: 5px; width: 100%;" name="edit-broker" id="edit-broker" required>
+                <select style="margin-bottom: 5px; width: 100%;" name="edit-broker" id="edit-broker" required>
+                    <option value="" disabled selected hidden></option> 
                     <?php foreach ($listBroker as $broker) { ?>
-                        <option value="<?=$broker['id'] ?>" <?php if ($broker['id'] == $value['brokerId']) echo 'selected'; ?>><?=$broker['fullName'] ?> - <?=$broker['phoneNumber'] ?></option>
-                     <?php } ?>
+                        <option 
+                            value="<?=$broker['id'] ?>" 
+                            <?php if ($broker['id'] == $value['brokerId']) echo 'selected'; ?>
+                        >
+                            <?=$broker['fullName'] ?> - <?=$broker['phoneNumber'] ?>
+                        </option>
+                    <?php } ?>
                 </select>
             <label for="edit-note">Nội dung:</label>
             <textarea style="margin-bottom: 5px; width: 100%; box-sizing: border-box;" id="edit-note" name="edit-note" rows="6"></textarea>
-         
-            <button type="submit" name="editContact" style="background-color: blue; color: white;" class="action-button edit">Lưu</button>
+            <button type="submit" name="editContact" style="background-color: green; color: white;" class="action-button edit">Lưu</button>
             <button type="button" style="background-color: red; color: white;" class="action-button cancel-edit">Hủy</button>
         </form>
     </div>

@@ -28,7 +28,7 @@ if (!empty($_POST)) {
 
     $image_file_name = null;
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-        $target_dir = "../../uploads/news/";
+        $target_dir = "../../../uploads/news/";
         $file_extension = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
         $new_file_name = uniqid() . '.' . $file_extension;
         $target_file = $target_dir . $new_file_name;
@@ -58,7 +58,7 @@ if (!empty($_POST)) {
         $response = array(
             'status' => 'success',
             'message' => 'Cập nhật thông tin tin tức thành công!',
-            'path' => 'http://localhost/van_van-1p/admin/index.php?act=news',
+            'path' => 'http://localhost/thuc-tap-tot-nghiep/admin/index.php?act=news',
         );
         echo json_encode($response);
     } else {

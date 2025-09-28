@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const avatarContainer = document.getElementById("modal-avatar-container");
     const avatarInput = document.getElementById("modal-avatar");
     const passwordInput = document.getElementById("modal-password");
-    const passwordLabel = document.querySelector('label[for="modal-password"]'); // Chọn label của mật khẩu
+    const passwordLabel = document.querySelector('label[for="modal-password"]');
 
     const dataTable = document.querySelector(".data-table table tbody");
 
@@ -21,24 +21,19 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("modal-name").readOnly = readOnlyState;
         document.getElementById("modal-email").readOnly = readOnlyState;
         document.getElementById("modal-phone").readOnly = readOnlyState;
-        document.getElementById("modal-facebook").readOnly = readOnlyState;
-        document.getElementById("modal-youtube").readOnly = readOnlyState;
-        document.getElementById("modal-website").readOnly = readOnlyState;
         document.getElementById("modal-intro").readOnly = readOnlyState;
-        document.getElementById("modal-area").disabled = readOnlyState;
+        document.getElementById("modal-location").disabled = readOnlyState;
         document.getElementById("modal-hour").readOnly = readOnlyState;
         document.getElementById("modal-language").disabled = readOnlyState;
         document.getElementById("modal-expertise").disabled = readOnlyState;
         document.getElementById("modal-status").disabled = readOnlyState;
-
-        // Ẩn/hiện input file
         avatarInput.style.display = readOnlyState ? 'none' : 'block';
     }
 
     function setAvatarDisplay(isReadOnly, avatarSrc) {
         const modalAvatarImg = document.getElementById("modal-avatar-img");
         if (isReadOnly) {
-            modalAvatarImg.src = `../admin/uploads/broker/${avatarSrc}`;
+            modalAvatarImg.src = `../uploads/user/${avatarSrc}`;
             modalAvatarImg.style.display = 'block';
             avatarInput.style.display = 'none';
         } else {
@@ -73,27 +68,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!row) return;
 
         const cells = row.querySelectorAll("td");
-        const brokerId = cells[15] ? cells[15].textContent.trim() : '';
-        const accountId = cells[16] ? cells[16].textContent.trim() : '';
+        const brokerId = cells[12] ? cells[12].textContent.trim() : '';
+        const accountId = cells[13] ? cells[13].textContent.trim() : '';
         const brokerName = cells[1] ? cells[1].textContent.trim() : '';
         const brokerAvatar = cells[2] ? cells[2].querySelector('img').getAttribute('src').split('/').pop() : '';
         const brokerPhone = cells[3] ? cells[3].textContent.trim() : '';
         const brokerEmail = cells[4] ? cells[4].textContent.trim() : '';
-        const brokerFacebook = cells[5] ? cells[5].textContent.trim() : '';
-        const brokerYoutube = cells[6] ? cells[6].textContent.trim() : '';
-        const brokerWebsite = cells[7] ? cells[7].textContent.trim() : '';
-        const brokerIntro = cells[8] ? cells[8].textContent.trim() : '';
-        const brokerArea = cells[10] ? cells[10].textContent.trim() : '';
-        const brokerHour = cells[11] ? cells[11].textContent.trim() : '';
-        const brokerLanguage = cells[12] ? cells[12].textContent.trim() : '';
-        const brokerExpertise = cells[13] ? cells[13].textContent.trim() : '';
-        const brokerCreated = cells[14] ? cells[14].textContent.trim() : '';
-        const statusElement = cells[9] ? cells[9].querySelector(".status") : null;
+        const brokerIntro = cells[5] ? cells[5].textContent.trim() : '';
+        const brokerLocation = cells[7] ? cells[7].textContent.trim() : '';
+        const brokerHour = cells[8] ? cells[8].textContent.trim() : '';
+        const brokerLanguage = cells[9] ? cells[9].textContent.trim() : '';
+        const brokerExpertise = cells[10] ? cells[10].textContent.trim() : '';
+        const brokerCreated = cells[11] ? cells[11].textContent.trim() : '';
+        const statusElement = cells[6] ? cells[6].querySelector(".status") : null;
         const statusText = statusElement ? statusElement.textContent.trim() : "";
 
         const modalLanguageSelect = document.getElementById("modal-language");
         const modalExpertiseSelect = document.getElementById("modal-expertise");
-        const modalAreaSelect = document.getElementById("modal-area");
 
         function updateSelectOptions(selectElement, selectedValues) {
             const valuesArray = selectedValues.split(',').map(item => item.trim());
@@ -106,21 +97,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (target.classList.contains("view")) {
                 isEditing = false;
                 modalTitle.textContent = "CHI TIẾT NGƯỜI DÙNG";
-
                 document.getElementById("modal-name").value = brokerName;
                 document.getElementById("modal-email").value = brokerEmail;
                 document.getElementById("modal-phone").value = brokerPhone;
-                document.getElementById("modal-facebook").value = brokerFacebook;
-                document.getElementById("modal-youtube").value = brokerYoutube;
-                document.getElementById("modal-website").value = brokerWebsite;
                 document.getElementById("modal-intro").value = brokerIntro;
-                document.getElementById("modal-area").value = brokerArea;
+                document.getElementById("modal-location").value = brokerLocation;
                 document.getElementById("modal-hour").value = brokerHour;
                 document.getElementById("modal-created").value = brokerCreated;
 
                 updateSelectOptions(modalLanguageSelect, brokerLanguage);
                 updateSelectOptions(modalExpertiseSelect, brokerExpertise);
-                updateSelectOptions(modalAreaSelect, brokerArea);
 
                 const modalStatusSelect = document.getElementById("modal-status");
                 for (let i = 0; i < modalStatusSelect.options.length; i++) {
@@ -134,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 setAvatarDisplay(true, brokerAvatar);
                 document.getElementById("modal-created").disabled = true;
                 
-                // Ẩn trường mật khẩu và label khi xem
                 passwordInput.style.display = "none";
                 if(passwordLabel) passwordLabel.style.display = "none";
 
@@ -148,11 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("modal-name").value = brokerName;
                 document.getElementById("modal-email").value = brokerEmail;
                 document.getElementById("modal-phone").value = brokerPhone;
-                document.getElementById("modal-facebook").value = brokerFacebook;
-                document.getElementById("modal-youtube").value = brokerYoutube;
-                document.getElementById("modal-website").value = brokerWebsite;
                 document.getElementById("modal-intro").value = brokerIntro;
-                document.getElementById("modal-area").value = brokerArea;
+                document.getElementById("modal-location").value = brokerLocation;
                 document.getElementById("modal-hour").value = brokerHour;
                 document.getElementById("modal-created").value = brokerCreated;
                 document.getElementById("modal-brokerId").value = brokerId;
@@ -160,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 updateSelectOptions(modalLanguageSelect, brokerLanguage);
                 updateSelectOptions(modalExpertiseSelect, brokerExpertise);
-                updateSelectOptions(modalAreaSelect, brokerArea);
 
                 const modalStatusSelect = document.getElementById("modal-status");
                 for (let i = 0; i < modalStatusSelect.options.length; i++) {
@@ -171,11 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 setBrokerModalFieldsReadOnly(false);
-                setAvatarDisplay(false, brokerAvatar); // Pass avatar to show
+                setAvatarDisplay(false, brokerAvatar);
                 document.getElementById("modal-created").disabled = true;
                 document.getElementById("modal-status").disabled = false;
-                
-                // Hiện trường mật khẩu và label khi chỉnh sửa
+            
                 passwordInput.style.display = "block";
                 if(passwordLabel) passwordLabel.style.display = "block";
 
@@ -208,17 +188,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const modalLanguageSelect = document.getElementById("modal-language");
         const modalExpertiseSelect = document.getElementById("modal-expertise");
-        const modalAreaSelect = document.getElementById("modal-area");
 
         var name = document.getElementById("modal-name").value;
         var phone = document.getElementById("modal-phone").value;
         var email = document.getElementById("modal-email").value;
         var password = document.getElementById("modal-password").value;
-        var facebook = document.getElementById("modal-facebook").value;
-        var youtube = document.getElementById("modal-youtube").value;
-        var website = document.getElementById("modal-website").value;
         var intro = document.getElementById("modal-intro").value;
-        var area = Array.from(modalAreaSelect.options).filter(option => option.selected).map(option => option.value).join(", ");
+        var location = document.getElementById("modal-location").value;
         var hour = document.getElementById("modal-hour").value;
         var language = Array.from(modalLanguageSelect.options).filter(option => option.selected).map(option => option.value).join(", ");
         var expertise = Array.from(modalExpertiseSelect.options).filter(option => option.selected).map(option => option.value).join(", ");
@@ -238,11 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("phone", phone);
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("facebook", facebook);
-        formData.append("youtube", youtube);
-        formData.append("website", website);
         formData.append("intro", intro);
-        formData.append("area", area);
+        formData.append("location", location);
         formData.append("hour", hour);
         formData.append("language", language);
         formData.append("expertise", expertise);
@@ -291,21 +264,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const addLanguageSelect = document.getElementById("add-language");
         const addExpertiseSelect = document.getElementById("add-expertise");
-        const addAreaSelect = document.getElementById("add-area");
 
         var name = document.getElementById("add-name").value;
         var phone = document.getElementById("add-phone").value;
         var email = document.getElementById("add-email").value;
         var password = document.getElementById("add-password").value;
-        var facebook = document.getElementById("add-facebook").value;
-        var youtube = document.getElementById("add-youtube").value;
-        var website = document.getElementById("add-website").value;
         var intro = document.getElementById("add-intro").value;
         var hour = document.getElementById("add-hour").value;
-
         var language = Array.from(addLanguageSelect.options).filter(option => option.selected).map(option => option.value).join(", ");
         var expertise = Array.from(addExpertiseSelect.options).filter(option => option.selected).map(option => option.value).join(", ");
-        var area = Array.from(addAreaSelect.options).filter(option => option.selected).map(option => option.value).join(", ");
+        var location = document.getElementById("add-location").value;
 
         var avatarFile = document.getElementById("add-avatar").files[0];
 
@@ -319,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (language.trim() === "" || expertise.trim() === "" || area.trim() === "") {
+        if (language.trim() === "" || expertise.trim() === "") {
             Swal.fire({
                 title: "Thông báo",
                 text: "Vui lòng chọn ít nhất một giá trị cho ngôn ngữ, chuyên môn và khu vực.",
@@ -334,11 +302,8 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("phone", phone);
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("facebook", facebook);
-        formData.append("youtube", youtube);
-        formData.append("website", website);
         formData.append("intro", intro);
-        formData.append("area", area);
+        formData.append("location", location);
         formData.append("hour", hour);
         formData.append("language", language);
         formData.append("expertise", expertise);

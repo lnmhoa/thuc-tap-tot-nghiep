@@ -19,11 +19,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 <body>
+    <style>
+        .current-page {
+            background-color: #34495e;
+            border-left: 5px solid #3498db;
+        }
+    </style>
     <div class="layout">
     <div class="admin-container">
         <div class="sidebar">
             <div class="logo">
-                <img src="../logo.jpg" alt="logo">
+                <img src="../uploads/system/logo.jpg" alt="logo">
             </div>
             <nav class="navigation">
                 <ul>
@@ -31,7 +37,6 @@
                     <li><a href="?act=account"><i class="fa-solid fa-user"></i> Quản lý người dùng</a></li>
                     <li><a href="?act=broker"><i class="fa-solid fa-user-tie"></i> Quản lý nhân viên</a></li>
                     <li><a href="?act=rentalProperty"><i class="fa-solid fa-city"></i> Quản lý bất động sản</a></li>
-                    <!-- <li><a href="?act=rentalHistory"><i class="fa-solid fa-pen-to-square"></i> Quản lý cho thuê</a></li> -->
                     <li><a href="?act=contact"><i class="fa-solid fa-phone-volume"></i>Quản lý hỗ trợ</a></li>
                     <li><a href="?act=typeNews"><i class="fa-solid fa-list"></i> Quản lý loại tin tức</a></li>
                     <li><a href="?act=news"><i class="fa-solid fa-newspaper"></i> Quản lý tin tức</a></li>
@@ -39,3 +44,22 @@
             </nav>
         </div>
 <div style="width: 260px"></div>
+<script>
+    var links = document.querySelectorAll(".navigation a");
+var currentURL = window.location.href;
+for (var i = 0; i < links.length; i++) {
+    if (links[i].href === currentURL) {
+        links[i].classList.add("current-page");
+    } else if (currentURL.includes("?index.php&action=account&page=")) {
+        document.querySelector('.navigation a[href="?act=account"]').classList.add("current-page");
+    } else if (currentURL.includes("?index.php&action=broker&page=")) {
+        document.querySelector('.navigation a[href="?act=broker"]').classList.add("current-page");
+    } else if (currentURL.includes("?index.php&action=rentalProperty&page=")) {
+        document.querySelector('.navigation a[href="?act=rentalProperty"]').classList.add("current-page");
+    } else if (currentURL.includes("?index.php&action=typeNews&page=")) {
+        document.querySelector('.navigation a[href="?act=typeNews"]').classList.add("current-page");
+    } else if (currentURL.includes("?index.php&action=news&page=")) {
+        document.querySelector('.navigation a[href="?act=news"]').classList.add("current-page");
+    }
+}
+</script>

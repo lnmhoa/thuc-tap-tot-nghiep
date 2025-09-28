@@ -2,9 +2,10 @@
 
 $brokerId = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
-$sql = "SELECT b.*, a.fullName, a.email, a.phoneNumber, a.avatar, a.address 
+$sql = "SELECT b.*, a.fullName, a.email, a.phoneNumber, a.avatar, a.address, l.name as locationName, l.name as mainArea
         FROM broker b 
         LEFT JOIN account a ON b.accountId = a.id 
+        LEFT JOIN location l ON b.location = l.id
         WHERE b.id = ?";
 $stmt = mysqli_prepare($conn, $sql);
 if ($stmt) {

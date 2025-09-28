@@ -51,12 +51,12 @@ if (!empty($_POST)) {
         echo json_encode($response);
         exit();
     }
-    $addAccount = mysqli_query($conn, "INSERT INTO `account`(fullName, phoneNumber, email, password, createdAt, role, status) VALUES ('$name', '$phone', '$email', '$newHashedPassword', NOW(), 1, 1)");
+    $addAccount = mysqli_query($conn, "INSERT INTO `account`(fullName, phoneNumber, email, password, createdAt, role, status) VALUES ('$name', '$phone', '$email', '$newHashedPassword', NOW(), 1, 'active')");
     if ($addAccount) {
         $response = array(
             'status' => 'success',
             'message' => 'Thêm người dùng thành công!',
-            'path'  => 'http://localhost/van_van-1p/admin/index.php?act=account',
+            'path'  => 'http://localhost/thuc-tap-tot-nghiep/admin/index.php?act=account',
         );
         echo json_encode($response);
     } else {

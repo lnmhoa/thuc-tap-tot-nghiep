@@ -19,7 +19,7 @@
                 <fieldset>
                     <legend>Sắp xếp</legend>
                     <form action="" method="post" class="admin__form-search">
-                        <select name="sort-type-news" id="">
+                        <select name="sort-type-news" id="" onchange="this.form.submit()">
                             <option value="desc" <?php if ($_SESSION['sort-type-news'] === 'desc') echo 'selected' ?>>
                                 Mới nhất
                             </option>
@@ -27,7 +27,6 @@
                                 nhất
                             </option>
                         </select>
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </fieldset>
             </div>

@@ -7,11 +7,8 @@ if (!empty($_POST)) {
     $phone = $_POST['phone'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $facebook = $_POST['facebook'] ?? '';
-    $youtube = $_POST['youtube'] ?? '';
-    $website = $_POST['website'] ?? '';
     $intro = $_POST['intro'] ?? '';
-    $area = $_POST['area'] ?? '';
+    $location = $_POST['location'] ?? '';
     $hour = $_POST['hour'] ?? '';
     $language = $_POST['language'] ?? '';
     $expertise = $_POST['expertise'] ?? '';
@@ -32,10 +29,10 @@ if (!empty($_POST)) {
         echo json_encode($response);
         exit();
     }
-    if (strlen($password) < 6) {
+    if (strlen($password) < 8) {
         $response = array(
             'status' => 'error',
-            'message' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'message' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         );
         echo json_encode($response);
         exit();
@@ -60,7 +57,7 @@ if (!empty($_POST)) {
     $avatar_file_name = null;
 
     if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] == 0) {
-        $target_dir = "../../uploads/broker/";
+        $target_dir = "../../../uploads/user/";
         $file_extension = strtolower(pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION));
         $new_file_name = uniqid() . '.' . $file_extension;
         $target_file = $target_dir . $new_file_name;
@@ -78,15 +75,15 @@ if (!empty($_POST)) {
     }
  
    $newHashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $addAccount = mysqli_query($conn, "INSERT INTO `account`(fullName, phoneNumber, email, password, createdAt, role, status, avatar) VALUES ('$name', '$phone', '$email', '$newHashedPassword', NOW(), 2, 1, '$avatar_file_name')");
+    $addAccount = mysqli_query($conn, "INSERT INTO `account`(fullName, phoneNumber, email, password, createdAt, role, status, avatar) VALUES ('$name', '$phone', '$email', '$newHashedPassword', NOW(), 2, 'active', '$avatar_file_name')");
     if ($addAccount) {
         $account_id = mysqli_insert_id($conn);
-        $addBroker = mysqli_query($conn, "INSERT INTO `broker`(accountId, linkFacebook, linkYoutube, linkWebsite, shortIntro, mainArea, workingHours, language, expertise) VALUES ('$account_id', '$facebook', '$youtube', '$website', '$intro', '$area', '$hour', '$language', '$expertise')");
+        $addBroker = mysqli_query($conn, "INSERT INTO `broker`(accountId, shortIntro, location, workingHours, language, expertise) VALUES ('$account_id', '$intro', '$location', '$hour', '$language', '$expertise')");
         if ($addBroker) {
             $response = array(
                 'status' => 'success',
                 'message' => 'Thêm thông tin môi giới thành công!',
-                'path' => 'http://localhost/van_van-1p/admin/index.php?act=broker',
+                'path' => 'http://localhost/thuc-tap-tot-nghiep/admin/index.php?act=broker',
             );
             echo json_encode($response);
         } else {

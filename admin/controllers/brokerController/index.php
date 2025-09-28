@@ -33,9 +33,9 @@ if ($current_page < 1) {
 $start = ($current_page - 1) * $limit;
 
 if ($_SESSION['sort-status-broker'] === 'all') {
-    $sql_list = "SELECT a.*, b.* FROM `account` a JOIN `broker` b ON a.id = b.accountId WHERE a.`role` = 2 AND (a.`email` LIKE '%" . $_SESSION['search-broker'] . "%' OR a.`phoneNumber` LIKE '%" . $_SESSION['search-broker'] . "%') ORDER BY a.`createdAt` " . $_SESSION['sort-broker-admin'] . " LIMIT $start, $limit;";
+    $sql_list = "SELECT a.*, b.*, l.name as mainArea FROM `account` a JOIN `broker` b ON a.id = b.accountId LEFT JOIN `location` l ON b.location = l.id WHERE a.`role` = 2 AND (a.`email` LIKE '%" . $_SESSION['search-broker'] . "%' OR a.`phoneNumber` LIKE '%" . $_SESSION['search-broker'] . "%') ORDER BY a.`createdAt` " . $_SESSION['sort-broker-admin'] . " LIMIT $start, $limit;";
 } else {
-    $sql_list = "SELECT a.*, b.* FROM `account` a JOIN `broker` b ON a.id = b.accountId WHERE a.`role` = 2 AND a.`status` = '" . $_SESSION['sort-status-broker'] . "' AND (a.`email` LIKE '%" . $_SESSION['search-broker'] . "%' OR a.`phoneNumber` LIKE '%" . $_SESSION['search-broker'] . "%') ORDER BY a.`createdAt` " . $_SESSION['sort-broker-admin'] . " LIMIT $start, $limit;";
+    $sql_list = "SELECT a.*, b.*, l.name as mainArea FROM `account` a JOIN `broker` b ON a.id = b.accountId LEFT JOIN `location` l ON b.location = l.id WHERE a.`role` = 2 AND a.`status` = '" . $_SESSION['sort-status-broker'] . "' AND (a.`email` LIKE '%" . $_SESSION['search-broker'] . "%' OR a.`phoneNumber` LIKE '%" . $_SESSION['search-broker'] . "%') ORDER BY a.`createdAt` " . $_SESSION['sort-broker-admin'] . " LIMIT $start, $limit;";
 }
 $sql_expertises = "SELECT name, id FROM `expertises`";
 $sql_location = "SELECT name, id FROM `location`";

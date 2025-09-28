@@ -10,6 +10,12 @@
   color: #155724;
 }
 
+.status.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 5px 15px;
+}
+
  fieldset {
             width: fit-content;
             background-color: transparent;

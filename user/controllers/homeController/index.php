@@ -15,7 +15,7 @@ $sql_properties = "
     LEFT JOIN broker b ON rp.brokerId = b.id 
     LEFT JOIN account a ON b.accountId = a.id 
     WHERE rp.status = 'active' 
-    ORDER BY rp.featured DESC, rp.views DESC, rp.createdAt DESC 
+    ORDER BY rp.views DESC, rp.createdAt DESC 
     LIMIT 6
 ";
 $propertiesResult = mysqli_query($conn, $sql_properties);

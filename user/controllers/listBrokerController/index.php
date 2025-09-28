@@ -1,5 +1,5 @@
 <?php
-$districtsResult = mysqli_query($conn, "SELECT id, name, type FROM `location` ORDER BY id ASC");
+$districtsResult = mysqli_query($conn, "SELECT id, name FROM `location` ORDER BY id ASC");
 $districts = mysqli_fetch_all($districtsResult, MYSQLI_ASSOC);
 
 $expertisesResult = mysqli_query($conn, "SELECT id, name, icon FROM `expertises` WHERE status = 1 ORDER BY name");
@@ -53,14 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $whereConditions = array();
-$whereConditions[] = "a.status = 1"; 
+$whereConditions[] = "a.status = 'active'"; 
 $whereConditions[] = "a.role = 2";
 
 if (!empty($_SESSION['filter-area'])) {
   $areaConditions = array();
   foreach ($_SESSION['filter-area'] as $area) {
-    $area = mysqli_real_escape_string($conn, $area);
-    $areaConditions[] = "b1.mainArea LIKE '%$area%'";
+    $area = (int)mysqli_real_escape_string($conn, $area);
+    $areaConditions[] = "b1.location = $area";
   }
   $whereConditions[] = "(" . implode(' OR ', $areaConditions) . ")";
 }
