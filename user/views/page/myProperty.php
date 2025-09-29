@@ -30,12 +30,12 @@
                         <span>Đổi mật khẩu</span>
                     </a>
                     <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
-                    <a href="?act=myProperty" class="menu-item">
+                    <a href="?act=myProperty" class="menu-item active">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
                     </a>
                     <?php endif; ?>
-                    <a href="?act=saveProperty" class="menu-item active">
+                    <a href="?act=saveProperty" class="menu-item">
                         <i class="fas fa-heart"></i>
                         <span>BĐS đã lưu</span>
                     </a>

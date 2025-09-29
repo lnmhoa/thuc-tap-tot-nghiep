@@ -63,7 +63,7 @@
                                 <a href="?act=followBroker"><i class="fas fa-user-friends"></i> Môi giới theo dõi</a>
                                 <a href="?act=consultationRequest"><i class="fas fa-headset"></i> Yêu cầu tư vấn</a>
                                 <?php if(isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] == '2' )): ?>
-                                    <a href="?act=brokerProperty"><i class="fas fa-building"></i> BĐS của tôi</a>
+                                    <a href="?act=myProperty"><i class="fas fa-building"></i> BĐS của tôi</a>
                                     <a href="?act=addProperty"><i class="fas fa-plus-circle"></i> Đăng tin mới</a>
                                 <?php endif; ?>
                                 

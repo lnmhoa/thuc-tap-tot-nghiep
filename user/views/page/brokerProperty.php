@@ -361,7 +361,7 @@
                 <?php if ($totalPages > 1): ?>
                 <div class="pagination">
                     <?php if ($page > 1): ?>
-                        <a href="?act=brokerProperty&page=<?= $page - 1 ?>&status=<?= $statusFilter ?>&search=<?= urlencode($searchFilter) ?>" class="page-btn">
+                        <a href="?act=myProperty&page=<?= $page - 1 ?>&status=<?= $statusFilter ?>&search=<?= urlencode($searchFilter) ?>" class="page-btn">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     <?php else: ?>
@@ -375,7 +375,7 @@
                     $endPage = min($totalPages, $page + 2);
                     
                     if ($startPage > 1) {
-                        echo '<a href="?act=brokerProperty&page=1&status=' . $statusFilter . '&search=' . urlencode($searchFilter) . '" class="page-btn">1</a>';
+                        echo '<a href="?act=myProperty&page=1&status=' . $statusFilter . '&search=' . urlencode($searchFilter) . '" class="page-btn">1</a>';
                         if ($startPage > 2) {
                             echo '<span class="page-dots">...</span>';
                         }
@@ -383,19 +383,19 @@
                     
                     for ($i = $startPage; $i <= $endPage; $i++) {
                         $activeClass = ($i == $page) ? 'active' : '';
-                        echo '<a href="?act=brokerProperty&page=' . $i . '&status=' . $statusFilter . '&search=' . urlencode($searchFilter) . '" class="page-btn ' . $activeClass . '">' . $i . '</a>';
+                        echo '<a href="?act=myProperty&page=' . $i . '&status=' . $statusFilter . '&search=' . urlencode($searchFilter) . '" class="page-btn ' . $activeClass . '">' . $i . '</a>';
                     }
                     
                     if ($endPage < $totalPages) {
                         if ($endPage < $totalPages - 1) {
                             echo '<span class="page-dots">...</span>';
                         }
-                        echo '<a href="?act=brokerProperty&page=' . $totalPages . '&status=' . $statusFilter . '&search=' . urlencode($searchFilter) . '" class="page-btn">' . $totalPages . '</a>';
+                        echo '<a href="?act=myProperty&page=' . $totalPages . '&status=' . $statusFilter . '&search=' . urlencode($searchFilter) . '" class="page-btn">' . $totalPages . '</a>';
                     }
                     ?>
 
                     <?php if ($page < $totalPages): ?>
-                        <a href="?act=brokerProperty&page=<?= $page + 1 ?>&status=<?= $statusFilter ?>&search=<?= urlencode($searchFilter) ?>" class="page-btn">
+                        <a href="?act=myProperty&page=<?= $page + 1 ?>&status=<?= $statusFilter ?>&search=<?= urlencode($searchFilter) ?>" class="page-btn">
                             <i class="fas fa-chevron-right"></i>
                         </a>
                     <?php else: ?>

@@ -244,8 +244,6 @@
                             <option value="Tiếng Việt">Tiếng Việt</option>
                             <option value="Tiếng Anh">Tiếng Anh</option>
                             <option value="Tiếng Trung">Tiếng Trung</option>
-                            <option value="Tiếng Hàn">Tiếng Hàn</option>
-                            <option value="Tiếng Nhật">Tiếng Nhật</option>
                         </select>
                         <label for="modal-expertise"><i class="fa-solid fa-street-view"></i> Chuyên môn:</label>
                         <select id="modal-expertise" multiple size="2">

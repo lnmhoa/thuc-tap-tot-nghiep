@@ -17,6 +17,13 @@ if(isset($_POST['update_profile'])) {
     $email = $_POST['email'];
     $phoneNumber = $_POST['phoneNumber'];
     $address = $_POST['address'];
+    if($_SESSION['user']['role'] == 2) {
+        $location = $_POST['location'];
+        $expertise = isset($_POST['expertise']) ? implode(',', $_POST['expertise']) : '';
+        $language = isset($_POST['language']) ? implode(',', $_POST['language']) : '';
+        $working_hours = $_POST['working_hours'];
+        $shortIntro = $_POST['shortIntro'];
+    }
     $checkPhoneNumber=mysqli_query($conn, "SELECT * FROM `account` WHERE `phoneNumber`='$phoneNumber' AND `id` != $userId");
         if (mysqli_num_rows($checkPhoneNumber) > 0) {
             error('Số điện thoại đã tồn tại. Vui lòng sử dụng số điện thoại khác.', 'index.php?act=profile');
@@ -41,11 +48,36 @@ if(isset($_POST['update_profile'])) {
             if(move_uploaded_file($fileTmpPath, $dest_path)) {
                 $sql_update = "UPDATE `account` SET `fullName`='$fullName', `email`='$email', `phoneNumber`='$phoneNumber', `address`='$address', `avatar`='$newFileName' WHERE `id`='$userId'";
                 if (mysqli_query($conn, $sql_update)) {
+                    if($_SESSION['user']['role'] == 2) {
+                        $sql_update_broker = "UPDATE `broker` SET `location`='$location', `expertise`='$expertise', `language`='$language', `workingHours`='$working_hours', `shortIntro`='$shortIntro' WHERE `accountId`='$userId'";
+                        if(mysqli_query($conn, $sql_update_broker)) {
+                        $_SESSION['user']['fullName'] = $fullName;
+                        $_SESSION['user']['email'] = $email;
+                        $_SESSION['user']['phoneNumber'] = $phoneNumber;
+                        $_SESSION['user']['address'] = $address;
+                        $_SESSION['user']['avatar'] = $newFileName;
+                        $_SESSION['user']['broker_info'] = array(
+                            'location' => $location,
+                            'expertise' => $expertise,
+                            'language' => $language,
+                            'workingHours' => $working_hours,
+                            'shortIntro' => $shortIntro
+                        );
+                          include "./views/page/profile.php";
+                    success('Cập nhật hồ sơ thành công!', 'index.php?act=profile');
+                     exit();
+                    }else{
+                        include "./views/page/profile.php";
+                        error('Cập nhật hồ sơ thất bại!', 'index.php?act=profile');
+                        exit();
+                    }
+                    }else{
                     $_SESSION['user']['fullName'] = $fullName;
                     $_SESSION['user']['email'] = $email;
                     $_SESSION['user']['phoneNumber'] = $phoneNumber;
                     $_SESSION['user']['address'] = $address;
                     $_SESSION['user']['avatar'] = $newFileName;
+                    }
                     include "./views/page/profile.php";
                     success('Cập nhật hồ sơ thành công!', 'index.php?act=profile');
                      exit();
@@ -63,10 +95,34 @@ if(isset($_POST['update_profile'])) {
     } else {
         $sql_update = "UPDATE `account` SET `fullName`='$fullName', `email`='$email', `phoneNumber`='$phoneNumber', `address`='$address' WHERE `id`='$userId'";
         if (mysqli_query($conn, $sql_update)) {
-            $_SESSION['user']['fullName'] = $fullName;
-            $_SESSION['user']['email'] = $email;
-            $_SESSION['user']['phoneNumber'] = $phoneNumber;
-            $_SESSION['user']['address'] = $address;
+            if($_SESSION['user']['role'] == 2) {
+                $sql_update_broker = "UPDATE `broker` SET `location`='$location', `expertise`='$expertise', `language`='$language', `workingHours`='$working_hours', `shortIntro`='$shortIntro' WHERE `accountId`='$userId'";
+                if(mysqli_query($conn, $sql_update_broker)) {
+                 $_SESSION['user']['fullName'] = $fullName;
+                $_SESSION['user']['email'] = $email;
+                $_SESSION['user']['phoneNumber'] = $phoneNumber;
+                $_SESSION['user']['address'] = $address;
+                $_SESSION['user']['broker_info'] = array(
+                    'location' => $location,
+                    'expertise' => $expertise,
+                    'language' => $language,
+                    'workingHours' => $working_hours,
+                    'shortIntro' => $shortIntro
+                );
+                include "./views/page/profile.php";
+                success('Cập nhật hồ sơ thành công!', 'index.php?act=profile');
+                exit();
+            }else{
+                include "./views/page/profile.php";
+                error('Cập nhật hồ sơ thất bại!', 'index.php?act=profile');
+                exit();
+            }
+            } else { 
+                $_SESSION['user']['fullName'] = $fullName;
+                $_SESSION['user']['email'] = $email;
+                $_SESSION['user']['phoneNumber'] = $phoneNumber;
+                $_SESSION['user']['address'] = $address;
+            }
             include "./views/page/profile.php";
             success('Cập nhật hồ sơ thành công!', 'index.php?act=profile');
             exit();
@@ -77,6 +133,13 @@ if(isset($_POST['update_profile'])) {
         }
     }
 }
-
+if(isset($_SESSION['user']['id']) && $_SESSION['user']['role'] == 2) {  
+    $sql_expertises = "SELECT * FROM expertises";
+    $result_expertises = mysqli_query($conn, $sql_expertises);
+    $listExpertises = mysqli_fetch_all($result_expertises, MYSQLI_ASSOC);
+    $sql_location = "SELECT * FROM location";
+    $result_location = mysqli_query($conn, $sql_location);
+    $listLocation = mysqli_fetch_all($result_location, MYSQLI_ASSOC);
+}
 include "./views/page/profile.php";
 return;

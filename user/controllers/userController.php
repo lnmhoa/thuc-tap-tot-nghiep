@@ -43,10 +43,6 @@ $itemOnePage = 10;
         }
     }
 
-// if (!isset($_SESSION['user']) || $_SESSION['user']['loai'] != '3') {
-//     header("Location: http://localhost/DA1/display/index.php");
-//     exit();
-// } else {
 if (isset($_GET['act'])) {
   $act = $_GET['act'];
   switch ($act) {
@@ -56,14 +52,8 @@ if (isset($_GET['act'])) {
     case 'about':
       include './controllers/aboutController/index.php';
       break;
-    case 'addProperty':
-      include './controllers/addPropertyController/index.php';
-      break;
     case 'broker':
       include './controllers/brokerController/index.php';
-      break;
-    case 'brokerProperty':
-      include './controllers/brokerPropertyController/index.php';
       break;
     case 'changePassword':
       include './controllers/changePasswordController/index.php';
@@ -101,8 +91,11 @@ if (isset($_GET['act'])) {
     case 'saveProperty':
       include './controllers/savePropertyController/index.php';
       break;
-    case 'userRentals':
-      include './controllers/userRentalsController/index.php';
+    case 'myProperty':
+      include './controllers/myPropertyController/index.php';
+      break;
+    case 'addProperty':
+      include './controllers/addPropertyController/index.php';
       break;
     case 'register':
       include './controllers/registerController/index.php';
@@ -119,4 +112,3 @@ if (isset($_GET['act'])) {
 } else {
   include './controllers/homeController/index.php';
 }
-// }

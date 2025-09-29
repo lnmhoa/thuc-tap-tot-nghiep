@@ -51,7 +51,7 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
-                    <a href="?act=brokerProperty" class="menu-item">
+                    <a href="?act=myProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
                     </a>
