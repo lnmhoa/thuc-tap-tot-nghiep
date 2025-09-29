@@ -97,6 +97,9 @@ if (isset($_GET['act'])) {
     case 'addProperty':
       include './controllers/addPropertyController/index.php';
       break;
+    case 'editProperty':
+      include './controllers/editPropertyController/index.php';
+      break;
     case 'register':
       include './controllers/registerController/index.php';
       break;

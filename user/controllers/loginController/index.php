@@ -12,12 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (strlen($password) < 6) {
         errorNotLoad('Mật khẩu phải có ít nhất 6 ký tự.');
     } else {
-        $stmt = $conn->prepare("SELECT * FROM `account` WHERE phoneNumber = ?");
-        $stmt->bind_param("s", $phone);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $user_from_db = $result->fetch_assoc();
+      $sql = "SELECT * FROM `account` WHERE phoneNumber = '$phone'";
+      $sql_result = mysqli_query($conn, $sql);
+      $dataUser = mysqli_fetch_all($sql_result, MYSQLI_ASSOC);
+        if (count($dataUser) > 0) {
+            $user_from_db = $dataUser[0];
             if ($user_from_db['role'] == 4 || $user_from_db['role'] == 5) {
                 errorNotLoad('Tài khoản không có quyền truy cập.');
                 return;
@@ -25,18 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user_from_db['password'])) {
                 $_SESSION['user'] = $user_from_db;
                 if ($_SESSION['user']['role'] == '2') {
-                    $broker_stmt = $conn->prepare("SELECT * FROM `broker` WHERE accountId = ?");
-                    $broker_stmt->bind_param("i", $_SESSION['user']['id']);
-                    $broker_stmt->execute();
-                    $broker_result = $broker_stmt->get_result();
-                    
-                    if ($broker_result->num_rows > 0) {
-                        $broker_data = $broker_result->fetch_assoc();
+                    $sql = "SELECT * FROM `broker` WHERE accountId = ".$_SESSION['user']['id'];
+                    $broker_result = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($broker_result) > 0) {
+                        $broker_data = mysqli_fetch_assoc($broker_result);
                         $_SESSION['user']['broker_info'] = $broker_data;
                     }
-                    $broker_stmt->close();
                 }
-                
                 success('Đăng nhập thành công!', 'index.php?act=home');
             } else {
                 errorNotLoad('Số điện thoại hoặc mật khẩu không đúng.');

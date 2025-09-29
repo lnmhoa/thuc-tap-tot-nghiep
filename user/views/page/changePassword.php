@@ -11,13 +11,17 @@
                             <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
                         <?php endif; ?>
                         </div>
-                        <div class="user-info">
-                            <h3><?= htmlspecialchars($_SESSION['user']['name'] ?? 'Người dùng') ?></h3>
-                            <div class="user-badge">
-                                <i class="fas fa-shield-alt"></i>
+                       <div class="user-info">
+                        <h3><?= htmlspecialchars($_SESSION['user']['fullName'] ?? 'Người dùng') ?></h3>
+                        <div class="user-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <?php if ($_SESSION['user']['role'] === '2'): ?>
+                                Môi giới
+                            <?php else: ?>
                                 Thành viên
-                            </div>
+                            <?php endif; ?>
                         </div>
+                    </div>
                     </div>
                     
                     <nav class="profile-menu">
@@ -30,11 +34,15 @@
                             <span>Đổi mật khẩu</span>
                         </a>
                         <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
-                        <a href="?act=myProperty" class="menu-item">
-                            <i class="fas fa-home"></i>
-                            <span>BĐS của tôi</span>
-                        </a>
-                        <?php endif; ?>
+                    <a href="?act=myProperty" class="menu-item">
+                        <i class="fas fa-home"></i>
+                        <span>BĐS của tôi</span>
+                    </a>
+                       <a href="?act=addProperty" class="menu-item">
+                        <i class="fas fa-plus"></i>
+                        <span>Thêm BĐS</span>
+                    </a>
+                    <?php endif; ?>
                         <a href="?act=saveProperty" class="menu-item">
                             <i class="fas fa-heart"></i>
                             <span>BĐS đã lưu</span>

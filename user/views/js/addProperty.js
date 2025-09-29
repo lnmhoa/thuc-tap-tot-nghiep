@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize
     showStep(currentStep);
 
-    // Next button event listeners
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (validateStep(currentStep)) {

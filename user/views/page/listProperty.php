@@ -93,7 +93,6 @@
                                         min="0" step="1">
                                 </div>
                             </div>
-
                             <div class="filter-group">
                                 <label style="font-size: 1.1rem; font-weight:bold; margin: 10px 0">Số phòng ngủ</label>
                                 <select class="form-select" name="filter-bedrooms">
@@ -104,7 +103,6 @@
                                     <option value="4" <?= ($_SESSION['filter-bedrooms'] ?? 0) >= 4 ? 'selected' : '' ?>>4+ phòng</option>
                                 </select>
                             </div>
-
                             <div class="filter-actions">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i>
@@ -118,7 +116,6 @@
                         </div>
                     </form>
                 </aside>
-
                 <div class="content-area">
                     <div class="content-header">
                         <div class="results-info">
@@ -138,16 +135,12 @@
                             </form>
                         </div>
                     </div>
-
                     <div class="properties-grid" id="properties-grid">
                         <?php if (!empty($properties)): ?>
                             <?php foreach ($properties as $item): ?>
                                 <div class="property-card" data-property-id="<?= $item['id'] ?>">
                                     <div class="property-image">
-                                        <?php
-                                        $imagePath = !empty($item['mainImage']) ? $item['mainImage'] : './uploads/broker/logo.jpg';
-                                        ?>
-                                        <img src="<?= htmlspecialchars($imagePath) ?>"
+                                        <img style="width: 100%; height: auto; object-fit: cover;" src="<?php if(!empty($item['mainImage'])){ echo '../uploads/property/' . $item['mainImage']; }else{ echo '../uploads/system/default_property.jpg'; } ?>"
                                             alt="<?= htmlspecialchars($item['title']) ?>"
                                             >
 

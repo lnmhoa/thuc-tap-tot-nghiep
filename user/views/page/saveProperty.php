@@ -11,11 +11,15 @@
                             <img src="../uploads/system/default_user.jpg" alt="Default Avatar" id="avatarPreview">
                         <?php endif; ?>
                     </div>
-                    <div class="user-info">
+                   <div class="user-info">
                         <h3><?= htmlspecialchars($_SESSION['user']['fullName'] ?? 'Người dùng') ?></h3>
                         <div class="user-badge">
                             <i class="fas fa-shield-alt"></i>
-                            Thành viên
+                            <?php if ($_SESSION['user']['role'] === '2'): ?>
+                                Môi giới
+                            <?php else: ?>
+                                Thành viên
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -29,10 +33,14 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
-                    <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
+                   <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=myProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
+                    </a>
+                       <a href="?act=addProperty" class="menu-item">
+                        <i class="fas fa-plus"></i>
+                        <span>Thêm BĐS</span>
                     </a>
                     <?php endif; ?>
                     <a href="?act=saveProperty" class="menu-item active">

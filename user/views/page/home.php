@@ -122,12 +122,11 @@
         <div class="properties-carousel">
             <?php if (!empty($featuredProperties)) { 
                 foreach ($featuredProperties as $property) { 
-                    $images = json_decode($property['images'], true);
-                    $firstImage = !empty($images) ? '../uploads/property/' . $images[0] : '../uploads/system/default.png';
+                    $firstImage = !empty($property['mainImage']) ? '../uploads/property/' . $property['mainImage'] : '../uploads/system/default_property.jpg';
                     
                     $price = number_format($property['price'], 0, ',', '.') . ' ';
                     if ($property['transactionType'] == 'rent') {
-                        $price .= ($property['priceUnit'] == 'month') ? 'đ/tháng' : 'đ';
+                        $price .= ($property['transactionType'] == 'rent') ? 'đ/tháng' : 'đ';
                     } else {
                         $price .= 'đ';
                     }
@@ -214,7 +213,7 @@
         <div class="brokers-grid">
             <?php if (!empty($topBrokers)) { 
                 foreach ($topBrokers as $broker) { 
-                    $avatar = $broker['avatar'] ? '../admin/uploads/broker/' . $broker['avatar'] : '../logo.jpg';
+                    $avatar = $broker['avatar'] ? '../uploads/user/' . $broker['avatar'] : '../uploads/system/default_user.jpg';
                     $rating = $broker['avgRating'] ? number_format($broker['avgRating'], 1) : '0';
                     $ratingCount = $broker['ratingCount'] ? $broker['ratingCount'] : 0;
             ?>
@@ -285,7 +284,7 @@
             <?php if (!empty($pinNewsHome)): ?>
             <article class="news-card featured">
                 <div class="news-image">
-                    <img src="../admin/uploads/news/<?= $pinNewsHome[0]['image'] ?>" alt="<?= ($pinNewsHome[0]['title']) ?>">
+                    <img src="../uploads/news/<?= $pinNewsHome[0]['image'] ?>" alt="<?= ($pinNewsHome[0]['title']) ?>">
                     <div class="news-badge">Tin nổi bật</div>
                 </div>
                 <div class="news-content">

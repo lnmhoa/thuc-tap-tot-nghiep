@@ -8,15 +8,32 @@ $listNewsHome = mysqli_fetch_all($listNews, MYSQLI_ASSOC);
 $pinNewsHome = mysqli_fetch_all($pinNews, MYSQLI_ASSOC);
 
 $sql_properties = "
-    SELECT rp.*, l.name as locationName, t.name as typeName, a.fullName as brokerName, a.avatar as brokerAvatar, a.phoneNumber as brokerPhone
-    FROM rental_property rp 
-    LEFT JOIN location l ON rp.locationId = l.id 
-    LEFT JOIN type_rental_property t ON rp.typeId = t.id 
-    LEFT JOIN broker b ON rp.brokerId = b.id 
-    LEFT JOIN account a ON b.accountId = a.id 
-    WHERE rp.status = 'active' 
-    ORDER BY rp.views DESC, rp.createdAt DESC 
-    LIMIT 6
+    SELECT
+  rp.*,
+  l.name AS locationName,
+  t.name AS typeName,
+  a.fullName AS brokerName,
+  a.avatar AS brokerAvatar,
+  a.phoneNumber AS brokerPhone,
+  p.imagePath AS mainImage
+FROM
+  rental_property rp
+LEFT JOIN
+  location l ON rp.locationId = l.id
+LEFT JOIN
+  type_rental_property t ON rp.typeId = t.id
+LEFT JOIN
+  broker b ON rp.brokerId = b.id
+LEFT JOIN
+  account a ON b.accountId = a.id
+LEFT JOIN
+  property_images p ON rp.id = p.propertyId AND p.isMain = 1
+WHERE
+  rp.status = 'active'
+ORDER BY
+  rp.views DESC,
+  rp.createdAt DESC
+LIMIT 6;
 ";
 $propertiesResult = mysqli_query($conn, $sql_properties);
 $featuredProperties = mysqli_fetch_all($propertiesResult, MYSQLI_ASSOC);

@@ -34,10 +34,14 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
-                    <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
+                  <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=myProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
+                    </a>
+                       <a href="?act=addProperty" class="menu-item">
+                        <i class="fas fa-plus"></i>
+                        <span>Thêm BĐS</span>
                     </a>
                     <?php endif; ?>
                     <a href="?act=saveProperty" class="menu-item">

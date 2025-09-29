@@ -84,8 +84,14 @@ if (!isset($property)) {
                                 <span><?= $property['floors'] ?> tầng</span>
                             </div>
                         <?php endif; ?>
+                        <?php if ($property['direction'] > 0): ?>
+                            <div class="detail-item">
+                                <strong>Hướng:</strong>
+                                <span><?= $property['direction'] ?></span>
+                            </div>
+                        <?php endif; ?>
                         <div class="detail-item">
-                            <strong>Loại hình:</strong>
+                            <strong>Loại:</strong>
                             <span><?= htmlspecialchars($property['propertyType']) ?></span>
                         </div>
                         <div class="detail-item">

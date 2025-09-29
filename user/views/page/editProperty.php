@@ -55,7 +55,7 @@
             </aside>
             <div class="profile-content" style="padding: 2rem">
             <div class="form-section" style="margin-bottom: 0.5rem;">
-                <h3 class="section-title" style="margin-bottom:0.5rem;">Thêm bất động sản</h3>
+                <h3 class="section-title" style="margin-bottom:0.5rem;">Chỉnh sửa bất động sản</h3>
             </div>
                 <form method="POST" enctype="multipart/form-data" class="add-property-form" style="gap: 0">
                    <div class="form-section" style="margin-bottom: 0">
