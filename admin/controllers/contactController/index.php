@@ -41,7 +41,7 @@ if ($listContactResult) {
 $sql_location="SELECT * FROM location";
 $result_location = mysqli_query($conn, $sql_location);
 $listLocation=mysqli_fetch_all($result_location, MYSQLI_ASSOC);
-$sql_broker="SELECT * FROM account WHERE ROLE = 2";
+$sql_broker="SELECT account.*, broker.id as brokerId FROM account LEFT JOIN broker ON account.id = broker.accountId WHERE ROLE = 2";
 $result_broker = mysqli_query($conn, $sql_broker);
 $listBroker=mysqli_fetch_all($result_broker, MYSQLI_ASSOC);
 if(isset($_POST['addContact'])){
@@ -49,9 +49,9 @@ if(isset($_POST['addContact'])){
     $phone = $_POST['add-phone'];
     $location = $_POST['add-location'];
     $subject = $_POST['add-subject'];
-    $note = $_POST['add-note'];
+    $message = $_POST['add-message'];
     $brokerId = $_POST['add-broker'];
-    $sql_add = "INSERT INTO `contact_requests`( `brokerId`, `name`, `phone`, `location`, `subject`, `note`, `status`, `createdAt`) VALUES ('$brokerId', '$name', '$phone', '$location', '$subject', '$note', 'inProgress', NOW())";
+    $sql_add = "INSERT INTO `contact_requests`( `brokerId`, `name`, `phone`, `location`, `subject`, `message`, `status`, `createdAt`) VALUES ('$brokerId', '$name', '$phone', '$location', '$subject', '$message', 'inProgress', NOW())";
     $result_add = mysqli_query($conn, $sql_add);
     if ($result_add) {
         success('Tạo yêu cầu thành công!', 'index.php?act=contact&page=' . $current_page);
@@ -60,15 +60,15 @@ if(isset($_POST['addContact'])){
     }
 }
 if(isset($_POST['editContact'])){
-  
     $id = $_POST['edit-id'];
     $name = $_POST['edit-name'];
     $phone = $_POST['edit-phone'];
     $status = $_POST['edit-status'];
     $location = $_POST['edit-location'];
     $brokerId = $_POST['edit-broker'];
+    $message = $_POST['edit-message'];
     $note = $_POST['edit-note'];
-    $sql_update = "UPDATE `contact_requests` SET `brokerId`= '$brokerId', `name`= '$name', `location`= '$location', `phone`= '$phone',  `note`= '$note', `status`= '$status' WHERE `id`= '$id'";
+    $sql_update = "UPDATE `contact_requests` SET `brokerId`= '$brokerId', `name`= '$name', `location`= '$location', `phone`= '$phone',  `note`= '$note', `message`= '$message', `status`= '$status' WHERE `id`= '$id'";
     $editContact=mysqli_query($conn, $sql_update);
     if ($editContact) {
         success('Cập nhật yêu cầu thành công!', 'index.php?act=contact&page=' . $current_page);

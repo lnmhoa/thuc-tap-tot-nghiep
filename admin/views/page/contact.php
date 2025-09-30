@@ -121,9 +121,10 @@
                                 <button <?php if(($value["status"] === 'completed') || ($value["status"] === 'canceled')): ?> disabled style="cursor: not-allowed; background-color: gray;" <?php endif; ?> class="action-button edit">Sửa</button>
                             </td>
                              <td data-label="Môi giới" style="display: none"><?= $value["brokerId"] ?? '' ?></td>
-                             <td data-label="Nội dung" style="display: none"><?= $value["note"] ?? '' ?></td>
+                             <td data-label="Nội dung" style="display: none"><?= $value["message"] ?? '' ?></td>
                              <td data-label="ID" style="display: none"><?= $value["id"] ?? '' ?></td>
                              <td data-label="Location" style="display: none"><?= $value["location"] ?? '' ?></td>
+                             <td data-label="note" style="display: none"><?= $value["note"] ?? '' ?></td>
                         </tr>
                     <?php
                         $stt++;
@@ -214,17 +215,17 @@
 <div id="editContactModal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="closeEditModalButton">&times;</span>
-        <h3>Chỉnh sửa Yêu cầu</h3>
+        <h3 style="padding: 0;">Chỉnh sửa Yêu cầu</h3>
         <form id="editContactForm" method="POST">
             <input type="hidden" id="edit-id" name="edit-id">
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;"> 
                 <div>
                     <label for="edit-name">Tên:</label>
-                    <input style="margin-bottom: 5px" type="text" id="edit-name" name="edit-name" required>
+                    <input style="margin-bottom: 0" type="text" id="edit-name" name="edit-name" required>
                 </div>
                 <div>
                     <label for="edit-phone">Số điện thoại:</label>
-                    <input style="margin-bottom: 5px" type="text" id="edit-phone" name="edit-phone" required>
+                    <input style="margin-bottom: 0" type="text" id="edit-phone" name="edit-phone" required>
                 </div>
                 
             </div>
@@ -232,7 +233,7 @@
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
                 <div>
                     <label for="edit-location">Khu vực:</label>
-                    <select style="margin-bottom: 5px" name="edit-location" id="edit-location">
+                    <select style="margin-bottom: 0" name="edit-location" id="edit-location">
                     <option value="" disabled selected hidden></option> 
                     <?php foreach ($listLocation as $location) {?>
                          <option value="<?=$location['id'] ?>" <?php if (htmlspecialchars($location['name']) === htmlspecialchars($value['location'])) echo 'selected'; ?>><?=$location['name'] ?></option>
@@ -241,41 +242,48 @@
                 </div>
                 <div>
                     <label for="edit-subject">Loại:</label>
-                    <input style="margin-bottom: 5px" type="text" id="edit-subject" name="edit-subject" readonly>
+                    <input style="margin-bottom: 0" type="text" id="edit-subject" name="edit-subject" readonly>
                 </div>
             </div>
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
                 <div>
                     <label for="edit-price">Khoảng giá:</label>
-                    <input type="text" style="margin-bottom: 5px" id="edit-price" name="edit-price" readonly>
+                    <input type="text" style="margin-bottom: 0" id="edit-price" name="edit-price" readonly>
                 </div>
                 <div>
                     <label for="edit-createdAt">Ngày gửi:</label>
-                    <input style="margin-bottom: 5px" type="text" id="edit-createdAt" name="edit-createdAt" readonly>
+                    <input style="margin-bottom: 0" type="text" id="edit-createdAt" name="edit-createdAt" readonly>
                 </div>
             </div>
+             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
             <div>
                 <label for="edit-status">Trạng thái:</label>
-                <select style="margin-bottom: 5px; width: 100%;" id="edit-status" name="edit-status">
+                <select style="margin-bottom: 0; width: 100%;" id="edit-status" name="edit-status">
                     <option value="pending" disabled>Chờ xử lý</option>
                     <option value="inProgress">Đang xử lý</option>
                     <option value="completed">Hoàn thành</option>
                     <option value="canceled">Đã huỷ</option>
                 </select>
+                </div>
+                <div>
               <label for="edit-broker">Môi giới: </label>
-                <select style="margin-bottom: 5px; width: 100%;" name="edit-broker" id="edit-broker" required>
+                <select style="margin-bottom: 0; width: 100%;" name="edit-broker" id="edit-broker" required>
                     <option value="" disabled selected hidden></option> 
                     <?php foreach ($listBroker as $broker) { ?>
                         <option 
-                            value="<?=$broker['id'] ?>" 
-                            <?php if ($broker['id'] == $value['brokerId']) echo 'selected'; ?>
+                            value="<?=$broker['brokerId'] ?>" 
+                            <?php if ($broker['brokerId'] == $value['brokerId']) echo 'selected'; ?>
                         >
                             <?=$broker['fullName'] ?> - <?=$broker['phoneNumber'] ?>
                         </option>
                     <?php } ?>
                 </select>
-            <label for="edit-note">Nội dung:</label>
-            <textarea style="margin-bottom: 5px; width: 100%; box-sizing: border-box;" id="edit-note" name="edit-note" rows="6"></textarea>
+                </div>
+                </div>
+            <label for="edit-message">Nội dung:</label>
+            <textarea style="margin-bottom: 0; width: 100%; height: 75px; box-sizing: border-box;" id="edit-message" name="edit-message" rows="2"></textarea>
+             <label for="edit-note">Ghi chú:</label>
+            <textarea style="margin-bottom: 0; width: 100%; height: 75px; box-sizing: border-box;" id="edit-note" name="edit-note" rows="2"></textarea>
             <button type="submit" name="editContact" style="background-color: green; color: white;" class="action-button edit">Lưu</button>
             <button type="button" style="background-color: red; color: white;" class="action-button cancel-edit">Hủy</button>
         </form>

@@ -31,12 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit-name').value = contactData.name;
             document.getElementById('edit-phone').value = contactData.phone;
             document.getElementById('edit-location').value = contactData.location;
+            document.getElementById('edit-note').value = contactData.note;
             document.getElementById('edit-subject').value = contactData.subject;
             document.getElementById('edit-price').value = contactData.price;
             document.getElementById('edit-createdAt').value = contactData.createdAt;
             document.getElementById('edit-status').value = contactData.status;
             document.getElementById('edit-broker').value = contactData.broker;
-            document.getElementById('edit-note').value = contactData.note;
+            document.getElementById('edit-message').value = contactData.message;
             document.getElementById('edit-id').value = contactData.id;
             editContactModal.style.display = 'flex';
         }
@@ -78,12 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     name: cells[1]?.textContent.trim(),
                     phone: cells[2]?.textContent.trim(),
                     location: cells[12]?.textContent.trim(),
+                    note: cells[13]?.textContent.trim(),
                     subject: cells[4]?.textContent.trim(),
                     price: cells[5]?.textContent.trim(),
                     createdAt: cells[6]?.textContent.trim(),
                     status: cells[7]?.querySelector('.status')?.classList[1] || '',
                     broker: cells[9]?.textContent.trim(),
-                    note: cells[10]?.textContent.trim(),
+                    message: cells[10]?.textContent.trim(),
                     id: cells[11]?.textContent.trim(),
                 };
                 openEditModal(contactData);

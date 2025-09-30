@@ -17,7 +17,7 @@ $sql = "SELECT rp.*, pi.imagePath as image,
         LEFT JOIN property_images pi ON rp.id = pi.propertyId AND pi.isMain = 1
         JOIN broker b ON rp.brokerId = b.id
         JOIN account a ON b.accountId = a.id
-        WHERE sp.userId = '$userId' 
+        WHERE sp.userId = '$userId' AND rp.status = 'active'
         ORDER BY sp.createdAt " . $_SESSION['sort-property-profile'] . "";
 $result = mysqli_query($conn, $sql);
 $listSavedProperties = mysqli_fetch_all($result, MYSQLI_ASSOC);

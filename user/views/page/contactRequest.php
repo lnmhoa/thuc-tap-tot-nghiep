@@ -33,7 +33,7 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
-                 <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
+                   <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=myProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
@@ -42,7 +42,7 @@
                         <i class="fas fa-plus"></i>
                         <span>Thêm BĐS</span>
                     </a>
-                      <a href="?act=contactRequest" class="menu-item">
+                      <a href="?act=contactRequest" class="menu-item active">
                         <i class="fas fa-envelope"></i>
                         <span>Liên hệ phân công</span>
                     </a>
@@ -55,8 +55,8 @@
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
                     </a>
-                 <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '1' && $_SESSION['user']['status'] === 'active'): ?>
-                    <a href="?act=consultationRequest" class="menu-item active">
+                     <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '1' && $_SESSION['user']['status'] === 'active'): ?>
+                    <a href="?act=consultationRequest" class="menu-item">
                         <i class="fas fa-comments"></i>
                         <span>Yêu cầu tư vấn</span>
                     </a>
@@ -66,7 +66,7 @@
 
                 <div class="profile-content" style="padding: 2rem">
                       <div class="form-section" style="margin-bottom: 0.5rem;">
-                <h3 class="section-title" style="margin-bottom:0.5rem;">Yêu cầu tư vấn đã gửi</h3>
+                <h3 class="section-title" style="margin-bottom:0.5rem;">Liên hệ được phân công</h3>
                 <div class="content-filters">
                     <div class="filter-actions">
                         <form method="POST" action="" class="sort-options">
@@ -105,13 +105,6 @@
                                     <div class="broker-badge broker <?= $statusClass ?>"><?= $statusText ?></div>
                                 </div>
                                 <div class="broker-details">
-                                    <div class="broker-title">
-                                        <?php if($consultationRequest['brokerName']) { ?>
-                                        <h3 style="cursor: pointer;" onclick="window.location.href='?act=broker&id=<?= $consultationRequest['brokerId'] ?>'">Môi giới: <?= htmlspecialchars($consultationRequest['brokerName']) ?></h3>
-                                        <?php } else { ?>
-                                            <h3>Đang phân công môi giới</h3>
-                                        <?php } ?>
-                                    </div>
                                     <p class="broker-location">
                                         <i class="fas fa-phone"></i>
                                         <?= htmlspecialchars($consultationRequest['phone']) ?>
@@ -141,9 +134,9 @@
                                 </div>
                                 
                                 <div class="broker-contact">
-                                    <button <?php if($consultationRequest['status'] == 'pending' || $consultationRequest['status'] == 'completed' || $consultationRequest['status'] == 'canceled') echo 'disabled style="background: #e9ecef; color: #6c757d; cursor: not-allowed; border: 1px solid #e9ecef;"'; ?> class="btn btn-primary btn-sm" onclick="window.location.href='?act=broker&id=<?= $consultationRequest['brokerId'] ?>'">
-                                        <i class="fas fa-phone"></i>
-                                        Liên hệ môi giới
+                                    <button class="btn btn-primary btn-sm" onclick="window.location.href='?act=editContactRequest&id=<?= $consultationRequest['id'] ?>'">
+                                        <i class="fas fa-eye"></i>
+                                        Xem chi tiết
                                     </button>
                                 </div>
                             </div>
@@ -153,12 +146,7 @@
                             <div class="empty-icon">
                                <i class="fa-regular fa-comment-dots"></i>
                             </div>
-                            <h3>Chưa gửi bất kì yêu cầu tư vấn nào</h3>
-                            <p>Bạn chưa gửi bất kì yêu cầu tư vấn nào. Gửi yêu cầu ngay nếu cần bất kì trợ giúp nào!</p>
-                            <a href="?act=contact" class="btn btn-primary">
-                               <i class="fa-solid fa-comment-medical"></i>
-                                Gửi yêu cầu tư vấn
-                            </a>
+                            <h3>Chưa nhận được bất kì yêu cầu tư vấn nào</h3>
                         </div>
                     <?php } ?>
                     </div>

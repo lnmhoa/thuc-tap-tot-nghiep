@@ -29,7 +29,7 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
-                    <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
+                     <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=myProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
@@ -37,6 +37,10 @@
                        <a href="?act=addProperty" class="menu-item active">
                         <i class="fas fa-plus"></i>
                         <span>Thêm BĐS</span>
+                    </a>
+                      <a href="?act=contactRequest" class="menu-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Liên hệ phân công</span>
                     </a>
                     <?php endif; ?>
                     <a href="?act=saveProperty" class="menu-item">
@@ -47,10 +51,12 @@
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
                     </a>
+                   <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '1' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=consultationRequest" class="menu-item">
                         <i class="fas fa-comments"></i>
                         <span>Yêu cầu tư vấn</span>
                     </a>
+                    <?php endif; ?>
                 </nav>
             </aside>
             <div class="profile-content" style="padding: 2rem">

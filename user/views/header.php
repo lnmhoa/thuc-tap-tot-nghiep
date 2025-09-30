@@ -48,7 +48,7 @@
                         </ul>
                     </nav>
                 </div>
-                <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') { ?>
+                <?php if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '' && $_SESSION['user']['role'] != 3) { ?>
                     <div class="user-menu">
                         <div class="dropdown">
                             <button class="dropdown-btn">
@@ -65,11 +65,22 @@
                                 <?php if(isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] == '2' )): ?>
                                     <a href="?act=myProperty"><i class="fas fa-building"></i> BĐS của tôi</a>
                                     <a href="?act=addProperty"><i class="fas fa-plus-circle"></i> Đăng tin mới</a>
-                                <?php endif; ?>
-                                
-                                
-                                
-                                
+                                    <a href="?act=contactRequest"><i class="fas fa-check-circle"></i>Liên hệ phân công</a>
+                                <?php endif; ?>        
+                                <a href="?act=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php }else if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '' && $_SESSION['user']['role'] == 3) { ?>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <button class="dropdown-btn">
+                                <i class="fas fa-user"></i>
+                                <?php echo htmlspecialchars($_SESSION['user']['fullName'] ?? $_SESSION['user']['fullName'] ?? 'Người dùng'); ?>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a href="http://localhost/thuc-tap-tot-nghiep/admin/"><i class="fas fa-tachometer-alt"></i> Trang quản trị</a>
                                 <a href="?act=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                             </div>
                         </div>

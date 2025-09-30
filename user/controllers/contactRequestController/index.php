@@ -4,7 +4,7 @@ if (!isset($_SESSION['user']['id']) || $_SESSION['user']['id'] == '') {
     exit();
 }
 
-$userId = $_SESSION['user']['id'];
+$brokerId = $_SESSION['user']['broker_info']['id'];
 
 $_SESSION['sort-consultation-request'] = isset($_SESSION['sort-consultation-request']) ? $_SESSION['sort-consultation-request'] : 'desc';
 if(isset($_POST['sort'])) {
@@ -15,10 +15,10 @@ $sql ="SELECT cr.*, u.fullName AS userName,  b.id AS brokerId, a.fullName AS bro
     broker b ON cr.brokerId = b.id LEFT JOIN
     account a ON a.id = b.accountId LEFT JOIN
     account u ON cr.userId = u.id WHERE
-    cr.userId = '$userId'
+    cr.brokerId = '$brokerId'
     ORDER BY cr.createdAt " . $_SESSION['sort-consultation-request'] . "";
 
 $result = mysqli_query($conn, $sql);
 $listConsultationRequest = mysqli_fetch_all($result, MYSQLI_ASSOC);
-include "./views/page/consultationRequest.php";
+include "./views/page/contactRequest.php";
 return;

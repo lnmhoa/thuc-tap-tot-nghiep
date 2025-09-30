@@ -100,6 +100,12 @@ if (isset($_GET['act'])) {
     case 'editProperty':
       include './controllers/editPropertyController/index.php';
       break;
+    case 'contactRequest':
+      include './controllers/contactRequestController/index.php';
+      break;
+     case 'editContactRequest':
+      include './controllers/editContactRequestController/index.php';
+      break;
     case 'register':
       include './controllers/registerController/index.php';
       break;

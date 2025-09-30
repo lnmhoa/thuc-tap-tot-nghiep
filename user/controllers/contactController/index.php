@@ -29,15 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
         errorNotLoad('Vui lòng nhập nội dung tin nhắn');
     }
-            $userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;
-            $brokerId = 1; // Có thể để mặc định hoặc chọn broker
+            $userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;$brokerId = '';
             
             $sql = "INSERT INTO contact_requests (userId, brokerId, name, phone, location, subject, price, message, status, createdAt) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("iissssss", $userId, $brokerId, $name, $phone, $location, $subject, $price, $message);
+                    VALUES ('$userId', '$brokerId', '$name', '$phone', '$location', '$subject', '$price', '$message', 'pending', NOW())";
             
-            if ($stmt->execute()) {
+            if (mysqli_query($conn, $sql)) {
                 include "./views/page/contact.php";
                 success('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.','index.php?act=contact');
                 exit();

@@ -33,7 +33,7 @@
                         <i class="fas fa-lock"></i>
                         <span>Đổi mật khẩu</span>
                     </a>
-                   <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
+                    <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '2' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=myProperty" class="menu-item">
                         <i class="fas fa-home"></i>
                         <span>BĐS của tôi</span>
@@ -41,6 +41,10 @@
                        <a href="?act=addProperty" class="menu-item">
                         <i class="fas fa-plus"></i>
                         <span>Thêm BĐS</span>
+                    </a>
+                      <a href="?act=contactRequest" class="menu-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Liên hệ phân công</span>
                     </a>
                     <?php endif; ?>
                     <a href="?act=saveProperty" class="menu-item active">
@@ -51,10 +55,12 @@
                         <i class="fas fa-user-friends"></i>
                         <span>Môi giới theo dõi</span>
                     </a>
+                    <?php if (isset($_SESSION['user']['id']) && $_SESSION['user']['role'] === '1' && $_SESSION['user']['status'] === 'active'): ?>
                     <a href="?act=consultationRequest" class="menu-item">
                         <i class="fas fa-comments"></i>
                         <span>Yêu cầu tư vấn</span>
                     </a>
+                    <?php endif; ?>
                 </nav>
             </aside>
 
@@ -83,7 +89,7 @@
                             <div class="saved-property-card" data-type="sale">
                         <?php endif; ?>
                             <div class="property-image">
-                                <img src="<?php if(!empty($property['image'])) { echo '../uploads/system/' . $property['image']; } else { echo '../uploads/system/default_property.jpg'; } ?>" alt="<?= htmlspecialchars($property['title'] ?? 'Bất động sản') ?>">
+                                <img src="<?php if(!empty($property['image'])) { echo '../uploads/property/' . $property['image']; } else { echo '../uploads/system/default_property.jpg'; } ?>" alt="<?= htmlspecialchars($property['title'] ?? 'Bất động sản') ?>">
                                 <?php if($property['transactionType'] === 'rent'): ?>
                                 <div class="property-badge rent">Cho thuê</div>
                                 <?php else: ?>
