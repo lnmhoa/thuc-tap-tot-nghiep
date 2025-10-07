@@ -10,9 +10,9 @@ if (isset($_POST['search-account'])) {
   $_SESSION['search-account'] = $_POST['search-account'];
 }
 if($_SESSION['sort-account'] === 'active' || $_SESSION['sort-account'] === 'inactive'){
-    $total = mysqli_query($conn, "SELECT id FROM `account` WHERE (`email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%') AND `status` = '" . $_SESSION['sort-account'] . "'");
+    $total = mysqli_query($conn, "SELECT id FROM `account` WHERE role = 1 AND (`email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%') AND `status` = '" . $_SESSION['sort-account'] . "'");
 } else {
-    $total = mysqli_query($conn, "SELECT id FROM `account` WHERE `email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%'");
+    $total = mysqli_query($conn, "SELECT id FROM `account` WHERE role = 1 AND (`email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%')");
 }
 $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
 $total_page = ceil(mysqli_num_rows($total) / $limit);
@@ -24,9 +24,9 @@ if ($current_page < 1) {
 }
 $start = ($current_page - 1) * $limit;
 if($_SESSION['sort-account'] === 'active' || $_SESSION['sort-account'] === 'inactive'){
-    $sql_list = "SELECT id, fullName, phoneNumber, email, password, createdAt, role, status, avatar FROM `account` WHERE (`email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%') AND `status` = '" . $_SESSION['sort-account'] . "' LIMIT $start, $limit";
+    $sql_list = "SELECT id, fullName, phoneNumber, email, password, createdAt, role, status, avatar FROM `account` WHERE role = 1 AND (`email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%') AND `status` = '" . $_SESSION['sort-account'] . "' LIMIT $start, $limit";
 } else {
-    $sql_list = "SELECT id, fullName, phoneNumber, email, password, createdAt, role, status, avatar FROM `account` WHERE `email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%' ORDER BY `createdAt` " . $_SESSION['sort-account'] . " LIMIT $start, $limit";
+    $sql_list = "SELECT id, fullName, phoneNumber, email, password, createdAt, role, status, avatar FROM `account` WHERE role = 1 AND (`email` LIKE '%" . $_SESSION['search-account'] . "%' OR `phoneNumber` LIKE '%" . $_SESSION['search-account'] . "%') ORDER BY `createdAt` " . $_SESSION['sort-account'] . " LIMIT $start, $limit";
 }
 $listAccountResult = mysqli_query($conn, $sql_list);
 if ($listAccountResult) {

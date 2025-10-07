@@ -160,25 +160,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="bedrooms">Số phòng ngủ</label>
-                                <select id="bedrooms" name="bedrooms">
-                                    <option value="0" <?= ($_POST['bedrooms'] ?? '0') === '0' ? 'selected' : '' ?>>0</option>
-                                    <option value="1" <?= ($_POST['bedrooms'] ?? '') === '1' ? 'selected' : '' ?>>1</option>
-                                    <option value="2" <?= ($_POST['bedrooms'] ?? '') === '2' ? 'selected' : '' ?>>2</option>
-                                    <option value="3" <?= ($_POST['bedrooms'] ?? '') === '3' ? 'selected' : '' ?>>3</option>
-                                    <option value="4" <?= ($_POST['bedrooms'] ?? '') === '4' ? 'selected' : '' ?>>4</option>
-                                    <option value="5" <?= ($_POST['bedrooms'] ?? '') === '5' ? 'selected' : '' ?>>5+</option>
-                                </select>
+                                <input type="number" id="bedrooms" name="bedrooms" min="0" style=" padding: 0.75rem 1rem"  
+                                           placeholder="0" value="<?= $_POST['bedrooms'] ?? '' ?>">
+                            </div>
+
                             </div>
                             <div class="form-group">
                                 <label for="bathrooms">Số phòng tắm</label>
-                                <select id="bathrooms" name="bathrooms">
-                                    <option value="0" <?= ($_POST['bathrooms'] ?? '0') === '0' ? 'selected' : '' ?>>0</option>
-                                    <option value="1" <?= ($_POST['bathrooms'] ?? '') === '1' ? 'selected' : '' ?>>1</option>
-                                    <option value="2" <?= ($_POST['bathrooms'] ?? '') === '2' ? 'selected' : '' ?>>2</option>
-                                    <option value="3" <?= ($_POST['bathrooms'] ?? '') === '3' ? 'selected' : '' ?>>3</option>
-                                    <option value="4" <?= ($_POST['bathrooms'] ?? '') === '4' ? 'selected' : '' ?>>4</option>
-                                    <option value="5" <?= ($_POST['bathrooms'] ?? '') === '5' ? 'selected' : '' ?>>5+</option>
-                                </select>
+                                <input type="number" id="bathrooms" name="bathrooms" min="0" style=" padding: 0.75rem 1rem"  
+                                       placeholder="0" value="<?= $_POST['bathrooms'] ?? '' ?>">
+                            </div>
+
                             </div>
                             <div class="form-group">
                                 <label for="floors">Số tầng</label>
@@ -222,10 +214,7 @@
                                     <option value="0" <?= ($_POST['parking'] ?? '0') === '0' ? 'selected' : '' ?>>Không có</option>
                                     <option value="1" <?= ($_POST['parking'] ?? '') === '1' ? 'selected' : '' ?>>Có</option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
+                            </div>  <div class="form-actions">
                         <button type="submit" name="submit_property" class="btn btn-primary">
                             <i class="fas fa-check"></i>
                             Đăng tin
@@ -235,6 +224,9 @@
                             Hủy
                         </button>
                     </div>
+                        </div>
+                    </div>
+                  
                         </div>
                     </div>
                 </form>

@@ -68,8 +68,6 @@
                         <th style="display: none">Ngày tạo</th>
                         <th style="display: none">id</th>
                         <th style="display: none">accountId</th>
-                        <th style="width: 13%">Số bài đăng</th>
-                        <th style="width: 14%">Lượt cho thuê</th>
                         <th style="width: 12%; text-align: center;">Hành động</th>
                     </tr>
                 </thead>
@@ -100,8 +98,6 @@
                             <td data-label="Ngày tạo" style="display: none"><span><?= date("d-m-Y", strtotime($value["createdAt"])) ?></span></td>
                             <td data-label="Mã nhân viên" style="display: none"><span><?= $value["id"] ?></span></td>
                             <td data-label="Mã tài khoản" style="display: none"><span><?= $value["accountId"] ?></span></td>
-                            <td data-label="Số bài đăng" style="text-align: center;"><span>1</span></td>
-                            <td data-label="Lượt cho thuê" style="text-align: center;"><span>2</span></td>
                             <td data-label="Hành động" style="text-align: center;">
                                 <button class="action-button view">Xem</button>
                                 <button class="action-button edit">Sửa</button>

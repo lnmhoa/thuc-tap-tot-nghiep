@@ -92,7 +92,7 @@
                     <div class="featured-news">
                         <article class="news-card-large">
                             <div class="news-image">
-                                <img src="../1.jpg" alt="" style="height: 240px; object-fit: fill; width: 420px;">
+                                <img src="../uploads/news/<?= $featuredNews['image'] ?>" alt="" style="height: 240px; object-fit: fill; width: 420px;">
                             
                             </div>
                             <div class="news-content">
@@ -105,7 +105,7 @@
                                 <p class="news-excerpt"><?= substr(strip_tags($featuredNews['content']), 0, 200) ?>...</p>
                                 <div class="news-meta">
                                     <div class="author-info">
-                                        <img src="../1.jpg?height=30&width=30" alt="Tác giả">
+                                        <img src="../uploads/system/logo.jpg?height=30&width=30" alt="Tác giả">
                                         <span><?= !empty($featuredNews['author']) ? $featuredNews['author'] : 'Admin' ?></span>
                                     </div>
                                     <div class="news-stats">
@@ -128,7 +128,7 @@
                     ?>
                         <article class="news-card-horizontal">
                             <div class="news-image">
-                                  <img src="../1.jpg" alt="" style="object-fit: fill;">
+                                  <img src="../uploads/news/<?= $value['image'] ?>" alt="" style="object-fit: fill;">
                             </div>
                             <div class="news-content">
                                 <div> 
@@ -140,7 +140,7 @@
                                 <p class="news-excerpt"><?= substr(strip_tags($value['content']), 0, 150) ?>...</p>
                                 <div class="news-meta">
                                     <div class="author-info">
-                                        <img src="../1.jpg?height=25&width=25" alt="Tác giả">
+                                        <img src="../uploads/system/logo.jpg?height=25&width=25" alt="Tác giả">
                                         <span><?= !empty($value['author']) ? $value['author'] : 'Admin' ?></span>
                                     </div>
                                     <div class="news-stats">
@@ -154,8 +154,6 @@
                         </article>
                     <?php } ?>
                 </div>
-
-                <!-- No Results Message -->
                 <?php if (empty($listNews)) { ?>
                     <div style="text-align: center; padding: 40px; color: #666;">
                         <h3>Không tìm thấy tin tức nào</h3>

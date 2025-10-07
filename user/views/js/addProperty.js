@@ -1,12 +1,9 @@
-// Multi-step form functionality
 document.addEventListener('DOMContentLoaded', function() {
     const steps = document.querySelectorAll('.form-step');
     const progressSteps = document.querySelectorAll('.progress-step');
     const nextButtons = document.querySelectorAll('.next-step');
     const prevButtons = document.querySelectorAll('.prev-step');
     let currentStep = 0;
-
-    // Initialize
     showStep(currentStep);
 
     nextButtons.forEach(button => {
@@ -18,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Previous button event listeners
     prevButtons.forEach(button => {
         button.addEventListener('click', () => {
             currentStep--;
@@ -28,12 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function showStep(step) {
-        // Hide all steps
         steps.forEach((stepElement, index) => {
             stepElement.style.display = index === step ? 'block' : 'none';
         });
-
-        // Update progress
         progressSteps.forEach((progressStep, index) => {
             progressStep.classList.remove('active', 'completed');
             if (index < step) {
@@ -43,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Scroll to top
         document.querySelector('.form-container').scrollTop = 0;
     }
 
@@ -69,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updatePreview() {
-        // Update preview content
         const title = document.getElementById('title')?.value || 'Tiêu đề bất động sản';
         const transactionType = document.querySelector('input[name="transactionType"]:checked')?.value || 'sell';
         const address = document.getElementById('address')?.value || 'Địa chỉ';
@@ -86,22 +76,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('previewBathrooms').innerHTML = `<i class="fas fa-bath"></i> ${bathrooms} phòng tắm`;
         document.getElementById('previewPrice').textContent = formatPrice(price) + ' VNĐ';
     }
-
-    // Image upload functionality
     const uploadArea = document.getElementById('uploadArea');
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
     const uploadLink = document.querySelector('.upload-link');
     let uploadedImages = [];
-
-    // Click to upload
     uploadArea.addEventListener('click', () => imageInput.click());
     uploadLink.addEventListener('click', (e) => {
         e.stopPropagation();
         imageInput.click();
     });
-
-    // Drag and drop
     uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadArea.classList.add('dragover');
@@ -117,8 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const files = e.dataTransfer.files;
         handleFiles(files);
     });
-
-    // File input change
     imageInput.addEventListener('change', (e) => {
         handleFiles(e.target.files);
     });
@@ -144,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
             displayImagePreview(file, uploadedImages.length - 1);
         });
 
-        // Update main preview image
         if (uploadedImages.length > 0 && uploadedImages[0]) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -176,14 +157,11 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsDataURL(file);
     }
 
-    // Global functions for image management
     window.setMainImage = function(index) {
-        // Move image to first position
         const image = uploadedImages[index];
         uploadedImages.splice(index, 1);
         uploadedImages.unshift(image);
-        
-        // Refresh preview
+
         refreshImagePreview();
         updatePreview();
     };
@@ -203,13 +181,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Price formatting
     function formatPrice(price) {
         if (!price) return '0';
         return parseInt(price).toLocaleString('vi-VN');
     }
 
-    // Add price formatting on input
     const priceInput = document.getElementById('price');
     if (priceInput) {
         priceInput.addEventListener('input', function(e) {
@@ -225,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Form submission
     const form = document.querySelector('.property-form');
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -239,18 +214,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Create FormData with images
         const formData = new FormData(form);
-        
-        // Remove old file inputs
+
         formData.delete('images[]');
-        
-        // Add uploaded images
+
         uploadedImages.forEach((file, index) => {
             formData.append('images[]', file);
         });
 
-        // Submit form
         const submitBtn = document.querySelector('.submit-btn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
@@ -268,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = '/user/controllers/brokerPropertyController/';
                 }, 2000);
             } else {
-                // Parse error messages
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
                 const errorMessages = doc.querySelectorAll('.error-message');
@@ -294,9 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Alert function
     function showAlert(message, type = 'info') {
-        // Remove existing alerts
         const existingAlerts = document.querySelectorAll('.alert');
         existingAlerts.forEach(alert => alert.remove());
 
@@ -311,15 +279,12 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         document.body.appendChild(alert);
-
-        // Auto remove after 5 seconds
         setTimeout(() => {
             if (alert.parentNode) {
                 alert.remove();
             }
         }, 5000);
 
-        // Close button
         alert.querySelector('.alert-close').addEventListener('click', () => {
             alert.remove();
         });

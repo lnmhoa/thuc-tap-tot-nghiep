@@ -9,7 +9,6 @@
         </div>
     </section>
     <div class="news-detail-layout">
-    <?php if($newsDetail['pin'] === '1') echo '<div>' ?>
             <article class="news-article">
                 <header class="article-header">
                     <div class="article-category">

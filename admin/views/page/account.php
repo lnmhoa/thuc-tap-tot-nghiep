@@ -80,7 +80,7 @@
                             <td data-label="Trạng thái"><span class="status <?= $statusClass ?>"><?= $status ?></span></td>
                             <td data-label="Ngày tạo"><?php $date = new DateTime($value["createdAt"]); echo $date->format('d/m/Y'); ?></td>
                             <td data-label="Hành động" style="text-align: center;">
-                                <button class="action-button view">Xem</button>
+                                <button class="action-button view" style="background-color: blue; color: white;">Xem</button>
                                 <button class="action-button lock" <?php if($statusClass === "inactive") {echo 'style="background-color: green;"';}else{echo 'style="background-color: red; padding: 6px 16px"';} ?>><?= $buttonText ?></button>
                             </td>
                         </tr>

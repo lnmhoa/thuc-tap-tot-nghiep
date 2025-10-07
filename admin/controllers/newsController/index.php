@@ -38,5 +38,16 @@ if ($listNewsResult) {
   error('Lấy thông tin tin tức thất bại!', 'index.php?act=news');
 }
 
+if(isset($_POST['change-pin'])){
+  $newsId = $_POST['news-id'];
+  $updatePin = mysqli_query($conn,"UPDATE `news` SET `pin` = 0 WHERE `pin` = 1");
+  $updatePinResult = mysqli_query($conn, "UPDATE `news` SET `pin` = 1 WHERE `id` = $newsId");
+  if ($updatePinResult) {
+     success('Cập nhật trạng thái ghim thành công!', 'index.php?act=news');
+  } else {
+    error('Cập nhật trạng thái ghim thất bại!', 'index.php?act=news');
+  }
+}
+
 include "./views/page/news.php";
 return;

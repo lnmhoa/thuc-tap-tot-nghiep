@@ -26,10 +26,10 @@ if (!isset($property)) {
                 <div class="property-images">
     <?php if (!empty($propertyImages)): ?>
         <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
-            <div class="swiper-wrapper">
+                <div class="swiper-wrapper" style="height: 500px;">
                 <?php foreach ($propertyImages as $image): ?>
                     <div class="swiper-slide">
-                        <img src="../uploads/property/<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" />
+                            <img src="../uploads/property/<?= htmlspecialchars($image['imagePath']) ?>" alt="<?= htmlspecialchars($property['title']) ?>" style="height: 100%; width: auto; max-width: 100%; object-fit: cover; display: block; margin: 0 auto;" />
                     </div>
                 <?php endforeach; ?>
             </div>

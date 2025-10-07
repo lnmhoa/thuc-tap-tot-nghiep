@@ -42,11 +42,11 @@
                         <th style="width: 36%">Tiêu đề</th>
                         <th style="width: 10% ;text-align: center;">Ảnh bìa</th>
                         <th style="display: none">Nội dung</th>
-                        <th style="width: 15%;">Thể loại</th>
+                        <th style="width: 10%;">Thể loại</th>
                         <th style="width: 10%">Ngày đăng</th>
                         <th style="width: 9%">Lượt xem</th>
                         <th style="display: none">newsId</th>
-                        <th style="width: 15%; text-align: center;">Hành động</th>
+                        <th style="width: 20%; text-align: center;">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,9 +63,16 @@
                             <td data-label="Ngày đăng" style="text-align: center;"><?= date("d-m-Y", strtotime($value["createdAt"])) ?></td>
                             <td data-label="Lượt xem" style="text-align: center;"><?= $value["views"] ?></td>
                             <td data-label="Mã" style="display: none"><?= $value["id"] ?></td>
-                            <td data-label="Hành động" style="text-align: center;">
+                            <td data-label="Hành động" style="justify-content: center; display: flex;">
                                 <button class="action-button edit">Sửa</button>
-                                <button class="action-button del">Xóa</button>
+                                <button class="action-button del">Xóa</button>                                <?php if ($value['pin'] == 0) { ?>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="news-id" value="<?= $value['id'] ?>">
+                                    <button class="action-button edit pin-news" name="change-pin" style="background-color: orange;">Ghim</button>
+                                    </form>
+                                <?php } else { ?>
+                                                                       <button class="action-button edit pin-news" style="background-color: gray;" disabled>Ghim</button>
+                                <?php } ?>
                             </td>
                         </tr>
                     <?php

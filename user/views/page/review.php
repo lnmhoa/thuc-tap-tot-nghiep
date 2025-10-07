@@ -10,11 +10,9 @@
         </div>
     </section>
 
-    <!-- Main Content -->
     <main class="reviews-page">
         <div class="container">
             <div class="page-layout">
-                <!-- Review Tabs -->
                 <div class="review-tabs">
                     <button class="tab-btn active" data-tab="write-review">
                         <i class="fas fa-edit"></i>
@@ -30,7 +28,6 @@
                     </button>
                 </div>
 
-                <!-- Write Review Tab -->
                 <div class="tab-content active" id="write-review">
                     <div class="review-form-container">
                         <div class="form-header">
@@ -39,7 +36,6 @@
                         </div>
 
                         <form class="review-form" id="reviewForm">
-                            <!-- Review Type Selection -->
                             <div class="form-section">
                                 <h3>Loại đánh giá</h3>
                                 <div class="review-type-selection">
@@ -62,7 +58,6 @@
                                 </div>
                             </div>
 
-                            <!-- Agent Review Form -->
                             <div class="review-form-content" id="agent-review-form">
                                 <div class="form-section">
                                     <h3>Thông tin môi giới</h3>
@@ -75,7 +70,6 @@
                                             </div>
                                         </div>
                                         <div class="agent-suggestions" id="agentSuggestions">
-                                            <!-- Agent suggestions will appear here -->
                                         </div>
                                         <div class="selected-agent" id="selectedAgent" style="display: none;">
                                             <div class="agent-info">
@@ -151,7 +145,6 @@
                                 </div>
                             </div>
 
-                            <!-- Property Review Form -->
                             <div class="review-form-content" id="property-review-form" style="display: none;">
                                 <div class="form-section">
                                     <h3>Thông tin bất động sản</h3>
@@ -164,7 +157,6 @@
                                             </div>
                                         </div>
                                         <div class="property-suggestions" id="propertySuggestions">
-                                            <!-- Property suggestions will appear here -->
                                         </div>
                                         <div class="selected-property" id="selectedProperty" style="display: none;">
                                             <div class="property-info">
@@ -240,7 +232,6 @@
                                 </div>
                             </div>
 
-                            <!-- Review Content -->
                             <div class="form-section">
                                 <h3>Nội dung đánh giá</h3>
                                 <div class="form-group">
@@ -254,7 +245,6 @@
                                 </div>
                             </div>
 
-                            <!-- Review Options -->
                             <div class="form-section">
                                 <h3>Tùy chọn</h3>
                                 <div class="review-options">
@@ -283,7 +273,6 @@
                     </div>
                 </div>
 
-                <!-- My Reviews Tab -->
                 <div class="tab-content" id="my-reviews">
                     <div class="reviews-header">
                         <h2>Đánh giá của tôi</h2>
@@ -382,7 +371,6 @@
                     </div>
                 </div>
 
-                <!-- Received Reviews Tab -->
                 <div class="tab-content" id="received-reviews">
                     <div class="reviews-header">
                         <h2>Đánh giá nhận được</h2>

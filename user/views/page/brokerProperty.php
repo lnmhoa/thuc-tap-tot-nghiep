@@ -91,7 +91,6 @@
                     </div>
                 </div>
 
-                <!-- Properties List -->
                 <div class="properties-list" id="propertiesList">
                     <?php if (!empty($properties)): ?>
                         <?php foreach ($properties as $property): ?>
@@ -228,7 +227,6 @@
                         </div>
                     </div>
 
-                    <!-- Property Item 2 -->
                     <div class="property-item" data-status="pending">
                         <div class="property-image">
                             <img src="/placeholder.svg?height=200&width=300" alt="Biệt thự sang trọng">
@@ -289,7 +287,6 @@
                         </div>
                     </div>
 
-                    <!-- Property Item 3 -->
                     <div class="property-item" data-status="hidden">
                         <div class="property-image">
                             <img src="/placeholder.svg?height=200&width=300" alt="Văn phòng cho thuê">
@@ -357,7 +354,6 @@
                     </div>
                 </div>
 
-                <!-- Pagination -->
                 <?php if ($totalPages > 1): ?>
                 <div class="pagination">
                     <?php if ($page > 1): ?>
@@ -444,7 +440,6 @@
         window.location.href = `?act=addProperty&edit=${propertyId}`;
     }
 
-    // Filter tabs functionality
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const status = this.dataset.status;
@@ -454,12 +449,11 @@
             } else {
                 currentUrl.searchParams.set('status', status);
             }
-            currentUrl.searchParams.delete('page'); // Reset to page 1
+            currentUrl.searchParams.delete('page');
             window.location.href = currentUrl.toString();
         });
     });
 
-    // Search functionality
     document.getElementById('searchInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const currentUrl = new URL(window.location);
@@ -468,7 +462,7 @@
             } else {
                 currentUrl.searchParams.delete('search');
             }
-            currentUrl.searchParams.delete('page'); // Reset to page 1
+            currentUrl.searchParams.delete('page');
             window.location.href = currentUrl.toString();
         }
     });

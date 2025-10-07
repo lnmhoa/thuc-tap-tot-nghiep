@@ -209,7 +209,7 @@
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
-        
+        <?php unset($broker); ?>
         <div class="brokers-grid">
             <?php if (!empty($topBrokers)) { 
                 foreach ($topBrokers as $broker) { 
@@ -219,7 +219,7 @@
             ?>
             <div class="broker-card">
                 <div class="broker-avatar">
-                    <img src="<?= $avatar ?>" alt="<?= htmlspecialchars($broker['fullName']) ?>" onerror="this.src='../logo.jpg'">
+                    <img src="<?= $avatar ?>" alt="<?= htmlspecialchars($broker['fullName']) ?>" onerror="this.src='../uploads/system/default_user.jpg'">
                 </div>
                 <div class="broker-info">
                     <h3 class="broker-name" onclick="window.location.href='?act=broker&id=<?= $broker['id'] ?>'"><?= htmlspecialchars($broker['fullName']) ?></h3>
