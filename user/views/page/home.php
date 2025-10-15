@@ -282,7 +282,7 @@
         </div>
         <div class="news-grid">
             <?php if (!empty($pinNewsHome)): ?>
-            <article class="news-card featured">
+            <article class="news-card featured" style="cursor: pointer;" onclick="window.location.href='?act=news&id=<?= $pinNewsHome[0]['id'] ?>'">
                 <div class="news-image">
                     <img src="../uploads/news/<?= $pinNewsHome[0]['image'] ?>" alt="<?= ($pinNewsHome[0]['title']) ?>">
                     <div class="news-badge">Tin nổi bật</div>
@@ -307,7 +307,7 @@
             
             <div class="news-list">
                 <?php foreach ($listNewsHome as $news): ?>
-                <article class="news-item">
+                <article class="news-item" style="cursor: pointer;" onclick="window.location.href='?act=news&id=<?= $news['id'] ?>'">
                     <div class="news-info">
                         <h4 class="news-title"><div class="news-category small"><?= $news['name'] ?></div><?= $news['title'] ?></h4>
                         <p class="news-excerpt"><?= strip_tags($news['content']) ?></p>

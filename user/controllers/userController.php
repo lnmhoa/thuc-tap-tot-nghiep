@@ -3,10 +3,6 @@ require_once "./connectDB.php";
 require_once "./message.php";
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-$vndtousd = 24385;
-$itemOnePage = 10;
-
-
  if(isset($_POST['save-property'])) {
   $propertie = $_POST['property_id'];
         if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] != '') {

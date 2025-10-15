@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const brokerForm = document.getElementById("brokerForm");
     const saveBrokerButton = document.getElementById("saveBrokerButton");
     const modalTitle = document.getElementById("modalTitle");
-    const avatarContainer = document.getElementById("modal-avatar-container");
     const avatarInput = document.getElementById("modal-avatar");
     const passwordInput = document.getElementById("modal-password");
     const passwordLabel = document.querySelector('label[for="modal-password"]');

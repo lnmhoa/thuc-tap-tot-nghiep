@@ -28,9 +28,11 @@
     <div class="layout">
     <div class="admin-container">
         <div class="sidebar">
-            <div class="logo">
-                <img src="../uploads/system/logo.jpg" alt="logo">
-            </div>
+       <div class="logo">
+    <a href="http://localhost/thuc-tap-tot-nghiep/user/index.php?act=home">
+        <img src="../uploads/system/logo.jpg" alt="Logo Trang Chủ">
+    </a>
+</div>
             <nav class="navigation">
                 <ul>
                     <li><a href="index.php"><i class="fa-solid fa-chart-simple"></i> Tổng quát</a></li>

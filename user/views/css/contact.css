@@ -1,4 +1,3 @@
-/* Contact Page Styles */
 .contact-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -165,7 +164,6 @@
         padding: 1.5rem;
     }
 
-    /* Info Items */
     .info-item {
         display: flex;
         align-items: flex-start;

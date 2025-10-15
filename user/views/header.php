@@ -14,12 +14,9 @@
     <link rel="stylesheet" href="./views/css/broker.css">
     <link rel="stylesheet" href="./views/css/news.css">
     <link rel="stylesheet" href="./views/css/newsDetail.css">
-    <link rel="stylesheet" href="./views/css/user-profile.css">
+    <link rel="stylesheet" href="./views/css/userProfile.css">
     <link rel="stylesheet" href="./views/css/properties.css">
     <link rel="stylesheet" href="./views/css/propertyDetail.css">
-    <link rel="stylesheet" href="./views/css/addProperty.css">
-    <link rel="stylesheet" href="./views/css/brokerProperty.css">
-    <link rel="stylesheet" href="./views/css/consultationRequest.css">
     <link rel="stylesheet" href="./views/css/auth.css">
     <link rel="stylesheet" href="./views/css/about.css">
     <link rel="stylesheet" href="./views/css/contact.css">

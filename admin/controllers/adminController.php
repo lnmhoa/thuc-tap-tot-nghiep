@@ -3,8 +3,6 @@ require_once "./connectDB.php";
 require_once "./message.php";
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-$vndtousd = 24385;
-$itemOnePage = 10;
 if(!isset($_SESSION['user']) || $_SESSION['user']['role'] != 3){
   header('Location: http://localhost/thuc-tap-tot-nghiep/user/');
   exit();
